@@ -43,6 +43,7 @@ import {
   Bookmark,
   BookOpen,
   Tag,
+  Filter,
   X
 } from 'lucide-react';
 import {
@@ -60,14 +61,25 @@ import {
   fetchNetworkStats,
 } from '@/lib/api';
 
-function formatTimelineDate(dateStr: string) {
-  if (!dateStr) return '-';
+function formatTimelineDate(dateStr?: string | null) {
+  if (
+    !dateStr ||
+    dateStr === 'belum_ditentukan' ||
+    dateStr === '0000-00-00' ||
+    dateStr === 'null' ||
+    dateStr.toLowerCase().includes('belum') ||
+    dateStr === '-' ||
+    dateStr === 'TBD'
+  ) {
+    return 'Belum ditentukan';
+  }
   try {
     const parts = dateStr.split('T')[0].split('-');
-    if (parts.length === 3) {
+    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
       const y = parts[0];
       const m = parseInt(parts[1], 10);
       const d = parseInt(parts[2], 10);
+      if (isNaN(m) || isNaN(d)) return 'Belum ditentukan';
       const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
         'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
@@ -78,6 +90,17 @@ function formatTimelineDate(dateStr: string) {
   } catch (e) {
     return dateStr;
   }
+}
+
+function getItemKelas(item: RplTimelineItem): '10' | '11' | '12' | 'all' {
+  if ((item as any).kelas === '10' || (item as any).kelas === '11' || (item as any).kelas === '12') {
+    return (item as any).kelas;
+  }
+  const text = `${item.nama_kegiatan} ${item.keterangan || ''}`.toLowerCase();
+  if (text.includes('kelas 10') || text.includes('kelas x ') || text.includes('kelas x-') || text.includes('[kelas 10]')) return '10';
+  if (text.includes('kelas 11') || text.includes('kelas xi ') || text.includes('kelas xi-') || text.includes('[kelas 11]')) return '11';
+  if (text.includes('kelas 12') || text.includes('kelas xii ') || text.includes('kelas xii-') || text.includes('[kelas 12]') || text.includes('ukk') || text.includes('tka')) return '12';
+  return 'all';
 }
 
 function getFotoUrl(url?: string | null): string {
@@ -251,21 +274,26 @@ export default function PublicMonitorPage() {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [verifying, setVerifying] = useState<boolean>(false);
 
-  // Timeline Admin Modal State
+  // Timeline Admin Modal & Class Filter State
   const [showTimelineModal, setShowTimelineModal] = useState<boolean>(false);
+  const [timelineClassFilter, setTimelineClassFilter] = useState<'all' | '10' | '11' | '12'>('all');
   const [timelineForm, setTimelineForm] = useState<{
     id?: number;
     nama_kegiatan: string;
     tanggal: string;
+    isDateTBD: boolean;
     kategori: string;
     keterangan: string;
     status: 'belum_dimulai' | 'sedang_berlangsung' | 'selesai';
+    kelas: 'all' | '10' | '11' | '12';
   }>({
     nama_kegiatan: '',
     tanggal: new Date().toISOString().split('T')[0],
+    isDateTBD: false,
     kategori: 'Kejuruan',
     keterangan: '',
     status: 'belum_dimulai',
+    kelas: 'all',
   });
 
   // Dokumentasi / Kegiatan Admin Upload Modal State
@@ -457,18 +485,36 @@ export default function PublicMonitorPage() {
     if (authRole !== 'admin') return;
 
     try {
+      const isTBD = timelineForm.isDateTBD || !timelineForm.tanggal;
+      const finalTanggal = isTBD ? 'belum_ditentukan' : timelineForm.tanggal;
+
+      let finalKeterangan = timelineForm.keterangan || '';
+      if (timelineForm.kelas && timelineForm.kelas !== 'all') {
+        if (
+          !finalKeterangan.includes(`[Kelas ${timelineForm.kelas}]`) &&
+          !timelineForm.nama_kegiatan.includes(`Kelas ${timelineForm.kelas}`)
+        ) {
+          finalKeterangan = `[Kelas ${timelineForm.kelas}] ${finalKeterangan}`.trim();
+        }
+      }
+
       await submitTimelineAction({
         pin: authPin,
         action: timelineForm.id ? 'update' : 'add',
         ...timelineForm,
+        tanggal: finalTanggal,
+        keterangan: finalKeterangan,
+        kelas: timelineForm.kelas || 'all',
       });
       setShowTimelineModal(false);
       setTimelineForm({
         nama_kegiatan: '',
         tanggal: new Date().toISOString().split('T')[0],
+        isDateTBD: false,
         kategori: 'Kejuruan',
         keterangan: '',
         status: 'belum_dimulai',
+        kelas: 'all',
       });
       loadTimelineData();
     } catch (err: any) {
@@ -645,8 +691,17 @@ export default function PublicMonitorPage() {
     });
   }, [data, activeTab, statusFilter, searchQuery, customCategories]);
 
-  // Timeline completion counter
-  const timelineCompletedCount = timelineList.filter(
+  // Timeline filtered by Class
+  const filteredTimelineList = useMemo(() => {
+    return timelineList.filter((item) => {
+      if (timelineClassFilter === 'all') return true;
+      const itemClass = getItemKelas(item);
+      return itemClass === timelineClassFilter || itemClass === 'all';
+    });
+  }, [timelineList, timelineClassFilter]);
+
+  // Timeline completion counter (for current filter)
+  const timelineCompletedCount = filteredTimelineList.filter(
     (t) => t.status === 'selesai' || t.selesai === 1
   ).length;
 
@@ -687,7 +742,7 @@ export default function PublicMonitorPage() {
                       Catatan Agenda RPL
                     </h2>
                     <span className="text-[9px] font-black bg-amber-200/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1.5 py-0.2 rounded-full border border-amber-300/70 dark:border-amber-700 shrink-0">
-                      {timelineCompletedCount}/{timelineList.length}
+                      {timelineCompletedCount}/{filteredTimelineList.length}
                     </span>
                   </div>
                   <p className="text-[9.5px] text-amber-800/80 dark:text-amber-300/70 font-medium truncate">
@@ -702,9 +757,11 @@ export default function PublicMonitorPage() {
                     setTimelineForm({
                       nama_kegiatan: '',
                       tanggal: new Date().toISOString().split('T')[0],
+                      isDateTBD: false,
                       kategori: 'Kejuruan',
                       keterangan: '',
                       status: 'belum_dimulai',
+                      kelas: timelineClassFilter === 'all' ? '12' : timelineClassFilter,
                     });
                     setShowTimelineModal(true);
                   }}
@@ -717,21 +774,59 @@ export default function PublicMonitorPage() {
               )}
             </div>
 
+            {/* Class Filter Tabs: Semua, Kelas 10, Kelas 11, Kelas 12 */}
+            <div className="px-3 py-1.5 border-b border-amber-200/50 dark:border-slate-700/50 bg-amber-50/50 dark:bg-slate-900/50 flex items-center justify-between gap-1 shrink-0 select-none">
+              <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
+                {[
+                  { id: 'all', label: 'Semua' },
+                  { id: '10', label: 'Kelas 10' },
+                  { id: '11', label: 'Kelas 11' },
+                  { id: '12', label: 'Kelas 12' },
+                ].map((cls) => (
+                  <button
+                    key={cls.id}
+                    type="button"
+                    onClick={() => setTimelineClassFilter(cls.id as any)}
+                    className={`px-2 py-0.5 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
+                      timelineClassFilter === cls.id
+                        ? 'bg-amber-400 text-amber-950 font-black shadow-2xs scale-105'
+                        : 'bg-white/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700'
+                    }`}
+                  >
+                    {cls.label}
+                  </button>
+                ))}
+              </div>
+              <span className="text-[9.5px] font-bold text-amber-900/70 dark:text-amber-300/70 shrink-0">
+                {filteredTimelineList.length} Catatan
+              </span>
+            </div>
+
             {/* Scrollable Sticky Notes Area (with classic red notebook margin line) */}
             <div className="flex-1 overflow-y-auto p-3 space-y-3.5 min-h-0 border-l-[3px] border-rose-400/40 dark:border-rose-500/25 ml-2.5 pl-2.5">
-              {timelineList.length === 0 ? (
+              {filteredTimelineList.length === 0 ? (
                 <div className="py-10 text-center flex flex-col items-center justify-center text-amber-800/60 dark:text-amber-300/50 text-xs">
                   <span className="text-3xl mb-1.5">📝</span>
                   <p className="font-bold">Belum ada sticky note.</p>
-                  <p className="text-[10px] mt-0.5">Catatan agenda kegiatan RPL akan tampil di sini.</p>
+                  <p className="text-[10px] mt-0.5">
+                    {timelineClassFilter === 'all'
+                      ? 'Catatan agenda kegiatan RPL akan tampil di sini.'
+                      : `Belum ada agenda khusus untuk Kelas ${timelineClassFilter}.`}
+                  </p>
                 </div>
               ) : (
-                timelineList.map((item, idx) => {
+                filteredTimelineList.map((item, idx) => {
                   const itemStatus =
                     item.status || (item.selesai === 1 ? 'selesai' : 'belum_dimulai');
                   const isDone = itemStatus === 'selesai';
                   const palette = STICKY_PALETTES[idx % STICKY_PALETTES.length];
                   const rotation = STICKY_ROTATIONS[idx % STICKY_ROTATIONS.length];
+                  const itemClass = getItemKelas(item);
+                  const isDateTBD =
+                    !item.tanggal ||
+                    item.tanggal === 'belum_ditentukan' ||
+                    item.tanggal === '0000-00-00' ||
+                    item.tanggal.toLowerCase().includes('belum');
 
                   return (
                     <div
@@ -758,12 +853,26 @@ export default function PublicMonitorPage() {
 
                           {/* Info Detail */}
                           <div className="min-w-0 flex-1">
-                            {/* Tanggal & Kategori Badges */}
+                            {/* Tanggal & Kategori & Kelas Badges */}
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${palette.dateBadge}`}>
+                              {/* Tanggal Badge */}
+                              <span
+                                className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${
+                                  isDateTBD
+                                    ? 'bg-amber-100/90 text-amber-900 border-amber-300/90 dark:bg-amber-900/60 dark:text-amber-200'
+                                    : palette.dateBadge
+                                }`}
+                              >
                                 <Calendar className="w-2.5 h-2.5 shrink-0" />
                                 {formatTimelineDate(item.tanggal)}
                               </span>
+
+                              {/* Kelas Badge */}
+                              <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700">
+                                {itemClass === 'all' ? 'Semua Kelas' : `Kelas ${itemClass}`}
+                              </span>
+
+                              {/* Kategori Badge */}
                               <span
                                 className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-white/70 dark:bg-black/30 border border-black/10 dark:border-white/10 ${palette.text}`}
                               >
@@ -816,13 +925,20 @@ export default function PublicMonitorPage() {
                             <div className="flex items-center gap-0.5 mt-1 opacity-0 group-hover/note:opacity-100 transition-opacity">
                               <button
                                 onClick={() => {
+                                  const isTBD =
+                                    !item.tanggal ||
+                                    item.tanggal === 'belum_ditentukan' ||
+                                    item.tanggal === '0000-00-00' ||
+                                    item.tanggal.toLowerCase().includes('belum');
                                   setTimelineForm({
                                     id: item.id,
                                     nama_kegiatan: item.nama_kegiatan,
-                                    tanggal: item.tanggal,
+                                    tanggal: isTBD ? '' : item.tanggal,
+                                    isDateTBD: isTBD,
                                     kategori: item.kategori,
                                     keterangan: item.keterangan || '',
                                     status: itemStatus,
+                                    kelas: getItemKelas(item),
                                   });
                                   setShowTimelineModal(true);
                                 }}
@@ -1329,18 +1445,71 @@ export default function PublicMonitorPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* Target Kelas / Tingkat */}
+              <div>
+                <label className="block text-slate-700 font-bold mb-1">Target Kelas / Tingkat:</label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[
+                    { id: 'all', label: 'Semua' },
+                    { id: '10', label: 'Kelas 10' },
+                    { id: '11', label: 'Kelas 11' },
+                    { id: '12', label: 'Kelas 12' },
+                  ].map((cls) => (
+                    <button
+                      key={cls.id}
+                      type="button"
+                      onClick={() => setTimelineForm({ ...timelineForm, kelas: cls.id as any })}
+                      className={`py-1.5 px-1 rounded-lg text-xs font-bold border transition-all text-center cursor-pointer ${
+                        timelineForm.kelas === cls.id
+                          ? 'bg-amber-400 border-amber-500 text-amber-950 font-black shadow-2xs'
+                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      {cls.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tanggal & Kategori */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1">Tanggal Kegiatan:</label>
-                  <input
-                    type="date"
-                    value={timelineForm.tanggal}
-                    onChange={(e) =>
-                      setTimelineForm({ ...timelineForm, tanggal: e.target.value })
-                    }
-                    required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-semibold"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-slate-700 font-bold">Tanggal Kegiatan:</label>
+                    <label className="flex items-center gap-1 text-[11px] text-amber-900 font-bold cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={timelineForm.isDateTBD}
+                        onChange={(e) =>
+                          setTimelineForm({
+                            ...timelineForm,
+                            isDateTBD: e.target.checked,
+                            tanggal: e.target.checked
+                              ? ''
+                              : (timelineForm.tanggal || new Date().toISOString().split('T')[0]),
+                          })
+                        }
+                        className="w-3.5 h-3.5 rounded text-amber-500 focus:ring-amber-400 cursor-pointer"
+                      />
+                      <span>Belum ditentukan</span>
+                    </label>
+                  </div>
+                  {timelineForm.isDateTBD ? (
+                    <div className="w-full px-3 py-2 bg-amber-50 border border-dashed border-amber-300 rounded-lg text-amber-900 font-bold text-xs flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-amber-600" />
+                      <span>Belum ditentukan (Tentatif)</span>
+                    </div>
+                  ) : (
+                    <input
+                      type="date"
+                      value={timelineForm.tanggal}
+                      onChange={(e) =>
+                        setTimelineForm({ ...timelineForm, tanggal: e.target.value })
+                      }
+                      required={!timelineForm.isDateTBD}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-semibold focus:outline-none focus:ring-1 focus:ring-amber-400"
+                    />
+                  )}
                 </div>
                 <div>
                   <label className="block text-slate-700 font-bold mb-1">Kategori:</label>
