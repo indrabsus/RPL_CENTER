@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert } from 'lucide-react';
+import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight } from 'lucide-react';
 import { fetchNetworkStats, NetworkStatsData } from '@/lib/api';
 
 export default function Navbar() {
@@ -106,41 +106,43 @@ export default function Navbar() {
         </Link>
 
         {/* Center/Right: Network Badges [Internet Siswa o] [Internet Guru o] */}
-        <div className="hidden lg:flex items-center gap-2">
-          {/* Internet Siswa */}
-          <div
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
-              networkStats.siswaOnline
-                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                : 'bg-rose-50/70 border-rose-200 text-rose-800'
-            }`}
-            title={`Internet Siswa: ${networkStats.siswaOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
-          >
-            <span>Internet Siswa</span>
-            <span
-              className={`w-2.5 h-2.5 rounded-full ${
-                networkStats.siswaOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
+        {!isMonitor && (
+          <div className="hidden lg:flex items-center gap-2">
+            {/* Internet Siswa */}
+            <div
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
+                networkStats.siswaOnline
+                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                  : 'bg-rose-50/70 border-rose-200 text-rose-800'
               }`}
-            />
-          </div>
+              title={`Internet Siswa: ${networkStats.siswaOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
+            >
+              <span>Internet Siswa</span>
+              <span
+                className={`w-2.5 h-2.5 rounded-full ${
+                  networkStats.siswaOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
+                }`}
+              />
+            </div>
 
-          {/* Internet Guru */}
-          <div
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
-              networkStats.guruOnline
-                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                : 'bg-rose-50/70 border-rose-200 text-rose-800'
-            }`}
-            title={`Internet Guru: ${networkStats.guruOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
-          >
-            <span>Internet Guru</span>
-            <span
-              className={`w-2.5 h-2.5 rounded-full ${
-                networkStats.guruOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
+            {/* Internet Guru */}
+            <div
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
+                networkStats.guruOnline
+                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
+                  : 'bg-rose-50/70 border-rose-200 text-rose-800'
               }`}
-            />
+              title={`Internet Guru: ${networkStats.guruOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
+            >
+              <span>Internet Guru</span>
+              <span
+                className={`w-2.5 h-2.5 rounded-full ${
+                  networkStats.guruOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
+                }`}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Desktop Nav Items */}
         <div className="hidden md:flex items-center gap-2 sm:gap-2.5">
@@ -312,6 +314,17 @@ export default function Navbar() {
               KARTU KONTROL
             </Link>
           </nav>
+
+          <span className="text-slate-300 font-light mx-0.5 select-none">|</span>
+
+          {/* Admin Panel -> on the far right */}
+          <Link
+            href="/kiosk"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs shrink-0 ml-1"
+          >
+            <span>Admin Panel</span>
+            <ArrowRight className="w-3.5 h-3.5 text-slate-300" />
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -464,6 +477,15 @@ export default function Navbar() {
             }`}
           >
             KARTU KONTROL
+          </Link>
+
+          <Link
+            href="/kiosk"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold transition-all shadow-xs mt-2"
+          >
+            <span>Admin Panel</span>
+            <ArrowRight className="w-4 h-4 text-slate-300" />
           </Link>
         </div>
       )}
