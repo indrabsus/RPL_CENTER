@@ -7,9 +7,13 @@ export default function Footer() {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
-  // Hide footer on root monitor page to keep TV / Laptop dashboard 100% zero-scroll
+  // Compact single-line footer on root monitor page
   if (pathname === '/') {
-    return null;
+    return (
+      <footer className="w-full border-t border-slate-200/80 bg-white/80 dark:bg-slate-900/80 py-1.5 px-4 text-center text-xs text-slate-500 dark:text-slate-400 shrink-0 select-none">
+        <span className="font-semibold text-slate-800 dark:text-slate-200">Pusat Data RPL</span> &ndash; <span className="text-blue-600 dark:text-blue-400 font-medium">Indra Batara, S.Pd., Gr.</span>
+      </footer>
+    );
   }
 
   return (

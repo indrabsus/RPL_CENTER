@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import {
   Laptop,
@@ -42,7 +42,8 @@ import {
   Paperclip,
   Bookmark,
   BookOpen,
-  Tag
+  Tag,
+  X
 } from 'lucide-react';
 import {
   fetchBarang,
@@ -314,14 +315,30 @@ export default function PublicMonitorPage() {
     loadDokumentasiData();
   }, []);
 
-  // Carousel auto-play (5 detik)
+  // Horizontal photo reel auto-scroll
+  const photoScrollRef = useRef<HTMLDivElement>(null);
+  const [isPhotoPaused, setIsPhotoPaused] = useState(false);
+  const [previewPhoto, setPreviewPhoto] = useState<RplDokumentasiItem | null>(null);
+
   useEffect(() => {
-    if (dokumentasiList.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % dokumentasiList.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [dokumentasiList.length]);
+    if (isPhotoPaused || dokumentasiList.length <= 1) return;
+    const interval = setInterval(() => {
+      const el = photoScrollRef.current;
+      if (!el) return;
+      if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollLeft += 1;
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isPhotoPaused, dokumentasiList.length]);
+
+  const scrollPhotos = (dir: 'left' | 'right') => {
+    const el = photoScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -280 : 280, behavior: 'smooth' });
+  };
 
   const loadData = async (silent = false) => {
     if (!silent) setLoading(true);
@@ -634,157 +651,19 @@ export default function PublicMonitorPage() {
   ).length;
 
   return (
-    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-76px)] max-h-[calc(100vh-76px)] overflow-hidden">
+    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] overflow-hidden">
       {/* ============================================================ */}
       {/* 12-GRID 2-COLUMN DASHBOARD LAYOUT                            */}
-      {/* KOLOM 1: 3 Grid  -> Dokumentasi RPL & Timeline RPL          */}
-      {/* KOLOM 2: 9 Grid  -> Peminjaman Alat & Barang RPL             */}
+      {/* KOLOM 1: 3 Grid  -> Catatan Agenda RPL (Full Height)         */}
+      {/* KOLOM 2: 9 Grid  -> Status, Foto Kegiatan, & Peminjaman      */}
       {/* ============================================================ */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 h-full max-h-full overflow-hidden">
 
         {/* ========================================================== */}
-        {/* KOLOM 1: 3 GRID (Dokumentasi RPL & Timeline RPL)           */}
+        {/* KOLOM 1: 3 GRID (Catatan Agenda RPL - Full Height)         */}
         {/* ========================================================== */}
-        <div className="lg:col-span-3 flex flex-col gap-2.5 h-full max-h-full min-h-0 overflow-hidden">
-          
-          {/* Card 1A: Dokumentasi Kegiatan RPL (TAMPIL ASLI TANPA GEPENG) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2.5 sm:p-3 flex flex-col shrink-0">
-            {/* Header */}
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                  <ImageIcon className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <h2 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight truncate">
-                    Dokumentasi RPL
-                  </h2>
-                  <p className="text-[10px] text-slate-500 font-medium truncate">
-                    Galeri kegiatan Lab PPLG
-                  </p>
-                </div>
-              </div>
-
-              {authRole === 'admin' && (
-                <button
-                  onClick={() => {
-                    setDokForm({
-                      judul: '',
-                      deskripsi: '',
-                      foto_url: '',
-                      tanggal: new Date().toISOString().split('T')[0],
-                    });
-                    setSelectedFile(null);
-                    setPreviewUrl(null);
-                    setShowDokumentasiModal(true);
-                  }}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold cursor-pointer shadow-2xs shrink-0"
-                  title="Upload Foto Kegiatan"
-                >
-                  <Plus className="w-3 h-3" />
-                  <span>Upload</span>
-                </button>
-              )}
-            </div>
-
-            {/* Carousel Frame - Gambar Asli Tanpa Gepeng (object-contain dengan ambient fill) */}
-            {dokumentasiList.length === 0 ? (
-              <div className="h-40 sm:h-44 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
-                <ImageIcon className="w-7 h-7 mb-1.5 opacity-50" />
-                <span>Belum ada foto kegiatan.</span>
-              </div>
-            ) : (
-              <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-950 group h-40 sm:h-44 lg:h-[180px] flex items-center justify-center shrink-0">
-                {/* Ambient blurred backdrop from the photo */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center blur-2xl opacity-25 scale-125 pointer-events-none transition-all duration-700"
-                  style={{
-                    backgroundImage: `url(${getFotoUrl(
-                      dokumentasiList[currentSlide]?.foto_url ||
-                      dokumentasiList[currentSlide]?.foto
-                    )})`,
-                  }}
-                />
-
-                {/* Foto Tampil Sesuai Dimensi Aslinya (object-contain, TIDAK GEPENG) */}
-                <img
-                  src={getFotoUrl(
-                    dokumentasiList[currentSlide]?.foto_url ||
-                    dokumentasiList[currentSlide]?.foto
-                  )}
-                  alt={dokumentasiList[currentSlide]?.judul || 'Dokumentasi'}
-                  className="relative z-10 max-h-full max-w-full object-contain mx-auto transition-transform duration-500 group-hover:scale-[1.01]"
-                />
-
-                {/* Gradient Text Overlay at the bottom */}
-                <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent flex flex-col justify-end p-2.5 pt-6 pointer-events-none">
-                  <span className="text-[9px] font-mono text-purple-300 font-bold mb-0.5">
-                    {dokumentasiList[currentSlide]?.tanggal || 'Dokumentasi RPL'}
-                  </span>
-                  <h3 className="text-white font-bold text-xs leading-tight line-clamp-1">
-                    {dokumentasiList[currentSlide]?.judul}
-                  </h3>
-                  {dokumentasiList[currentSlide]?.deskripsi && (
-                    <p className="text-slate-300 text-[10px] mt-0.5 line-clamp-1 leading-relaxed">
-                      {dokumentasiList[currentSlide]?.deskripsi}
-                    </p>
-                  )}
-                </div>
-
-                {/* Admin Delete Action */}
-                {authRole === 'admin' && (
-                  <button
-                    onClick={() => handleDeleteDokumentasi(dokumentasiList[currentSlide].id)}
-                    className="absolute top-2 right-2 z-30 p-1.5 rounded-lg bg-slate-900/80 hover:bg-rose-600 text-white text-xs transition-colors cursor-pointer shadow-md"
-                    title="Hapus foto ini dari kegiatan"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                )}
-
-                {/* Navigation Arrows */}
-                {dokumentasiList.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setCurrentSlide(
-                          (prev) => (prev - 1 + dokumentasiList.length) % dokumentasiList.length
-                        )
-                      }
-                      className="absolute left-1.5 top-1/2 -translate-y-1/2 z-30 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer shadow-md"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setCurrentSlide((prev) => (prev + 1) % dokumentasiList.length)
-                      }
-                      className="absolute right-1.5 top-1/2 -translate-y-1/2 z-30 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center transition-all cursor-pointer shadow-md"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </>
-                )}
-
-                {/* Dots */}
-                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1">
-                  {dokumentasiList.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                        currentSlide === idx ? 'w-4 bg-white' : 'w-1.5 bg-white/50'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Card 1B: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
+        <div className="lg:col-span-3 flex flex-col h-full max-h-full min-h-0 overflow-hidden">
+          {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
           <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
             {/* Spiral Ring Binding at top edge */}
             <div className="h-4 bg-amber-100/80 dark:bg-slate-800/90 border-b border-amber-200/70 dark:border-slate-700/70 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
@@ -1136,7 +1015,127 @@ export default function PublicMonitorPage() {
             )}
           </div>
 
-          {/* Card 2B: Peminjaman Alat & Barang RPL Siap Dipinjam (9 Grid Space) */}
+          {/* Card 2B: Dokumentasi Kegiatan RPL (Berjajar Horizontal Bergerak Sendiri) */}
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden">
+            {/* Header Dokumentasi */}
+            <div className="flex items-center justify-between px-1">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                </div>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <h2 className="font-bold text-slate-900 text-xs leading-tight truncate">
+                    Dokumentasi Kegiatan RPL
+                  </h2>
+                  <span className="text-[9px] text-purple-700 font-bold bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200/70 shrink-0">
+                    {dokumentasiList.length} Foto
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0">
+                {dokumentasiList.length > 2 && (
+                  <div className="flex items-center gap-0.5">
+                    <button
+                      type="button"
+                      onClick={() => scrollPhotos('left')}
+                      className="p-1 rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 cursor-pointer transition-colors"
+                      title="Geser Kiri"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollPhotos('right')}
+                      className="p-1 rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 cursor-pointer transition-colors"
+                      title="Geser Kanan"
+                    >
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+
+                {authRole === 'admin' && (
+                  <button
+                    onClick={() => {
+                      setDokForm({
+                        judul: '',
+                        deskripsi: '',
+                        foto_url: '',
+                        tanggal: new Date().toISOString().split('T')[0],
+                      });
+                      setSelectedFile(null);
+                      setPreviewUrl(null);
+                      setShowDokumentasiModal(true);
+                    }}
+                    className="flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold cursor-pointer shadow-2xs shrink-0"
+                    title="Upload Foto Kegiatan"
+                  >
+                    <Plus className="w-3 h-3" />
+                    <span>Upload</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Horizontal Moving Photo Strip (Menyesuaikan Asli Portrait & Landscape) */}
+            {dokumentasiList.length === 0 ? (
+              <div className="h-28 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
+                <ImageIcon className="w-6 h-6 mb-1 opacity-50" />
+                <span>Belum ada foto kegiatan.</span>
+              </div>
+            ) : (
+              <div
+                ref={photoScrollRef}
+                onMouseEnter={() => setIsPhotoPaused(true)}
+                onMouseLeave={() => setIsPhotoPaused(false)}
+                className="flex items-center gap-2.5 overflow-x-auto scrollbar-none py-0.5 select-none scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {dokumentasiList.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => setPreviewPhoto(item)}
+                    className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-200/90 dark:border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:shadow-md"
+                    title={`${item.judul} (Klik untuk perbesar)`}
+                  >
+                    {/* Natural Ratio: Portrait or Landscape */}
+                    <img
+                      src={getFotoUrl(item.foto_url || item.foto)}
+                      alt={item.judul}
+                      className="h-full w-auto max-w-none object-cover"
+                    />
+
+                    {/* Gradient Overlay at Bottom */}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent p-1.5 pt-4 pointer-events-none">
+                      <div className="text-[8.5px] font-mono text-purple-300 font-bold mb-0.5 truncate">
+                        {item.tanggal || 'Dokumentasi'}
+                      </div>
+                      <p className="text-white font-bold text-[10.5px] leading-tight line-clamp-1 drop-shadow-xs">
+                        {item.judul}
+                      </p>
+                    </div>
+
+                    {/* Admin Delete Action */}
+                    {authRole === 'admin' && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteDokumentasi(item.id);
+                        }}
+                        className="absolute top-1 right-1 p-1 rounded-md bg-slate-900/85 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-xs opacity-0 group-hover/foto:opacity-100"
+                        title="Hapus foto ini"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-0 flex flex-col max-h-full">
             {/* Header with Search and Category Filter */}
             <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/50 space-y-2.5">
@@ -1543,6 +1542,48 @@ export default function PublicMonitorPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* MODAL: PREVIEW FOTO KEGIATAN LIGHTBOX                        */}
+      {/* ============================================================ */}
+      {previewPhoto && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in-0 duration-150"
+          onClick={() => setPreviewPhoto(null)}
+        >
+          <div
+            className="relative max-w-3xl w-full bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 flex flex-col max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setPreviewPhoto(null)}
+              className="absolute top-3 right-3 z-10 p-2 rounded-full bg-slate-950/80 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-md"
+              title="Tutup"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex-1 overflow-hidden flex items-center justify-center bg-black/60 p-3 min-h-0">
+              <img
+                src={getFotoUrl(previewPhoto.foto_url || previewPhoto.foto)}
+                alt={previewPhoto.judul}
+                className="max-h-[68vh] w-auto max-w-full object-contain rounded-lg shadow-lg"
+              />
+            </div>
+
+            <div className="p-4 bg-slate-900 border-t border-slate-800 text-white space-y-1 shrink-0">
+              <div className="flex items-center gap-2 text-xs font-mono text-purple-400 font-bold">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{previewPhoto.tanggal || 'Dokumentasi RPL'}</span>
+              </div>
+              <h3 className="font-bold text-base text-white">{previewPhoto.judul}</h3>
+              {previewPhoto.deskripsi && (
+                <p className="text-slate-300 text-xs leading-relaxed">{previewPhoto.deskripsi}</p>
+              )}
+            </div>
           </div>
         </div>
       )}
