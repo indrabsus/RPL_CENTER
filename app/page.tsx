@@ -73,6 +73,15 @@ function formatTimelineDate(dateStr: string) {
   }
 }
 
+function getFotoUrl(url?: string | null): string {
+  if (!url) return '/pc.jpg';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('/kegiatan/')) {
+    return `https://sarpras.sakuci.id${url}`;
+  }
+  return url;
+}
+
 export default function PublicMonitorPage() {
   const [data, setData] = useState<BarangResponseData | null>(null);
   const [timelineList, setTimelineList] = useState<RplTimelineItem[]>([]);
@@ -563,21 +572,19 @@ export default function PublicMonitorPage() {
                 <div
                   className="absolute inset-0 bg-cover bg-center blur-2xl opacity-25 scale-125 pointer-events-none transition-all duration-700"
                   style={{
-                    backgroundImage: `url(${
+                    backgroundImage: `url(${getFotoUrl(
                       dokumentasiList[currentSlide]?.foto_url ||
-                      dokumentasiList[currentSlide]?.foto ||
-                      '/pc.jpg'
-                    })`,
+                      dokumentasiList[currentSlide]?.foto
+                    )})`,
                   }}
                 />
 
                 {/* Foto Tampil Sesuai Dimensi Aslinya (object-contain, TIDAK GEPENG) */}
                 <img
-                  src={
+                  src={getFotoUrl(
                     dokumentasiList[currentSlide]?.foto_url ||
-                    dokumentasiList[currentSlide]?.foto ||
-                    '/pc.jpg'
-                  }
+                    dokumentasiList[currentSlide]?.foto
+                  )}
                   alt={dokumentasiList[currentSlide]?.judul || 'Dokumentasi'}
                   className="relative z-10 max-h-full max-w-full object-contain mx-auto transition-transform duration-500 group-hover:scale-[1.01]"
                 />
