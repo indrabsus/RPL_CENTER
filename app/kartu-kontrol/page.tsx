@@ -324,7 +324,7 @@ export default function KartuKontrolPage() {
 
         {/* Right: The Exact Official A4 Kartu Kontrol Sheet */}
         <div className="lg:col-span-8 flex flex-col items-center">
-          <div className="w-full max-w-[800px] bg-white border border-slate-300 rounded-lg shadow-xl p-6 sm:p-10 font-serif text-black relative select-none">
+          <div className="kartu-kontrol-sheet w-full max-w-[800px] bg-white border border-slate-300 rounded-lg shadow-xl p-6 sm:p-10 font-serif text-black relative select-none">
             {/* Header with School Logo & Titles */}
             <div className="flex items-center relative pb-3 border-b-2 border-black">
               <img
