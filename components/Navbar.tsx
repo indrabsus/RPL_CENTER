@@ -89,6 +89,10 @@ export default function Navbar() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
+    if (isKartu) {
+      document.documentElement.classList.remove('dark');
+      return;
+    }
     try {
       const saved = localStorage.getItem('rpl_theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -100,7 +104,7 @@ export default function Navbar() {
         document.documentElement.classList.remove('dark');
       }
     } catch (e) {}
-  }, []);
+  }, [isKartu]);
 
   const toggleDarkMode = () => {
     setIsDark((prev) => {
@@ -189,20 +193,24 @@ export default function Navbar() {
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
             </button>
 
-            <span className="w-px h-3.5 bg-slate-200 mx-0.5 select-none" />
+            {!isKartu && (
+              <>
+                <span className="w-px h-3.5 bg-slate-200 mx-0.5 select-none" />
 
-            <button
-              onClick={toggleDarkMode}
-              className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-amber-500 transition-all cursor-pointer"
-              title={isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
-              aria-label="Toggle Dark Mode"
-            >
-              {isDark ? (
-                <Sun className="w-3.5 h-3.5 text-amber-500" />
-              ) : (
-                <Moon className="w-3.5 h-3.5 text-slate-600" />
-              )}
-            </button>
+                <button
+                  onClick={toggleDarkMode}
+                  className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-amber-500 transition-all cursor-pointer"
+                  title={isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
+                  aria-label="Toggle Dark Mode"
+                >
+                  {isDark ? (
+                    <Sun className="w-3.5 h-3.5 text-amber-500" />
+                  ) : (
+                    <Moon className="w-3.5 h-3.5 text-slate-600" />
+                  )}
+                </button>
+              </>
+            )}
           </div>
 
           <nav className="flex items-center text-xs font-bold tracking-wide">
@@ -406,20 +414,24 @@ export default function Navbar() {
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
             </button>
 
-            <span className="w-px h-3 bg-slate-200 mx-0.5" />
+            {!isKartu && (
+              <>
+                <span className="w-px h-3 bg-slate-200 mx-0.5" />
 
-            <button
-              onClick={toggleDarkMode}
-              className="p-1.5 rounded text-slate-700 cursor-pointer"
-              title={isDark ? 'Mode Terang' : 'Mode Gelap'}
-              aria-label="Toggle Dark Mode"
-            >
-              {isDark ? (
-                <Sun className="w-3.5 h-3.5 text-amber-500" />
-              ) : (
-                <Moon className="w-3.5 h-3.5 text-slate-600" />
-              )}
-            </button>
+                <button
+                  onClick={toggleDarkMode}
+                  className="p-1.5 rounded text-slate-700 cursor-pointer"
+                  title={isDark ? 'Mode Terang' : 'Mode Gelap'}
+                  aria-label="Toggle Dark Mode"
+                >
+                  {isDark ? (
+                    <Sun className="w-3.5 h-3.5 text-amber-500" />
+                  ) : (
+                    <Moon className="w-3.5 h-3.5 text-slate-600" />
+                  )}
+                </button>
+              </>
+            )}
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

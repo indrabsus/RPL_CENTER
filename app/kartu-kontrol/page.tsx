@@ -49,6 +49,20 @@ export default function KartuKontrolPage() {
   const [gasUrl, setGasUrl] = useState<string>(DEFAULT_GAS_URL);
   const [showGasModal, setShowGasModal] = useState<boolean>(false);
 
+  // Force Light Mode on Kartu Kontrol page unconditionally
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    return () => {
+      try {
+        const saved = localStorage.getItem('rpl_theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    };
+  }, []);
+
   // Load GAS URL from localStorage if configured
   useEffect(() => {
     const savedUrl = localStorage.getItem('KARTU_KONTROL_GAS_URL') || DEFAULT_GAS_URL;
