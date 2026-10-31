@@ -37,7 +37,12 @@ import {
   Check,
   Building2,
   Users,
-  UploadCloud
+  UploadCloud,
+  Pin,
+  Paperclip,
+  Bookmark,
+  BookOpen,
+  Tag
 } from 'lucide-react';
 import {
   fetchBarang,
@@ -82,6 +87,84 @@ function getFotoUrl(url?: string | null): string {
   }
   return url;
 }
+
+const STICKY_PALETTES = [
+  {
+    name: 'yellow',
+    bg: 'bg-[#fef9c3] dark:bg-[#38311a]',
+    border: 'border-[#fde047] dark:border-[#6e5d26]',
+    text: 'text-amber-950 dark:text-amber-100',
+    title: 'text-amber-950 dark:text-amber-100',
+    desc: 'text-amber-900/85 dark:text-amber-200/80',
+    dateBadge: 'bg-amber-200/70 text-amber-900 border-amber-300 dark:bg-amber-900/60 dark:text-amber-200 dark:border-amber-700/60',
+    pinColor: 'text-amber-600 dark:text-amber-400',
+    washiRotate: 'rotate-[-1.5deg]',
+  },
+  {
+    name: 'pink',
+    bg: 'bg-[#ffe4e6] dark:bg-[#381a24]',
+    border: 'border-[#fecdd3] dark:border-[#6e2d3f]',
+    text: 'text-rose-950 dark:text-rose-100',
+    title: 'text-rose-950 dark:text-rose-100',
+    desc: 'text-rose-900/85 dark:text-rose-200/80',
+    dateBadge: 'bg-rose-200/70 text-rose-900 border-rose-300 dark:bg-rose-900/60 dark:text-rose-200 dark:border-rose-700/60',
+    pinColor: 'text-rose-500 dark:text-rose-400',
+    washiRotate: 'rotate-[1.2deg]',
+  },
+  {
+    name: 'mint',
+    bg: 'bg-[#dcfce7] dark:bg-[#153324]',
+    border: 'border-[#bbf7d0] dark:border-[#24523b]',
+    text: 'text-emerald-950 dark:text-emerald-100',
+    title: 'text-emerald-950 dark:text-emerald-100',
+    desc: 'text-emerald-900/85 dark:text-emerald-200/80',
+    dateBadge: 'bg-emerald-200/70 text-emerald-900 border-emerald-300 dark:bg-emerald-900/60 dark:text-emerald-200 dark:border-emerald-700/60',
+    pinColor: 'text-emerald-600 dark:text-emerald-400',
+    washiRotate: 'rotate-[-0.8deg]',
+  },
+  {
+    name: 'sky',
+    bg: 'bg-[#e0f2fe] dark:bg-[#132a3c]',
+    border: 'border-[#bae6fd] dark:border-[#1e4463]',
+    text: 'text-sky-950 dark:text-sky-100',
+    title: 'text-sky-950 dark:text-sky-100',
+    desc: 'text-sky-900/85 dark:text-sky-200/80',
+    dateBadge: 'bg-sky-200/70 text-sky-900 border-sky-300 dark:bg-sky-900/60 dark:text-sky-200 dark:border-sky-700/60',
+    pinColor: 'text-sky-600 dark:text-sky-400',
+    washiRotate: 'rotate-[1.5deg]',
+  },
+  {
+    name: 'purple',
+    bg: 'bg-[#f3e8ff] dark:bg-[#2b183d]',
+    border: 'border-[#e9d5ff] dark:border-[#522b75]',
+    text: 'text-purple-950 dark:text-purple-100',
+    title: 'text-purple-950 dark:text-purple-100',
+    desc: 'text-purple-900/85 dark:text-purple-200/80',
+    dateBadge: 'bg-purple-200/70 text-purple-900 border-purple-300 dark:bg-purple-900/60 dark:text-purple-200 dark:border-purple-700/60',
+    pinColor: 'text-purple-500 dark:text-purple-400',
+    washiRotate: 'rotate-[-1.2deg]',
+  },
+  {
+    name: 'peach',
+    bg: 'bg-[#ffedd5] dark:bg-[#382115]',
+    border: 'border-[#fed7aa] dark:border-[#6e3921]',
+    text: 'text-orange-950 dark:text-orange-100',
+    title: 'text-orange-950 dark:text-orange-100',
+    desc: 'text-orange-900/85 dark:text-orange-200/80',
+    dateBadge: 'bg-orange-200/70 text-orange-900 border-orange-300 dark:bg-orange-900/60 dark:text-orange-200 dark:border-orange-700/60',
+    pinColor: 'text-orange-600 dark:text-orange-400',
+    washiRotate: 'rotate-[0.9deg]',
+  },
+];
+
+const STICKY_ROTATIONS = [
+  '-rotate-[0.8deg]',
+  'rotate-[1deg]',
+  '-rotate-[0.5deg]',
+  'rotate-[0.7deg]',
+  '-rotate-[1.2deg]',
+  'rotate-[0.5deg]',
+];
 
 export default function PublicMonitorPage() {
   const [data, setData] = useState<BarangResponseData | null>(null);
@@ -693,23 +776,36 @@ export default function PublicMonitorPage() {
             )}
           </div>
 
-          {/* Card 1B: Timeline RPL (Super Compact To-Do List) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 flex flex-col min-h-0">
-            {/* Header */}
-            <div className="p-2.5 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50/50">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
-                  <ListTodo className="w-4 h-4" />
+          {/* Card 1B: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
+          <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0 group/notebook">
+            {/* Spiral Ring Binding at top edge */}
+            <div className="h-4 bg-amber-100/80 dark:bg-slate-800/90 border-b border-amber-200/70 dark:border-slate-700/70 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
+              {[...Array(14)].map((_, i) => (
+                <span
+                  key={i}
+                  className="w-2.5 h-4.5 rounded-full border border-slate-300 dark:border-slate-600 bg-gradient-to-b from-slate-200 via-white to-slate-300 dark:from-slate-700 dark:via-slate-500 dark:to-slate-800 shadow-2xs -mt-1"
+                />
+              ))}
+            </div>
+
+            {/* Notebook Header */}
+            <div className="px-3 py-2 border-b border-amber-200/60 dark:border-slate-700/60 flex items-center justify-between shrink-0 bg-white/75 dark:bg-slate-900/65 backdrop-blur-xs">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center font-bold text-sm shadow-2xs shrink-0 rotate-[-4deg]">
+                  📓
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h2 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight truncate">
-                      Timeline RPL
+                    <h2 className="font-extrabold text-amber-950 dark:text-amber-100 text-xs sm:text-sm leading-tight tracking-tight">
+                      Catatan Agenda RPL
                     </h2>
-                    <span className="text-[9px] text-indigo-700 font-bold bg-indigo-50 px-1.5 py-0.2 rounded border border-indigo-200/60 shrink-0">
+                    <span className="text-[9px] font-black bg-amber-200/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1.5 py-0.2 rounded-full border border-amber-300/70 dark:border-amber-700 shrink-0">
                       {timelineCompletedCount}/{timelineList.length}
                     </span>
                   </div>
+                  <p className="text-[9.5px] text-amber-800/80 dark:text-amber-300/70 font-medium truncate">
+                    Sticky Notes Agenda Kegiatan RPL
+                  </p>
                 </div>
               </div>
 
@@ -725,71 +821,64 @@ export default function PublicMonitorPage() {
                     });
                     setShowTimelineModal(true);
                   }}
-                  className="flex items-center gap-0.5 px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold cursor-pointer shadow-2xs shrink-0"
-                  title="Tambah kegiatan agenda"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold text-[10.5px] cursor-pointer shadow-xs transition-transform active:scale-95 shrink-0"
+                  title="Tambah sticky note kegiatan"
                 >
-                  <Plus className="w-3 h-3" />
-                  <span>Tambah</span>
+                  <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                  <span>+ Note</span>
                 </button>
               )}
             </div>
 
-            {/* Scrollable Detailed Timeline items */}
-            <div className="flex-1 overflow-y-auto p-2.5 space-y-2 min-h-0">
+            {/* Scrollable Sticky Notes Area (with classic red notebook margin line) */}
+            <div className="flex-1 overflow-y-auto p-3 space-y-3.5 min-h-0 border-l-[3px] border-rose-400/40 dark:border-rose-500/25 ml-2.5 pl-2.5">
               {timelineList.length === 0 ? (
-                <div className="py-8 text-center text-slate-400 text-xs">
-                  Belum ada agenda kegiatan.
+                <div className="py-10 text-center flex flex-col items-center justify-center text-amber-800/60 dark:text-amber-300/50 text-xs">
+                  <span className="text-3xl mb-1.5">📝</span>
+                  <p className="font-bold">Belum ada sticky note.</p>
+                  <p className="text-[10px] mt-0.5">Catatan agenda kegiatan RPL akan tampil di sini.</p>
                 </div>
               ) : (
-                timelineList.map((item) => {
+                timelineList.map((item, idx) => {
                   const itemStatus =
                     item.status || (item.selesai === 1 ? 'selesai' : 'belum_dimulai');
                   const isDone = itemStatus === 'selesai';
+                  const palette = STICKY_PALETTES[idx % STICKY_PALETTES.length];
+                  const rotation = STICKY_ROTATIONS[idx % STICKY_ROTATIONS.length];
 
                   return (
                     <div
                       key={item.id}
-                      className={`p-2.5 rounded-xl transition-all border group ${
-                        isDone
-                          ? 'opacity-70 bg-slate-50/70 border-slate-200/60'
-                          : itemStatus === 'sedang_berlangsung'
-                          ? 'bg-blue-50/30 border-blue-200 shadow-2xs'
-                          : 'bg-white border-slate-200/80 hover:border-slate-300'
-                      }`}
+                      className={`relative p-3 rounded-xl border transition-all duration-200 sticky-fold-shadow group/note ${palette.bg} ${palette.border} ${rotation} hover:rotate-0 hover:scale-[1.015] hover:z-20`}
                     >
-                      <div className="flex items-start justify-between gap-2.5">
-                        {/* Left: Disabled Checkbox + Content */}
-                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
-                          {/* Disabled Checkbox Indicator for Public Monitor */}
+                      {/* Washi Tape Strip at top center */}
+                      <div className={`washi-tape absolute -top-2 left-1/2 -translate-x-1/2 w-14 h-3.5 rounded-[1px] pointer-events-none z-10 ${palette.washiRotate}`} />
+
+                      <div className="flex items-start justify-between gap-2">
+                        {/* Left: Pushpin / Checkbox + Content */}
+                        <div className="flex items-start gap-2 min-w-0 flex-1">
+                          {/* Pushpin / Checkbox Indicator */}
                           <div
-                            className="text-slate-400 shrink-0 select-none pt-0.5 cursor-not-allowed"
-                            title="Monitor Mode (Non-aktif / Hanya Baca)"
+                            className="shrink-0 select-none pt-0.5 cursor-not-allowed"
+                            title="Monitor Mode (Hanya Baca)"
                           >
                             {isDone ? (
-                              <CheckSquare className="w-4 h-4 text-emerald-600" />
+                              <CheckSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
                             ) : (
-                              <Square className="w-4 h-4 text-slate-300" />
+                              <Pin className={`w-3.5 h-3.5 ${palette.pinColor} -rotate-45 drop-shadow-2xs`} />
                             )}
                           </div>
 
                           {/* Info Detail */}
                           <div className="min-w-0 flex-1">
-                            {/* Tanggal & Kategori */}
+                            {/* Tanggal & Kategori Badges */}
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 shrink-0">
-                                <Calendar className="w-3 h-3 text-indigo-600 shrink-0" />
+                              <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${palette.dateBadge}`}>
+                                <Calendar className="w-2.5 h-2.5 shrink-0" />
                                 {formatTimelineDate(item.tanggal)}
                               </span>
                               <span
-                                className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${
-                                  item.kategori === 'Ujian'
-                                    ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                                    : item.kategori === 'Industri'
-                                    ? 'bg-purple-50 text-purple-700 border border-purple-200'
-                                    : item.kategori === 'Kejuruan'
-                                    ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
-                                    : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                }`}
+                                className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-white/70 dark:bg-black/30 border border-black/10 dark:border-white/10 ${palette.text}`}
                               >
                                 {item.kategori}
                               </span>
@@ -797,8 +886,8 @@ export default function PublicMonitorPage() {
 
                             {/* Judul Kegiatan */}
                             <h4
-                              className={`font-bold text-xs leading-snug mt-1 ${
-                                isDone ? 'line-through text-slate-400 font-normal' : 'text-slate-900'
+                              className={`font-bold text-xs leading-snug mt-1.5 ${palette.title} ${
+                                isDone ? 'line-through opacity-70 font-medium' : ''
                               }`}
                             >
                               {item.nama_kegiatan}
@@ -807,8 +896,8 @@ export default function PublicMonitorPage() {
                             {/* Deskripsi / Keterangan Kegiatan */}
                             {item.keterangan ? (
                               <p
-                                className={`text-[11px] leading-relaxed mt-0.5 ${
-                                  isDone ? 'text-slate-400 line-through' : 'text-slate-600'
+                                className={`text-[11px] leading-relaxed mt-1 ${palette.desc} ${
+                                  isDone ? 'line-through opacity-60' : ''
                                 }`}
                               >
                                 {item.keterangan}
@@ -817,28 +906,27 @@ export default function PublicMonitorPage() {
                           </div>
                         </div>
 
-                        {/* Right: Status Pill & Admin Actions */}
-                        <div className="flex flex-col items-end gap-1.5 shrink-0">
+                        {/* Right: Status Stamp/Badge & Admin Actions */}
+                        <div className="flex flex-col items-end gap-1 shrink-0">
                           {itemStatus === 'selesai' ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/90 shrink-0 shadow-2xs whitespace-nowrap">
-                              <Check className="w-2.5 h-2.5 text-emerald-600 stroke-[3]" />
-                              Selesai
+                            <span className="stamp-selesai px-1.5 py-0.5 text-[9px] shrink-0 flex items-center gap-0.5 select-none shadow-2xs">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" /> SELESAI
                             </span>
                           ) : itemStatus === 'sedang_berlangsung' ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200/90 shrink-0 shadow-2xs whitespace-nowrap">
-                              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                              Sedang Berlangsung
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-black bg-blue-500 text-white shrink-0 shadow-2xs select-none">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                              Sedang Jalan
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-600 border border-slate-200 shrink-0 whitespace-nowrap">
-                              <Clock className="w-2.5 h-2.5 text-slate-400" />
-                              Belum Dimulai
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-black/10 dark:bg-white/10 text-slate-700 dark:text-slate-300 shrink-0 select-none">
+                              <Clock className="w-2.5 h-2.5 opacity-70" />
+                              Agenda
                             </span>
                           )}
 
                           {/* Admin Actions */}
                           {authRole === 'admin' && (
-                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex items-center gap-0.5 mt-1 opacity-0 group-hover/note:opacity-100 transition-opacity">
                               <button
                                 onClick={() => {
                                   setTimelineForm({
@@ -851,15 +939,15 @@ export default function PublicMonitorPage() {
                                   });
                                   setShowTimelineModal(true);
                                 }}
-                                className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-blue-50 cursor-pointer"
-                                title="Edit Kegiatan"
+                                className="p-1 rounded bg-white/70 dark:bg-black/30 hover:bg-white text-slate-700 dark:text-slate-200 hover:text-blue-600 transition-colors cursor-pointer shadow-2xs"
+                                title="Edit Catatan"
                               >
                                 <Edit3 className="w-3 h-3" />
                               </button>
                               <button
                                 onClick={() => handleDeleteTimeline(item.id)}
-                                className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer"
-                                title="Hapus Kegiatan"
+                                className="p-1 rounded bg-white/70 dark:bg-black/30 hover:bg-white text-slate-700 dark:text-slate-200 hover:text-rose-600 transition-colors cursor-pointer shadow-2xs"
+                                title="Hapus Catatan"
                               >
                                 <Trash2 className="w-3 h-3" />
                               </button>
@@ -1215,8 +1303,8 @@ export default function PublicMonitorPage() {
       {showTimelineModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
-            <h3 className="font-bold text-slate-900 text-base">
-              {timelineForm.id ? 'Edit Kegiatan Timeline' : 'Tambah Kegiatan ke Timeline RPL'}
+            <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+              <span>{timelineForm.id ? '📝 Edit Sticky Note Agenda' : '📌 Tempel Sticky Note Baru'}</span>
             </h3>
 
             <form onSubmit={handleSaveTimeline} className="space-y-3 text-xs">
