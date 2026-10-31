@@ -232,6 +232,14 @@ export default function PublicMonitorPage() {
     };
   }, []);
 
+  // Ensure desktop dashboard stays strictly 1 page without window scrolling
+  useEffect(() => {
+    document.body.classList.add('lg:overflow-hidden');
+    return () => {
+      document.body.classList.remove('lg:overflow-hidden');
+    };
+  }, []);
+
   // Dual-Role Auth State: 'admin' | 'sarpras' | null
   const [authRole, setAuthRole] = useState<'admin' | 'sarpras' | null>(null);
   const [authUsername, setAuthUsername] = useState<string>('');
@@ -626,21 +634,21 @@ export default function PublicMonitorPage() {
   ).length;
 
   return (
-    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-76px)] overflow-hidden">
+    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-76px)] max-h-[calc(100vh-76px)] overflow-hidden">
       {/* ============================================================ */}
       {/* 12-GRID 2-COLUMN DASHBOARD LAYOUT                            */}
       {/* KOLOM 1: 3 Grid  -> Dokumentasi RPL & Timeline RPL          */}
       {/* KOLOM 2: 9 Grid  -> Peminjaman Alat & Barang RPL             */}
       {/* ============================================================ */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 flex-1 min-h-0 h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 h-full max-h-full overflow-hidden">
 
         {/* ========================================================== */}
         {/* KOLOM 1: 3 GRID (Dokumentasi RPL & Timeline RPL)           */}
         {/* ========================================================== */}
-        <div className="lg:col-span-3 flex flex-col gap-3 h-full overflow-hidden">
+        <div className="lg:col-span-3 flex flex-col gap-2.5 h-full max-h-full min-h-0 overflow-hidden">
           
           {/* Card 1A: Dokumentasi Kegiatan RPL (TAMPIL ASLI TANPA GEPENG) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-3 flex flex-col shrink-0">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2.5 sm:p-3 flex flex-col shrink-0">
             {/* Header */}
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
               <div className="flex items-center gap-1.5 min-w-0">
@@ -681,12 +689,12 @@ export default function PublicMonitorPage() {
 
             {/* Carousel Frame - Gambar Asli Tanpa Gepeng (object-contain dengan ambient fill) */}
             {dokumentasiList.length === 0 ? (
-              <div className="h-44 sm:h-52 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
+              <div className="h-40 sm:h-44 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
                 <ImageIcon className="w-7 h-7 mb-1.5 opacity-50" />
                 <span>Belum ada foto kegiatan.</span>
               </div>
             ) : (
-              <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-950 group h-48 sm:h-52 lg:h-[210px] flex items-center justify-center shrink-0">
+              <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-950 group h-40 sm:h-44 lg:h-[180px] flex items-center justify-center shrink-0">
                 {/* Ambient blurred backdrop from the photo */}
                 <div
                   className="absolute inset-0 bg-cover bg-center blur-2xl opacity-25 scale-125 pointer-events-none transition-all duration-700"
@@ -777,7 +785,7 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 1B: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
-          <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0 group/notebook">
+          <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
             {/* Spiral Ring Binding at top edge */}
             <div className="h-4 bg-amber-100/80 dark:bg-slate-800/90 border-b border-amber-200/70 dark:border-slate-700/70 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
               {[...Array(14)].map((_, i) => (
@@ -967,7 +975,7 @@ export default function PublicMonitorPage() {
         {/* ========================================================== */}
         {/* KOLOM 2: 9 GRID (Peminjaman Alat & Barang RPL)             */}
         {/* ========================================================== */}
-        <div className="lg:col-span-9 flex flex-col gap-3 h-full overflow-hidden">
+        <div className="lg:col-span-9 flex flex-col gap-2.5 h-full max-h-full min-h-0 overflow-hidden">
 
           {/* Card 2A: Waktu Realtime + Tanggal, KPI Barang, & Status Internet Sejajar */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2.5 sm:p-3 shrink-0 flex flex-wrap items-center justify-between gap-2.5">
@@ -1129,7 +1137,7 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 2B: Peminjaman Alat & Barang RPL Siap Dipinjam (9 Grid Space) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 flex flex-col min-h-0">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-0 flex flex-col max-h-full">
             {/* Header with Search and Category Filter */}
             <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/50 space-y-2.5">
               <div className="flex items-center justify-between">

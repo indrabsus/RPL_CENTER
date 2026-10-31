@@ -201,3 +201,21 @@ html.dark .stamp-selesai {
   box-shadow: 0 10px 18px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
 }
 
+/* Notebook Scrollbar khusus Card Agenda */
+.notebook-paper ::-webkit-scrollbar {
+  width: 5px;
+}
+.notebook-paper ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.notebook-paper ::-webkit-scrollbar-thumb {
+  background: #facc15;
+  border-radius: 9999px;
+}
+html.dark .notebook-paper ::-webkit-scrollbar-thumb {
+  background: #854d0e;
+}
+.notebook-paper ::-webkit-scrollbar-thumb:hover {
+  background: #eab308;
+}
+
