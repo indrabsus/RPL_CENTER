@@ -746,34 +746,34 @@ export default function PublicMonitorPage() {
         {/* KOLOM 1: 3 GRID (Catatan Agenda RPL - Full Height)         */}
         {/* ========================================================== */}
         <div className="lg:col-span-3 flex flex-col h-[460px] sm:h-[500px] lg:h-full lg:max-h-full min-h-0 overflow-hidden shrink-0 lg:shrink">
-          {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes Pastel Cyber) */}
-          <div className="relative notebook-paper border border-slate-800 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
+          {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes) */}
+          <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook transition-colors duration-200">
             {/* Spiral Ring Binding at top edge */}
-            <div className="h-4 bg-[#090e18] border-b border-slate-800 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
+            <div className="h-4 bg-amber-100/80 dark:bg-[#090e18] border-b border-amber-200/70 dark:border-slate-800 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
               {[...Array(14)].map((_, i) => (
                 <span
                   key={i}
-                  className="w-2.5 h-4.5 rounded-full border border-slate-700 bg-gradient-to-b from-slate-700 via-slate-500 to-slate-800 shadow-2xs -mt-1"
+                  className="w-2.5 h-4.5 rounded-full border border-slate-300 dark:border-slate-700 bg-gradient-to-b from-slate-200 via-white to-slate-300 dark:from-slate-700 dark:via-slate-500 dark:to-slate-800 shadow-2xs -mt-1"
                 />
               ))}
             </div>
 
             {/* Notebook Header */}
-            <div className="px-3 py-2 border-b border-slate-800 flex items-center justify-between shrink-0 bg-[#0d1424]/90 backdrop-blur-xs">
+            <div className="px-3 py-2 border-b border-amber-200/60 dark:border-slate-800 flex items-center justify-between shrink-0 bg-white/80 dark:bg-[#0d1424]/90 backdrop-blur-xs">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-emerald-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-sm shadow-[0_0_8px_rgba(16,185,129,0.3)] shrink-0 rotate-[-4deg]">
+                <div className="w-7 h-7 rounded-lg bg-amber-400 dark:bg-emerald-950 border border-amber-300 dark:border-emerald-500/40 text-amber-950 dark:text-emerald-400 flex items-center justify-center font-bold text-sm shadow-2xs dark:shadow-[0_0_8px_rgba(16,185,129,0.3)] shrink-0 rotate-[-4deg]">
                   📓
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight tracking-tight">
+                    <h2 className="font-extrabold text-amber-950 dark:text-slate-100 text-xs sm:text-sm leading-tight tracking-tight">
                       Catatan Agenda RPL
                     </h2>
-                    <span className="text-[9px] font-black bg-emerald-950/80 text-emerald-400 px-1.5 py-0.2 rounded-full border border-emerald-500/40 shrink-0">
+                    <span className="text-[9px] font-black bg-amber-200/80 dark:bg-emerald-950/80 text-amber-900 dark:text-emerald-400 px-1.5 py-0.2 rounded-full border border-amber-300/70 dark:border-emerald-500/40 shrink-0">
                       {timelineCompletedCount}/{filteredTimelineList.length}
                     </span>
                   </div>
-                  <p className="text-[9.5px] text-emerald-400/80 font-medium truncate">
+                  <p className="text-[9.5px] text-amber-800/80 dark:text-emerald-400/80 font-medium truncate">
                     Sticky Notes Agenda Kegiatan RPL
                   </p>
                 </div>
@@ -796,7 +796,7 @@ export default function PublicMonitorPage() {
                     });
                     setShowTimelineModal(true);
                   }}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[10.5px] cursor-pointer shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-transform active:scale-95 shrink-0"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-amber-950 dark:text-slate-950 font-bold dark:font-black text-[10.5px] cursor-pointer shadow-xs dark:shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-transform active:scale-95 shrink-0"
                   title="Tambah sticky note kegiatan"
                 >
                   <Plus className="w-3.5 h-3.5 stroke-[3]" />
@@ -806,7 +806,7 @@ export default function PublicMonitorPage() {
             </div>
 
             {/* Class Filter Tabs: Semua, Kelas 10, Kelas 11, Kelas 12 */}
-            <div className="px-3 py-1.5 border-b border-slate-800 bg-[#090e18]/80 flex items-center justify-between gap-1 shrink-0 select-none">
+            <div className="px-3 py-1.5 border-b border-amber-200/50 dark:border-slate-800 bg-amber-50/50 dark:bg-[#090e18]/80 flex items-center justify-between gap-1 shrink-0 select-none">
               <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
                 {[
                   { id: 'all', label: 'Semua' },
@@ -820,15 +820,15 @@ export default function PublicMonitorPage() {
                     onClick={() => setTimelineClassFilter(cls.id as any)}
                     className={`px-2 py-0.5 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
                       timelineClassFilter === cls.id
-                        ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_8px_rgba(16,185,129,0.4)] scale-105'
-                        : 'bg-[#0c121e] border border-slate-800 text-slate-400 hover:text-emerald-400 hover:bg-slate-800'
+                        ? 'bg-amber-400 text-amber-950 dark:bg-emerald-500 dark:text-slate-950 font-black shadow-2xs dark:shadow-[0_0_8px_rgba(16,185,129,0.4)] scale-105'
+                        : 'bg-white/80 dark:bg-[#0c121e] border border-amber-200/60 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-amber-100 dark:hover:text-emerald-400 dark:hover:bg-slate-800'
                     }`}
                   >
                     {cls.label}
                   </button>
                 ))}
               </div>
-              <span className="text-[9.5px] font-bold text-slate-400 shrink-0">
+              <span className="text-[9.5px] font-bold text-amber-900/70 dark:text-slate-400 shrink-0">
                 {filteredTimelineList.length} Catatan
               </span>
             </div>
@@ -959,7 +959,7 @@ export default function PublicMonitorPage() {
                               Sedang Jalan
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-black/5 text-slate-700 shrink-0 select-none">
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 shrink-0 select-none">
                               <Clock className="w-2.5 h-2.5 opacity-70" />
                               Agenda
                             </span>
