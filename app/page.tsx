@@ -486,7 +486,7 @@ export default function PublicMonitorPage() {
 
     try {
       const isTBD = timelineForm.isDateTBD || !timelineForm.tanggal;
-      const finalTanggal = isTBD ? 'belum_ditentukan' : timelineForm.tanggal;
+      const finalTanggal = isTBD ? null : timelineForm.tanggal;
 
       let finalKeterangan = timelineForm.keterangan || '';
       if (timelineForm.kelas && timelineForm.kelas !== 'all') {
@@ -933,7 +933,7 @@ export default function PublicMonitorPage() {
                                   setTimelineForm({
                                     id: item.id,
                                     nama_kegiatan: item.nama_kegiatan,
-                                    tanggal: isTBD ? '' : item.tanggal,
+                                    tanggal: isTBD || !item.tanggal ? '' : item.tanggal,
                                     isDateTBD: isTBD,
                                     kategori: item.kategori,
                                     keterangan: item.keterangan || '',

@@ -627,11 +627,12 @@ export async function fetchSiswaAbsenPinList(): Promise<SiswaAbsenPinItem[]> {
 export interface RplTimelineItem {
   id: number;
   nama_kegiatan: string;
-  tanggal: string;
+  tanggal: string | null;
   status?: 'belum_dimulai' | 'sedang_berlangsung' | 'selesai';
   selesai: number;
   kategori: string;
   keterangan: string | null;
+  kelas?: '10' | '11' | '12' | 'all' | string;
   updated_at: string;
 }
 
