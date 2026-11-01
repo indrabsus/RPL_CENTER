@@ -147,69 +147,99 @@ function getFotoUrl(url?: string | null): string {
 const STICKY_PALETTES = [
   {
     name: 'yellow',
-    bg: 'bg-[#fef9c3] dark:bg-[#38311a]',
-    border: 'border-[#fde047] dark:border-[#6e5d26]',
-    text: 'text-amber-950 dark:text-amber-100',
-    title: 'text-amber-950 dark:text-amber-100',
-    desc: 'text-amber-900/85 dark:text-amber-200/80',
-    dateBadge: 'bg-amber-200/70 text-amber-900 border-amber-300 dark:bg-amber-900/60 dark:text-amber-200 dark:border-amber-700/60',
-    pinColor: 'text-amber-600 dark:text-amber-400',
+    bg: 'bg-[#fef9c3]',
+    border: 'border-[#fde047]',
+    text: 'text-amber-950',
+    title: 'text-amber-950',
+    desc: 'text-amber-900/85',
+    dateBadge: 'bg-amber-100 text-amber-900 border-amber-300',
+    classBadge: 'bg-amber-200/90 text-amber-950 border-amber-300',
+    pinColor: 'text-amber-600',
     washiRotate: 'rotate-[-1.5deg]',
   },
   {
     name: 'pink',
-    bg: 'bg-[#ffe4e6] dark:bg-[#381a24]',
-    border: 'border-[#fecdd3] dark:border-[#6e2d3f]',
-    text: 'text-rose-950 dark:text-rose-100',
-    title: 'text-rose-950 dark:text-rose-100',
-    desc: 'text-rose-900/85 dark:text-rose-200/80',
-    dateBadge: 'bg-rose-200/70 text-rose-900 border-rose-300 dark:bg-rose-900/60 dark:text-rose-200 dark:border-rose-700/60',
-    pinColor: 'text-rose-500 dark:text-rose-400',
+    bg: 'bg-[#ffe4e6]',
+    border: 'border-[#fecdd3]',
+    text: 'text-rose-950',
+    title: 'text-rose-950',
+    desc: 'text-rose-900/85',
+    dateBadge: 'bg-rose-100 text-rose-900 border-rose-300',
+    classBadge: 'bg-rose-200/90 text-rose-950 border-rose-300',
+    pinColor: 'text-rose-500',
     washiRotate: 'rotate-[1.2deg]',
   },
   {
     name: 'mint',
-    bg: 'bg-[#dcfce7] dark:bg-[#153324]',
-    border: 'border-[#bbf7d0] dark:border-[#24523b]',
-    text: 'text-emerald-950 dark:text-emerald-100',
-    title: 'text-emerald-950 dark:text-emerald-100',
-    desc: 'text-emerald-900/85 dark:text-emerald-200/80',
-    dateBadge: 'bg-emerald-200/70 text-emerald-900 border-emerald-300 dark:bg-emerald-900/60 dark:text-emerald-200 dark:border-emerald-700/60',
-    pinColor: 'text-emerald-600 dark:text-emerald-400',
+    bg: 'bg-[#dcfce7]',
+    border: 'border-[#bbf7d0]',
+    text: 'text-emerald-950',
+    title: 'text-emerald-950',
+    desc: 'text-emerald-900/85',
+    dateBadge: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+    classBadge: 'bg-emerald-200/90 text-emerald-950 border-emerald-300',
+    pinColor: 'text-emerald-600',
     washiRotate: 'rotate-[-0.8deg]',
   },
   {
     name: 'sky',
-    bg: 'bg-[#e0f2fe] dark:bg-[#132a3c]',
-    border: 'border-[#bae6fd] dark:border-[#1e4463]',
-    text: 'text-sky-950 dark:text-sky-100',
-    title: 'text-sky-950 dark:text-sky-100',
-    desc: 'text-sky-900/85 dark:text-sky-200/80',
-    dateBadge: 'bg-sky-200/70 text-sky-900 border-sky-300 dark:bg-sky-900/60 dark:text-sky-200 dark:border-sky-700/60',
-    pinColor: 'text-sky-600 dark:text-sky-400',
+    bg: 'bg-[#e0f2fe]',
+    border: 'border-[#bae6fd]',
+    text: 'text-sky-950',
+    title: 'text-sky-950',
+    desc: 'text-sky-900/85',
+    dateBadge: 'bg-sky-100 text-sky-900 border-sky-300',
+    classBadge: 'bg-sky-200/90 text-sky-950 border-sky-300',
+    pinColor: 'text-sky-600',
     washiRotate: 'rotate-[1.5deg]',
   },
   {
     name: 'purple',
-    bg: 'bg-[#f3e8ff] dark:bg-[#2b183d]',
-    border: 'border-[#e9d5ff] dark:border-[#522b75]',
-    text: 'text-purple-950 dark:text-purple-100',
-    title: 'text-purple-950 dark:text-purple-100',
-    desc: 'text-purple-900/85 dark:text-purple-200/80',
-    dateBadge: 'bg-purple-200/70 text-purple-900 border-purple-300 dark:bg-purple-900/60 dark:text-purple-200 dark:border-purple-700/60',
-    pinColor: 'text-purple-500 dark:text-purple-400',
+    bg: 'bg-[#f3e8ff]',
+    border: 'border-[#e9d5ff]',
+    text: 'text-purple-950',
+    title: 'text-purple-950',
+    desc: 'text-purple-900/85',
+    dateBadge: 'bg-purple-100 text-purple-900 border-purple-300',
+    classBadge: 'bg-purple-200/90 text-purple-950 border-purple-300',
+    pinColor: 'text-purple-500',
     washiRotate: 'rotate-[-1.2deg]',
   },
   {
     name: 'peach',
-    bg: 'bg-[#ffedd5] dark:bg-[#382115]',
-    border: 'border-[#fed7aa] dark:border-[#6e3921]',
-    text: 'text-orange-950 dark:text-orange-100',
-    title: 'text-orange-950 dark:text-orange-100',
-    desc: 'text-orange-900/85 dark:text-orange-200/80',
-    dateBadge: 'bg-orange-200/70 text-orange-900 border-orange-300 dark:bg-orange-900/60 dark:text-orange-200 dark:border-orange-700/60',
-    pinColor: 'text-orange-600 dark:text-orange-400',
+    bg: 'bg-[#ffedd5]',
+    border: 'border-[#fed7aa]',
+    text: 'text-orange-950',
+    title: 'text-orange-950',
+    desc: 'text-orange-900/85',
+    dateBadge: 'bg-orange-100 text-orange-900 border-orange-300',
+    classBadge: 'bg-orange-200/90 text-orange-950 border-orange-300',
+    pinColor: 'text-orange-600',
     washiRotate: 'rotate-[0.9deg]',
+  },
+  {
+    name: 'teal',
+    bg: 'bg-[#ccfbf1]',
+    border: 'border-[#99f6e4]',
+    text: 'text-teal-950',
+    title: 'text-teal-950',
+    desc: 'text-teal-900/85',
+    dateBadge: 'bg-teal-100 text-teal-900 border-teal-300',
+    classBadge: 'bg-teal-200/90 text-teal-950 border-teal-300',
+    pinColor: 'text-teal-600',
+    washiRotate: 'rotate-[-1.3deg]',
+  },
+  {
+    name: 'indigo',
+    bg: 'bg-[#e0e7ff]',
+    border: 'border-[#c7d2fe]',
+    text: 'text-indigo-950',
+    title: 'text-indigo-950',
+    desc: 'text-indigo-900/85',
+    dateBadge: 'bg-indigo-100 text-indigo-900 border-indigo-300',
+    classBadge: 'bg-indigo-200/90 text-indigo-950 border-indigo-300',
+    pinColor: 'text-indigo-600',
+    washiRotate: 'rotate-[1.1deg]',
   },
 ];
 
@@ -840,7 +870,7 @@ export default function PublicMonitorPage() {
                               <span
                                 className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border shrink-0 ${
                                   isDateTBD
-                                    ? 'bg-amber-100/90 text-amber-900 border-amber-300/90 dark:bg-amber-900/60 dark:text-amber-200'
+                                    ? 'bg-amber-100/90 text-amber-900 border-amber-300/90'
                                     : palette.dateBadge
                                 }`}
                               >
@@ -853,7 +883,7 @@ export default function PublicMonitorPage() {
                                 const classes = getItemClasses(item);
                                 if (classes === 'all') {
                                   return (
-                                    <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700">
+                                    <span className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 border ${palette.classBadge}`}>
                                       Semua Kelas
                                     </span>
                                   );
@@ -861,7 +891,7 @@ export default function PublicMonitorPage() {
                                 return classes.map((c) => (
                                   <span
                                     key={c}
-                                    className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700"
+                                    className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 border ${palette.classBadge}`}
                                   >
                                     Kelas {c}
                                   </span>
@@ -870,7 +900,7 @@ export default function PublicMonitorPage() {
 
                               {/* Kategori Badge */}
                               <span
-                                className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-white/70 dark:bg-black/30 border border-black/10 dark:border-white/10 ${palette.text}`}
+                                className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-white/85 border border-black/10 ${palette.text}`}
                               >
                                 {item.kategori}
                               </span>
@@ -910,7 +940,7 @@ export default function PublicMonitorPage() {
                               Sedang Jalan
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-black/10 dark:bg-white/10 text-slate-700 dark:text-slate-300 shrink-0 select-none">
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-black/5 text-slate-700 shrink-0 select-none">
                               <Clock className="w-2.5 h-2.5 opacity-70" />
                               Agenda
                             </span>
@@ -940,14 +970,14 @@ export default function PublicMonitorPage() {
                                   });
                                   setShowTimelineModal(true);
                                 }}
-                                className="p-1 rounded bg-white/70 dark:bg-black/30 hover:bg-white text-slate-700 dark:text-slate-200 hover:text-blue-600 transition-colors cursor-pointer shadow-2xs"
+                                className="p-1 rounded bg-white/80 hover:bg-white text-slate-700 hover:text-blue-600 transition-colors cursor-pointer shadow-2xs border border-slate-200/80"
                                 title="Edit Catatan"
                               >
                                 <Edit3 className="w-3 h-3" />
                               </button>
                               <button
                                 onClick={() => handleDeleteTimeline(item.id)}
-                                className="p-1 rounded bg-white/70 dark:bg-black/30 hover:bg-white text-slate-700 dark:text-slate-200 hover:text-rose-600 transition-colors cursor-pointer shadow-2xs"
+                                className="p-1 rounded bg-white/80 hover:bg-white text-slate-700 hover:text-rose-600 transition-colors cursor-pointer shadow-2xs border border-slate-200/80"
                                 title="Hapus Catatan"
                               >
                                 <Trash2 className="w-3 h-3" />

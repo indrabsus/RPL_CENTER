@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Sun, Moon, Laptop, Monitor, Clock } from 'lucide-react';
+import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Laptop, Monitor, Clock } from 'lucide-react';
 import { fetchNetworkStats, fetchBarang, NetworkStatsData } from '@/lib/api';
 
 export default function Navbar() {
@@ -148,40 +148,14 @@ export default function Navbar() {
     window.dispatchEvent(new CustomEvent('sarpras-refresh'));
   };
 
-  // Dark Mode Toggle State & Listener
-  const [isDark, setIsDark] = useState(false);
-
+  // Enforce Light Mode strictly across the app
   useEffect(() => {
-    if (isKartu) {
-      document.documentElement.classList.remove('dark');
-      return;
-    }
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('light');
     try {
-      const saved = localStorage.getItem('rpl_theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        setIsDark(true);
-        document.documentElement.classList.add('dark');
-      } else {
-        setIsDark(false);
-        document.documentElement.classList.remove('dark');
-      }
+      localStorage.removeItem('rpl_theme');
     } catch (e) {}
-  }, [isKartu]);
-
-  const toggleDarkMode = () => {
-    setIsDark((prev) => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.classList.add('dark');
-        try { localStorage.setItem('rpl_theme', 'dark'); } catch (e) {}
-      } else {
-        document.documentElement.classList.remove('dark');
-        try { localStorage.setItem('rpl_theme', 'light'); } catch (e) {}
-      }
-      return next;
-    });
-  };
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-md shadow-2xs">
@@ -303,37 +277,16 @@ export default function Navbar() {
 
         {/* Desktop Nav Items */}
         <div className="hidden md:flex items-center gap-2 sm:gap-2.5">
-          {/* Unified Button Group: Refresh (Icon Only) + Dark Mode Toggle */}
-          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-0.5 shadow-2xs mr-1">
-            <button
-              onClick={triggerRefresh}
-              disabled={isRefreshing}
-              className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-blue-600 transition-all cursor-pointer disabled:opacity-50"
-              title="Muat ulang data"
-              aria-label="Refresh data"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
-            </button>
-
-            {!isKartu && (
-              <>
-                <span className="w-px h-3.5 bg-slate-200 mx-0.5 select-none" />
-
-                <button
-                  onClick={toggleDarkMode}
-                  className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-amber-500 transition-all cursor-pointer"
-                  title={isDark ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
-                  aria-label="Toggle Dark Mode"
-                >
-                  {isDark ? (
-                    <Sun className="w-3.5 h-3.5 text-amber-500" />
-                  ) : (
-                    <Moon className="w-3.5 h-3.5 text-slate-600" />
-                  )}
-                </button>
-              </>
-            )}
-          </div>
+          {/* Refresh Button */}
+          <button
+            onClick={triggerRefresh}
+            disabled={isRefreshing}
+            className="p-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white text-slate-700 hover:text-blue-600 shadow-2xs transition-all cursor-pointer disabled:opacity-50 mr-1"
+            title="Muat ulang data"
+            aria-label="Refresh data"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
+          </button>
 
           <nav className="flex items-center text-xs font-bold tracking-wide">
             {/* 1. MONITOR */}
@@ -524,37 +477,16 @@ export default function Navbar() {
             />
           </div>
 
-          {/* Mobile unified Refresh + Dark Mode */}
-          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5">
-            <button
-              onClick={triggerRefresh}
-              disabled={isRefreshing}
-              className="p-1.5 rounded text-slate-700 disabled:opacity-50 cursor-pointer"
-              title="Refresh"
-              aria-label="Refresh data"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
-            </button>
-
-            {!isKartu && (
-              <>
-                <span className="w-px h-3 bg-slate-200 mx-0.5" />
-
-                <button
-                  onClick={toggleDarkMode}
-                  className="p-1.5 rounded text-slate-700 cursor-pointer"
-                  title={isDark ? 'Mode Terang' : 'Mode Gelap'}
-                  aria-label="Toggle Dark Mode"
-                >
-                  {isDark ? (
-                    <Sun className="w-3.5 h-3.5 text-amber-500" />
-                  ) : (
-                    <Moon className="w-3.5 h-3.5 text-slate-600" />
-                  )}
-                </button>
-              </>
-            )}
-          </div>
+          {/* Mobile Refresh Button */}
+          <button
+            onClick={triggerRefresh}
+            disabled={isRefreshing}
+            className="p-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 disabled:opacity-50 cursor-pointer hover:bg-slate-100"
+            title="Refresh"
+            aria-label="Refresh data"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-600'}`} />
+          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
