@@ -180,7 +180,10 @@ export default function Navbar() {
 
           {/* 1. Card Waktu Realtime Lab (sebelah logo Pusat Data RPL, disembunyikan di HP / layar kecil) */}
           <div className="hidden lg:flex items-center gap-2 rounded-xl bg-slate-950 text-white px-2.5 sm:px-3 py-1 shadow-xs border border-slate-800 shrink-0 select-none">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 leading-none">
                 <span className="text-[8.5px] text-emerald-400 font-bold uppercase tracking-wider">

@@ -259,4 +259,92 @@ html.dark .notebook-paper ::-webkit-scrollbar-thumb {
   background-size: 18px 18px;
 }
 
+/* ============================================================ */
+/* TECH TELEMETRY ANIMATIONS (Cyber Scan, Waveforms, Laser)     */
+/* ============================================================ */
+
+@keyframes cyberScan {
+  0% {
+    transform: translateX(-150%);
+  }
+  50%, 100% {
+    transform: translateX(250%);
+  }
+}
+
+.animate-cyber-scan {
+  animation: cyberScan 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes dataWave {
+  0%, 100% {
+    height: 3px;
+  }
+  50% {
+    height: 11px;
+  }
+}
+
+.animate-data-wave-1 {
+  animation: dataWave 1.1s ease-in-out infinite;
+}
+.animate-data-wave-2 {
+  animation: dataWave 1.1s ease-in-out infinite 0.25s;
+}
+.animate-data-wave-3 {
+  animation: dataWave 1.1s ease-in-out infinite 0.5s;
+}
+.animate-data-wave-4 {
+  animation: dataWave 1.1s ease-in-out infinite 0.75s;
+}
+
+@keyframes laserSweep {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+.laser-sweep-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.9), transparent);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.85);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.group:hover .laser-sweep-line {
+  animation: laserSweep 1.6s ease-in-out infinite;
+}
+
+.group\/foto:hover .laser-sweep-line {
+  animation: laserSweep 1.6s ease-in-out infinite;
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 4s linear infinite;
+}
+
 

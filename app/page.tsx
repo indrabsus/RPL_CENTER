@@ -1015,12 +1015,19 @@ export default function PublicMonitorPage() {
                   <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
                     Dokumentasi Kegiatan RPL
                   </h2>
-                  <span className="text-[9px] font-mono font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200 flex items-center gap-1 shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                  <span className="text-[9px] font-mono font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200 flex items-center gap-1.5 shrink-0">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                    </span>
                     LIVE FEED
                   </span>
+                  <span className="text-[9px] font-mono font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 flex items-center gap-1 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                    REC
+                  </span>
                   <span className="text-[9px] font-mono text-slate-400 font-bold hidden sm:inline shrink-0">
-                    [{dokumentasiList.length} LOG_ITEMS]
+                    [{dokumentasiList.length} LOGS]
                   </span>
                 </div>
               </div>
@@ -1104,12 +1111,17 @@ export default function PublicMonitorPage() {
                     <div
                       key={`${item.id}-${idx}`}
                       onClick={() => setPreviewPhoto(item)}
-                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
+                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-cyan-400 hover:shadow-[0_0_18px_rgba(6,182,212,0.4)]"
                       title={`${item.judul} (Klik untuk perbesar)`}
                     >
+                      {/* Laser Scanning Line on Hover */}
+                      <div className="laser-sweep-line z-20" />
+
                       {/* Viewfinder Corner Accents */}
-                      <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-cyan-400/70 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
-                      <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-cyan-400/70 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+                      <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-cyan-400/80 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+                      <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-cyan-400/80 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+                      <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-cyan-400/80 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+                      <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-cyan-400/80 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
 
                       {/* Natural Ratio: Portrait or Landscape */}
                       <img
@@ -1153,8 +1165,11 @@ export default function PublicMonitorPage() {
 
           {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative">
-            {/* Top Tech Accent Line */}
-            <div className="h-0.5 w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 shrink-0" />
+            {/* Top Tech Accent Line with Laser Scanning Beam Animation */}
+            <div className="h-0.5 w-full bg-slate-200 relative overflow-hidden shrink-0">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400" />
+              <div className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan" />
+            </div>
 
             {/* Header with Search and Category Filter - Gaya Pusat Kendali Teknologi */}
             <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/60 space-y-2.5">
@@ -1167,10 +1182,23 @@ export default function PublicMonitorPage() {
                     <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
                       Peminjaman Alat &amp; Inventaris Lab RPL
                     </h2>
-                    <p className="text-[9.5px] font-mono text-slate-500 font-medium flex items-center gap-1.5 mt-0.5 truncate">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                      TELEMETRY // REALTIME HARDWARE MONITOR &amp; INVENTORY
-                    </p>
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                      <span className="text-[9.5px] font-mono text-slate-500 font-medium flex items-center gap-1.5 truncate">
+                        <span className="relative flex h-2 w-2 shrink-0">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                        </span>
+                        TELEMETRY // REALTIME HARDWARE MONITOR
+                      </span>
+
+                      {/* Animated Activity Waveform */}
+                      <div className="hidden sm:flex items-center gap-0.5 h-3 px-1 py-0.5 rounded bg-emerald-50 border border-emerald-200/90" title="Telemetry Activity">
+                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-1" />
+                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-2" />
+                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-3" />
+                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-4" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -1758,26 +1786,42 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
           </div>
 
           <span
-            className={`inline-flex items-center gap-1 text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
+            className={`inline-flex items-center gap-1.5 text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
               isAvailable
                 ? 'bg-emerald-50 text-emerald-700 border-emerald-200/90'
                 : 'bg-blue-50 text-blue-700 border-blue-200/90'
             }`}
           >
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${
-                isAvailable ? 'bg-emerald-500' : 'bg-blue-500 animate-pulse'
-              }`}
-            />
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span
+                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                  isAvailable ? 'bg-emerald-400' : 'bg-blue-400'
+                }`}
+              />
+              <span
+                className={`relative inline-flex rounded-full h-2 w-2 ${
+                  isAvailable ? 'bg-emerald-500' : 'bg-blue-500'
+                }`}
+              />
+            </span>
             {isAvailable ? 'READY' : 'IN-USE'}
           </span>
         </div>
 
         {/* Prominent Photo Area (Viewport Skematik CAD / Lab Hardware) */}
         <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-200/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-slate-300 transition-colors">
+          {/* Laser Scanning Beam on Hover */}
+          <div className="laser-sweep-line z-20" />
+
+          {/* Schematic Viewfinder HUD Corners */}
+          <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
+          <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
+
           {/* Schematic Crosshair Marks */}
-          <span className="absolute top-1 left-1.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
-          <span className="absolute bottom-1 right-1.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute top-2 left-2.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
 
           <img
             src={isLaptop ? '/laptop.png' : '/pc.jpg'}
