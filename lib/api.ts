@@ -708,6 +708,15 @@ export async function submitDokumentasiAction(payload: {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
+  if (!res.ok) {
+    const text = await res.text();
+    let msg = `Gagal memproses dokumentasi (HTTP ${res.status})`;
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed.message) msg = parsed.message;
+    } catch {}
+    throw new Error(msg);
+  }
   const json = await res.json();
   if (!json.success) throw new Error(json.message || 'Aksi dokumentasi gagal');
   return json;
@@ -718,6 +727,15 @@ export async function uploadKegiatanPhoto(formData: FormData): Promise<any> {
     method: 'POST',
     body: formData,
   });
+  if (!res.ok) {
+    const text = await res.text();
+    let msg = `Gagal mengunggah foto (HTTP ${res.status})`;
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed.message) msg = parsed.message;
+    } catch {}
+    throw new Error(msg);
+  }
   const json = await res.json();
   if (!json.success) throw new Error(json.message || 'Gagal mengunggah foto kegiatan');
   return json;
