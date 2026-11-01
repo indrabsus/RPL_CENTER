@@ -140,9 +140,16 @@ function getItemClasses(item: RplTimelineItem): ('10' | '11' | '12')[] | 'all' {
 
 function getFotoUrl(url?: string | null): string {
   if (!url) return '/pc.jpg';
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url
+      .replace('https://sarpras.sakuci.id', 'https://rpl.sakuci.id')
+      .replace('http://sarpras.sakuci.id', 'https://rpl.sakuci.id');
+  }
   if (url.startsWith('/kegiatan/')) {
-    return `https://sarpras.sakuci.id${url}`;
+    return `https://rpl.sakuci.id${url}`;
+  }
+  if (url.startsWith('kegiatan/')) {
+    return `https://rpl.sakuci.id/${url}`;
   }
   return url;
 }

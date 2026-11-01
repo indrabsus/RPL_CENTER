@@ -617,7 +617,7 @@ export default function AbsenPage() {
                         <button
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              `PIN Absen Kelas ${p.tingkat} ${p.nama_kelas}: ${p.pin}\nLink: https://sarpras.sakuci.id/siswa-absen`
+                              `PIN Absen Kelas ${p.tingkat} ${p.nama_kelas}: ${p.pin}\nLink: https://rpl.sakuci.id/siswa-absen`
                             );
                             alert(`PIN untuk ${p.tingkat} ${p.nama_kelas} berhasil disalin ke clipboard!`);
                           }}
