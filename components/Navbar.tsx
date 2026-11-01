@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Sun, Moon } from 'lucide-react';
-import { fetchNetworkStats, NetworkStatsData } from '@/lib/api';
+import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Sun, Moon, Laptop, Monitor, Clock } from 'lucide-react';
+import { fetchNetworkStats, fetchBarang, NetworkStatsData } from '@/lib/api';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -54,6 +54,69 @@ export default function Navbar() {
     const interval = setInterval(loadNet, 6000);
     return () => {
       isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Realtime Live Clock & Date
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [currentDate, setCurrentDate] = useState<string>('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'
+      );
+      setCurrentDate(
+        now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' })
+      );
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Barang Stats (Laptop, PC Lab, Dipinjam)
+  const [barangStats, setBarangStats] = useState<{
+    laptopTotal: number;
+    laptopTersedia: number;
+    pcTotal: number;
+    pcTersedia: number;
+    totalDipinjam: number;
+  } | null>(null);
+
+  // Listen to stats update events from page.tsx or fetch directly
+  useEffect(() => {
+    let isMounted = true;
+    const loadBarang = async () => {
+      try {
+        const res = await fetchBarang();
+        if (!isMounted || !res) return;
+        const totalDipinjam = (res.barang || [])
+          .filter((b) => b.status === 'dipinjam')
+          .reduce((acc, b) => acc + (b.unit_dipinjam || 1), 0);
+        setBarangStats({
+          laptopTotal: res.stats_laptop?.total ?? 0,
+          laptopTersedia: res.stats_laptop?.tersedia ?? 0,
+          pcTotal: res.stats_pc?.total ?? 0,
+          pcTersedia: res.stats_pc?.tersedia ?? 0,
+          totalDipinjam,
+        });
+      } catch (e) {}
+    };
+
+    loadBarang();
+    const handleStats = (e: any) => {
+      if (e.detail) {
+        setBarangStats(e.detail);
+      }
+    };
+    window.addEventListener('sarpras-stats-update', handleStats);
+    const interval = setInterval(loadBarang, 10000);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('sarpras-stats-update', handleStats);
       clearInterval(interval);
     };
   }, []);
@@ -122,62 +185,121 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-md shadow-2xs">
-      <div className="w-full max-w-[1850px] mx-auto px-2.5 sm:px-4 lg:px-6 h-13 sm:h-14 flex items-center justify-between">
-        {/* Left: Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-          <img
-            src="/logo.png"
-            alt="Logo"
-            className="w-8 h-8 sm:w-9 sm:h-9 object-contain"
-          />
-          <div className="flex flex-col">
-            <span className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
-              PUSAT DATA RPL
-            </span>
-            <span className="text-[10px] text-slate-500 font-semibold tracking-wider mt-0.5">
-              SMK SANGKURIANG 1 CIMAHI
-            </span>
-          </div>
-        </Link>
+      <div className="w-full max-w-[1850px] mx-auto px-2.5 sm:px-4 lg:px-6 h-13 sm:h-14 flex items-center justify-between gap-2.5">
+        {/* Left Side: Brand Logo + Waktu Realtime + Stats Laptop/PC + Internet (Disembunyikan di HP) */}
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
+            />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
+                PUSAT DATA RPL
+              </span>
+              <span className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider mt-0.5">
+                SMK SANGKURIANG 1 CIMAHI
+              </span>
+            </div>
+          </Link>
 
-        {/* Center/Right: Network Badges [Internet Siswa o] [Internet Guru o] */}
-        {!isMonitor && (
-          <div className="hidden lg:flex items-center gap-2">
+          {/* 1. Card Waktu Realtime Lab (sebelah logo Pusat Data RPL, disembunyikan di HP / layar kecil) */}
+          <div className="hidden lg:flex items-center gap-2 rounded-xl bg-slate-950 text-white px-2.5 sm:px-3 py-1 shadow-xs border border-slate-800 shrink-0 select-none">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="text-[8.5px] text-emerald-400 font-bold uppercase tracking-wider">
+                  Waktu Realtime Lab
+                </span>
+                <span className="text-slate-600 text-[8.5px]">•</span>
+                <span className="text-[9.5px] text-slate-300 font-medium truncate max-w-[125px]">
+                  {currentDate || '-'}
+                </span>
+              </div>
+              <div className="text-xs sm:text-sm font-black font-mono tracking-tight text-white leading-tight mt-0.5">
+                {currentTime || '--:--:-- WIB'}
+              </div>
+            </div>
+          </div>
+
+          {/* 2. Card Laptop, PC Lab yang dipinjam (ke NAVBAR, disembunyikan di HP) */}
+          <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-50 border border-slate-200/90 shadow-2xs divide-x divide-slate-200 shrink-0">
+            {/* Laptop */}
+            <div className="flex items-center gap-1.5 pr-1" title="Laptop Tersedia / Total">
+              <div className="w-5 h-5 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                <Laptop className="w-3 h-3" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[8.5px] font-bold text-slate-500 uppercase tracking-wide">Laptop</span>
+                <span className="font-mono text-xs font-black text-slate-800">
+                  {barangStats ? `${barangStats.laptopTersedia}/${barangStats.laptopTotal}` : '-/-'}
+                </span>
+              </div>
+            </div>
+
+            {/* PC Lab */}
+            <div className="flex items-center gap-1.5 px-2" title="PC Lab Tersedia / Total">
+              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <Monitor className="w-3 h-3" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[8.5px] font-bold text-slate-500 uppercase tracking-wide">PC Lab</span>
+                <span className="font-mono text-xs font-black text-slate-800">
+                  {barangStats ? `${barangStats.pcTersedia}/${barangStats.pcTotal}` : '-/-'}
+                </span>
+              </div>
+            </div>
+
+            {/* Dipinjam */}
+            <div className="flex items-center gap-1.5 pl-2" title="Total Unit Sedang Dipinjam">
+              <div className="w-5 h-5 rounded-md bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                <Clock className="w-3 h-3" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[8.5px] font-bold text-purple-700 uppercase tracking-wide">Dipinjam</span>
+                <span className="font-mono text-xs font-black text-purple-900">
+                  {barangStats ? `${barangStats.totalDipinjam}` : '-'} <span className="text-[9px] font-semibold text-purple-600">Unit</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Card Status Internet Guru & Siswa (ke NAVBAR, disembunyikan di HP) */}
+          <div className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-50 border border-slate-200/90 shadow-2xs divide-x divide-slate-200 shrink-0">
             {/* Internet Siswa */}
-            <div
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
-                networkStats.siswaOnline
-                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                  : 'bg-rose-50/70 border-rose-200 text-rose-800'
-              }`}
-              title={`Internet Siswa: ${networkStats.siswaOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
-            >
-              <span>Internet Siswa</span>
-              <span
-                className={`w-2.5 h-2.5 rounded-full ${
-                  networkStats.siswaOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-                }`}
-              />
+            <div className="flex items-center gap-1.5 pr-1" title="Status Jaringan Siswa">
+              <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${networkStats.siswaOnline ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                <Wifi className="w-3 h-3" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[8.5px] font-bold text-slate-500 uppercase tracking-wide">Net Siswa</span>
+                <div className="flex items-center gap-1">
+                  <span className={`w-1.5 h-1.5 rounded-full ${networkStats.siswaOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+                  <span className={`text-[10.5px] font-bold ${networkStats.siswaOnline ? 'text-emerald-700' : 'text-rose-700'}`}>
+                    {networkStats.siswaOnline ? 'Online' : 'Offline'}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Internet Guru */}
-            <div
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs ${
-                networkStats.guruOnline
-                  ? 'bg-emerald-50/70 border-emerald-200 text-emerald-800'
-                  : 'bg-rose-50/70 border-rose-200 text-rose-800'
-              }`}
-              title={`Internet Guru: ${networkStats.guruOnline ? 'Online (Normal)' : 'Offline (Gangguan)'}`}
-            >
-              <span>Internet Guru</span>
-              <span
-                className={`w-2.5 h-2.5 rounded-full ${
-                  networkStats.guruOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-                }`}
-              />
+            <div className="flex items-center gap-1.5 pl-2" title="Status Jaringan Guru">
+              <div className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${networkStats.guruOnline ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                <Wifi className="w-3 h-3" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-[8.5px] font-bold text-slate-500 uppercase tracking-wide">Net Guru</span>
+                <div className="flex items-center gap-1">
+                  <span className={`w-1.5 h-1.5 rounded-full ${networkStats.guruOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+                  <span className={`text-[10.5px] font-bold ${networkStats.guruOnline ? 'text-emerald-700' : 'text-rose-700'}`}>
+                    {networkStats.guruOnline ? 'Online' : 'Offline'}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Desktop Nav Items */}
         <div className="hidden md:flex items-center gap-2 sm:gap-2.5">

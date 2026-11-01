@@ -234,60 +234,6 @@ export default function PublicMonitorPage() {
   const [statusFilter, setStatusFilter] = useState<'all' | 'tersedia' | 'dipinjam'>('all');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-  // Live Realtime Clock for Monitor TV
-  const [currentTime, setCurrentTime] = useState<string>('');
-  const [currentDate, setCurrentDate] = useState<string>('');
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTime(
-        now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'
-      );
-      setCurrentDate(
-        now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' })
-      );
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Live Internet Status for Siswa & Guru
-  const [networkStats, setNetworkStats] = useState<{
-    siswaOnline: boolean;
-    guruOnline: boolean;
-  }>({
-    siswaOnline: true,
-    guruOnline: true,
-  });
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadNet = async () => {
-      try {
-        const net = await fetchNetworkStats();
-        if (!isMounted || !net) return;
-        const siswaStatus =
-          net.interfaces?.siswa?.status || net.interfaces?.ether2_difusi?.status || 'online';
-        const guruStatus =
-          net.interfaces?.guru?.status || net.interfaces?.ether1_indibiz?.status || 'online';
-        setNetworkStats({
-          siswaOnline: siswaStatus !== 'offline',
-          guruOnline: guruStatus !== 'offline',
-        });
-      } catch (e) {
-        // Keep default
-      }
-    };
-    loadNet();
-    const interval = setInterval(loadNet, 10000);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, []);
-
   // Ensure desktop dashboard stays strictly 1 page without window scrolling
   useEffect(() => {
     document.body.classList.add('lg:overflow-hidden');
@@ -394,6 +340,23 @@ export default function PublicMonitorPage() {
     try {
       const res = await fetchBarang();
       setData(res);
+      // Sinkronkan ke Navbar secara otomatis
+      if (typeof window !== 'undefined') {
+        const totalDipinjam = (res.barang || [])
+          .filter((b) => b.status === 'dipinjam')
+          .reduce((acc, b) => acc + (b.unit_dipinjam || 1), 0);
+        window.dispatchEvent(
+          new CustomEvent('sarpras-stats-update', {
+            detail: {
+              laptopTotal: res.stats_laptop?.total ?? 0,
+              laptopTersedia: res.stats_laptop?.tersedia ?? 0,
+              pcTotal: res.stats_pc?.total ?? 0,
+              pcTersedia: res.stats_pc?.tersedia ?? 0,
+              totalDipinjam,
+            },
+          })
+        );
+      }
       setError(null);
     } catch (err: any) {
       if (!silent) setError(err.message || 'Gagal memuat status sarpras');
@@ -1003,170 +966,11 @@ export default function PublicMonitorPage() {
         </div>
 
         {/* ========================================================== */}
-        {/* KOLOM 2: 9 GRID (Peminjaman Alat & Barang RPL)             */}
+        {/* KOLOM 2: 9 GRID (Dokumentasi RPL & Peminjaman Alat Barang) */}
         {/* ========================================================== */}
         <div className="lg:col-span-9 flex flex-col gap-2.5 h-full max-h-full min-h-0 overflow-hidden">
 
-          {/* Card 2A: Waktu Realtime + Tanggal, KPI Barang, & Status Internet Sejajar */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2.5 sm:p-3 shrink-0 flex flex-wrap items-center justify-between gap-2.5">
-            {/* 1. Realtime Clock & Hari/Tanggal (DIGABUNG DALAM 1 CARD) */}
-            <div className="rounded-xl bg-slate-950 text-white px-3.5 py-2 flex items-center gap-2.5 shadow-xs shrink-0">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[9px] text-emerald-400 font-bold uppercase tracking-wider">
-                    Waktu Realtime Lab
-                  </span>
-                  <span className="text-slate-600 text-[9px]">•</span>
-                  <span className="text-[10px] text-slate-300 font-medium">
-                    {currentDate || '-'}
-                  </span>
-                </div>
-                <div className="text-lg sm:text-xl font-black font-mono tracking-tight text-white leading-tight mt-0.5">
-                  {currentTime || '--:--:-- WIB'}
-                </div>
-              </div>
-            </div>
-
-            {/* 2. KPI Status Barang (Laptop 8/8, PC Lab 7/7, Alat, Dipinjam DIGABUNG DALAM 1 CARD) */}
-            <div className="flex items-center gap-2 sm:gap-3 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 shadow-2xs divide-x divide-slate-200 shrink-0">
-              {/* Laptop */}
-              <div className="flex items-center gap-2 pr-1">
-                <div className="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-                  <Laptop className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-slate-500 uppercase tracking-wide">Laptop</span>
-                  <span className="font-mono text-xs font-black text-slate-800">
-                    {data ? `${data.stats_laptop.tersedia}/${data.stats_laptop.total}` : '-/-'}
-                  </span>
-                </div>
-              </div>
-
-              {/* PC Lab */}
-              <div className="flex items-center gap-2 px-2.5 sm:px-3">
-                <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                  <Monitor className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-slate-500 uppercase tracking-wide">PC Lab</span>
-                  <span className="font-mono text-xs font-black text-slate-800">
-                    {data ? `${data.stats_pc.tersedia}/${data.stats_pc.total}` : '-/-'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Alat */}
-              <div className="flex items-center gap-2 px-2.5 sm:px-3">
-                <div className="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-                  <Wrench className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-slate-500 uppercase tracking-wide">Alat</span>
-                  <span className="font-mono text-xs font-black text-slate-800">
-                    {data ? `${data.stats_peralatan?.tersedia_unit ?? 0}` : '-'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Dipinjam */}
-              <div className="flex items-center gap-2 pl-2.5 sm:pl-3">
-                <div className="w-6 h-6 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
-                  <Clock className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-purple-700 uppercase tracking-wide">Dipinjam</span>
-                  <span className="font-mono text-xs font-black text-purple-900">
-                    {totalSedangDigunakan} <span className="text-[9px] font-semibold text-purple-600">Unit</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* 3. Card Internet Siswa & Internet Guru (SEJAJAR) */}
-            <div className="flex items-center gap-2 sm:gap-3 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 shadow-2xs divide-x divide-slate-200 shrink-0">
-              {/* Internet Siswa */}
-              <div className="flex items-center gap-2 pr-1" title="Status Jaringan Siswa">
-                <div
-                  className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
-                    networkStats.siswaOnline ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                  }`}
-                >
-                  <Wifi className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-slate-500 uppercase tracking-wide">Internet Siswa</span>
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className={`w-2 h-2 rounded-full ${
-                        networkStats.siswaOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-                      }`}
-                    />
-                    <span
-                      className={`text-xs font-bold ${
-                        networkStats.siswaOnline ? 'text-emerald-700' : 'text-rose-700'
-                      }`}
-                    >
-                      {networkStats.siswaOnline ? 'Online' : 'Offline'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Internet Guru */}
-              <div className="flex items-center gap-2 pl-2.5 sm:pl-3" title="Status Jaringan Guru">
-                <div
-                  className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
-                    networkStats.guruOnline ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                  }`}
-                >
-                  <Wifi className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[9.5px] font-bold text-slate-500 uppercase tracking-wide">Internet Guru</span>
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className={`w-2 h-2 rounded-full ${
-                        networkStats.guruOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-                      }`}
-                    />
-                    <span
-                      className={`text-xs font-bold ${
-                        networkStats.guruOnline ? 'text-emerald-700' : 'text-rose-700'
-                      }`}
-                    >
-                      {networkStats.guruOnline ? 'Online' : 'Offline'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Sesi Login Terbuka (Logout jika role aktif) */}
-            {authRole && (
-              <div className="flex items-center gap-1.5 shrink-0">
-                <span
-                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10.5px] font-bold border truncate ${
-                    authRole === 'admin'
-                      ? 'bg-purple-50 text-purple-800 border-purple-200'
-                      : 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                  }`}
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-                  <span>{authUsername ? `${authUsername}` : authRole}</span>
-                </span>
-                <button
-                  onClick={handleLogoutRole}
-                  className="p-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 cursor-pointer"
-                  title="Logout"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Card 2B: Dokumentasi Kegiatan RPL (Berjajar Horizontal Bergerak Sendiri) */}
+          {/* Card 2: Dokumentasi Kegiatan RPL (Berjajar Horizontal Bergerak Sendiri) */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden">
             {/* Header Dokumentasi */}
             <div className="flex items-center justify-between px-1">
