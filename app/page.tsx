@@ -140,16 +140,15 @@ function getItemClasses(item: RplTimelineItem): ('10' | '11' | '12')[] | 'all' {
 
 function getFotoUrl(url?: string | null): string {
   if (!url) return '/pc.jpg';
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url
-      .replace('https://sarpras.sakuci.id', 'https://rpl.sakuci.id')
-      .replace('http://sarpras.sakuci.id', 'https://rpl.sakuci.id');
-  }
-  if (url.startsWith('/kegiatan/')) {
-    return `https://rpl.sakuci.id${url}`;
+  if (url.includes('/kegiatan/')) {
+    const filename = url.split('/kegiatan/')[1];
+    return `/kegiatan/${filename}`;
   }
   if (url.startsWith('kegiatan/')) {
-    return `https://rpl.sakuci.id/${url}`;
+    return `/${url}`;
+  }
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
   }
   return url;
 }
@@ -1158,6 +1157,14 @@ export default function PublicMonitorPage() {
                         alt={item.judul}
                         loading="lazy"
                         className="h-full w-auto max-w-none object-cover block"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          const rawPath = item.foto_url || item.foto || '';
+                          if (rawPath && !target.src.includes('exs.sakuci.id')) {
+                            const filename = rawPath.split('/kegiatan/')[1] || rawPath;
+                            target.src = `https://exs.sakuci.id/kegiatan/${filename}`;
+                          }
+                        }}
                       />
 
                       {/* Glass HUD Overlay at Bottom */}
@@ -1765,6 +1772,14 @@ export default function PublicMonitorPage() {
                 src={getFotoUrl(previewPhoto.foto_url || previewPhoto.foto)}
                 alt={previewPhoto.judul}
                 className="max-h-[68vh] w-auto max-w-full object-contain rounded-lg shadow-lg"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  const rawPath = previewPhoto.foto_url || previewPhoto.foto || '';
+                  if (rawPath && !target.src.includes('exs.sakuci.id')) {
+                    const filename = rawPath.split('/kegiatan/')[1] || rawPath;
+                    target.src = `https://exs.sakuci.id/kegiatan/${filename}`;
+                  }
+                }}
               />
             </div>
 
