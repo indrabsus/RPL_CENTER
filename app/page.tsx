@@ -1845,20 +1845,13 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
           <span className="absolute top-2 left-2.5 font-mono text-[9px] text-slate-400 dark:text-emerald-500/50 group-hover:dark:text-emerald-400 select-none leading-none pointer-events-none">+</span>
           <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-slate-400 dark:text-emerald-500/50 group-hover:dark:text-emerald-400 select-none leading-none pointer-events-none">+</span>
 
-          {/* Hardware Device Icon (Icon Seperti Peralatan) */}
-          <div
-            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${
-              isLaptop
-                ? 'bg-blue-50 dark:bg-blue-950/70 border-blue-200 dark:border-blue-500/40 text-blue-600 dark:text-cyan-400 dark:shadow-[0_0_16px_rgba(6,182,212,0.25)]'
-                : 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-200 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 dark:shadow-[0_0_16px_rgba(16,185,129,0.25)]'
-            }`}
-          >
-            {isLaptop ? (
-              <Laptop className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.8]" />
-            ) : (
-              <Monitor className="w-8 h-8 sm:w-9 sm:h-9 stroke-[1.8]" />
-            )}
-          </div>
+          <img
+            src={isLaptop ? '/laptop.png' : '/pc.jpg'}
+            alt={item.nama_barang}
+            className={`w-full h-full ${
+              isLaptop ? 'object-contain' : 'object-cover rounded-lg'
+            } transition-transform duration-300 group-hover:scale-105 drop-shadow-xs`}
+          />
         </div>
 
         {/* Title and Specs */}
