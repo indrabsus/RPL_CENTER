@@ -730,34 +730,34 @@ export default function PublicMonitorPage() {
         {/* KOLOM 1: 3 GRID (Catatan Agenda RPL - Full Height)         */}
         {/* ========================================================== */}
         <div className="lg:col-span-3 flex flex-col h-[460px] sm:h-[500px] lg:h-full lg:max-h-full min-h-0 overflow-hidden shrink-0 lg:shrink">
-          {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
-          <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
+          {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes Pastel Cyber) */}
+          <div className="relative notebook-paper border border-slate-800 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
             {/* Spiral Ring Binding at top edge */}
-            <div className="h-4 bg-amber-100/80 dark:bg-slate-800/90 border-b border-amber-200/70 dark:border-slate-700/70 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
+            <div className="h-4 bg-[#090e18] border-b border-slate-800 flex items-center justify-around px-2 shrink-0 overflow-hidden select-none">
               {[...Array(14)].map((_, i) => (
                 <span
                   key={i}
-                  className="w-2.5 h-4.5 rounded-full border border-slate-300 dark:border-slate-600 bg-gradient-to-b from-slate-200 via-white to-slate-300 dark:from-slate-700 dark:via-slate-500 dark:to-slate-800 shadow-2xs -mt-1"
+                  className="w-2.5 h-4.5 rounded-full border border-slate-700 bg-gradient-to-b from-slate-700 via-slate-500 to-slate-800 shadow-2xs -mt-1"
                 />
               ))}
             </div>
 
             {/* Notebook Header */}
-            <div className="px-3 py-2 border-b border-amber-200/60 dark:border-slate-700/60 flex items-center justify-between shrink-0 bg-white/75 dark:bg-slate-900/65 backdrop-blur-xs">
+            <div className="px-3 py-2 border-b border-slate-800 flex items-center justify-between shrink-0 bg-[#0d1424]/90 backdrop-blur-xs">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center font-bold text-sm shadow-2xs shrink-0 rotate-[-4deg]">
+                <div className="w-7 h-7 rounded-lg bg-emerald-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-sm shadow-[0_0_8px_rgba(16,185,129,0.3)] shrink-0 rotate-[-4deg]">
                   📓
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h2 className="font-extrabold text-amber-950 dark:text-amber-100 text-xs sm:text-sm leading-tight tracking-tight">
+                    <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight tracking-tight">
                       Catatan Agenda RPL
                     </h2>
-                    <span className="text-[9px] font-black bg-amber-200/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1.5 py-0.2 rounded-full border border-amber-300/70 dark:border-amber-700 shrink-0">
+                    <span className="text-[9px] font-black bg-emerald-950/80 text-emerald-400 px-1.5 py-0.2 rounded-full border border-emerald-500/40 shrink-0">
                       {timelineCompletedCount}/{filteredTimelineList.length}
                     </span>
                   </div>
-                  <p className="text-[9.5px] text-amber-800/80 dark:text-amber-300/70 font-medium truncate">
+                  <p className="text-[9.5px] text-emerald-400/80 font-medium truncate">
                     Sticky Notes Agenda Kegiatan RPL
                   </p>
                 </div>
@@ -780,7 +780,7 @@ export default function PublicMonitorPage() {
                     });
                     setShowTimelineModal(true);
                   }}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold text-[10.5px] cursor-pointer shadow-xs transition-transform active:scale-95 shrink-0"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[10.5px] cursor-pointer shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-transform active:scale-95 shrink-0"
                   title="Tambah sticky note kegiatan"
                 >
                   <Plus className="w-3.5 h-3.5 stroke-[3]" />
@@ -790,7 +790,7 @@ export default function PublicMonitorPage() {
             </div>
 
             {/* Class Filter Tabs: Semua, Kelas 10, Kelas 11, Kelas 12 */}
-            <div className="px-3 py-1.5 border-b border-amber-200/50 dark:border-slate-700/50 bg-amber-50/50 dark:bg-slate-900/50 flex items-center justify-between gap-1 shrink-0 select-none">
+            <div className="px-3 py-1.5 border-b border-slate-800 bg-[#090e18]/80 flex items-center justify-between gap-1 shrink-0 select-none">
               <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
                 {[
                   { id: 'all', label: 'Semua' },
@@ -804,15 +804,15 @@ export default function PublicMonitorPage() {
                     onClick={() => setTimelineClassFilter(cls.id as any)}
                     className={`px-2 py-0.5 rounded-md text-[10.5px] font-bold transition-all cursor-pointer ${
                       timelineClassFilter === cls.id
-                        ? 'bg-amber-400 text-amber-950 font-black shadow-2xs scale-105'
-                        : 'bg-white/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700'
+                        ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_8px_rgba(16,185,129,0.4)] scale-105'
+                        : 'bg-[#0c121e] border border-slate-800 text-slate-400 hover:text-emerald-400 hover:bg-slate-800'
                     }`}
                   >
                     {cls.label}
                   </button>
                 ))}
               </div>
-              <span className="text-[9.5px] font-bold text-amber-900/70 dark:text-amber-300/70 shrink-0">
+              <span className="text-[9.5px] font-bold text-slate-400 shrink-0">
                 {filteredTimelineList.length} Catatan
               </span>
             </div>
@@ -1004,25 +1004,31 @@ export default function PublicMonitorPage() {
         <div className="lg:col-span-9 flex flex-col gap-2.5 min-h-0 lg:h-full lg:max-h-full lg:overflow-hidden">
 
           {/* Card 2: Dokumentasi Kegiatan RPL (Digital Lab Viewfinder Stream) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden relative">
+          <div className="bg-[#0c121e] border border-slate-800 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden relative">
+            {/* Top Gaming Accent Line with Cyber Scanning Beam */}
+            <div className="h-0.5 w-full bg-slate-800 relative overflow-hidden shrink-0 -mx-2.5 sm:-mx-3 -mt-2 sm:-mt-2.5 mb-1 w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-400 to-teal-400" />
+              <div className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan" />
+            </div>
+
             {/* Header Dokumentasi - Gaya Telemetri Teknologi */}
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-6 h-6 rounded-lg bg-cyan-50 border border-cyan-200/80 text-cyan-600 flex items-center justify-center shrink-0 shadow-2xs">
-                  <Radio className="w-3.5 h-3.5 text-cyan-600 animate-pulse" />
+                <div className="w-6 h-6 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
                 </div>
                 <div className="flex items-center gap-2 min-w-0">
-                  <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
+                  <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight truncate">
                     Dokumentasi Kegiatan RPL
                   </h2>
-                  <span className="text-[9px] font-mono font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200 flex items-center gap-1.5 shrink-0">
+                  <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/40 flex items-center gap-1.5 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.25)]">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                     </span>
                     LIVE FEED
                   </span>
-                  <span className="text-[9px] font-mono font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 flex items-center gap-1 shrink-0">
+                  <span className="text-[9px] font-mono font-bold text-rose-400 bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/40 flex items-center gap-1 shrink-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                     REC
                   </span>
@@ -1039,19 +1045,19 @@ export default function PublicMonitorPage() {
                     onClick={() => setIsPhotoPaused((prev) => !prev)}
                     className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-mono font-bold cursor-pointer transition-colors shadow-2xs ${
                       isPhotoPaused
-                        ? 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100'
-                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                        ? 'border-amber-500/40 bg-amber-950/60 text-amber-300 hover:bg-amber-900/60'
+                        : 'border-slate-800 bg-[#090e18] text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40'
                     }`}
                     title={isPhotoPaused ? 'Lanjutkan Animasi Berjalan' : 'Jeda Animasi'}
                   >
                     {isPhotoPaused ? (
                       <>
-                        <Play className="w-2.5 h-2.5 fill-current text-amber-600" />
+                        <Play className="w-2.5 h-2.5 fill-current text-amber-400" />
                         <span>RESUME</span>
                       </>
                     ) : (
                       <>
-                        <Pause className="w-2.5 h-2.5 fill-current text-slate-600" />
+                        <Pause className="w-2.5 h-2.5 fill-current text-slate-400" />
                         <span>PAUSE</span>
                       </>
                     )}
@@ -1071,10 +1077,10 @@ export default function PublicMonitorPage() {
                       setPreviewUrl(null);
                       setShowDokumentasiModal(true);
                     }}
-                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 hover:bg-slate-800 text-cyan-300 text-[10px] font-mono font-bold cursor-pointer shadow-2xs shrink-0 border border-slate-700"
+                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-[10px] font-mono font-black cursor-pointer shadow-[0_0_10px_rgba(16,185,129,0.3)] shrink-0"
                     title="Upload Foto Kegiatan"
                   >
-                    <Plus className="w-3 h-3 text-cyan-400" />
+                    <Plus className="w-3 h-3 text-slate-950 stroke-[3]" />
                     <span>UPLOAD</span>
                   </button>
                 )}
@@ -1164,58 +1170,58 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative">
+          <div className="bg-[#0c121e] border border-slate-800 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative">
             {/* Top Tech Accent Line with Laser Scanning Beam Animation */}
-            <div className="h-0.5 w-full bg-slate-200 relative overflow-hidden shrink-0">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400" />
+            <div className="h-0.5 w-full bg-slate-800 relative overflow-hidden shrink-0">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-400 to-lime-300" />
               <div className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan" />
             </div>
 
             {/* Header with Search and Category Filter - Gaya Pusat Kendali Teknologi */}
-            <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/60 space-y-2.5">
+            <div className="p-3 border-b border-slate-800 shrink-0 bg-[#0d1424]/80 space-y-2.5">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-200/80 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs">
-                    <Cpu className="w-4 h-4 text-blue-600" />
+                  <div className="w-7 h-7 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                    <Cpu className="w-4 h-4 text-emerald-400" />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
+                    <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight truncate">
                       Peminjaman Alat &amp; Inventaris Lab RPL
                     </h2>
                     <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                      <span className="text-[9.5px] font-mono text-slate-500 font-medium flex items-center gap-1.5 truncate">
+                      <span className="text-[9.5px] font-mono text-emerald-400 font-medium flex items-center gap-1.5 truncate">
                         <span className="relative flex h-2 w-2 shrink-0">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                         </span>
                         TELEMETRY // REALTIME HARDWARE MONITOR
                       </span>
 
                       {/* Animated Activity Waveform */}
-                      <div className="hidden sm:flex items-center gap-0.5 h-3 px-1 py-0.5 rounded bg-emerald-50 border border-emerald-200/90" title="Telemetry Activity">
-                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-1" />
-                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-2" />
-                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-3" />
-                        <span className="w-0.5 bg-emerald-600 rounded-full animate-data-wave-4" />
+                      <div className="hidden sm:flex items-center gap-0.5 h-3 px-1 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/40" title="Telemetry Activity">
+                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-1 shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-2 shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-3 shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-4 shadow-[0_0_4px_#34d399]" />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Status Toggle - High-Tech Segmented Pills */}
-                <div className="flex items-center gap-1 bg-slate-200/70 p-0.5 rounded-xl border border-slate-300/60 text-[10.5px] font-mono font-bold shadow-2xs shrink-0">
+                <div className="flex items-center gap-1 bg-[#090d16] p-0.5 rounded-xl border border-slate-800 text-[10.5px] font-mono font-bold shadow-2xs shrink-0">
                   {(['all', 'tersedia', 'dipinjam'] as const).map((st) => (
                     <button
                       key={st}
                       onClick={() => setStatusFilter(st)}
                       className={`px-2.5 py-0.5 rounded-lg transition-all cursor-pointer flex items-center gap-1 uppercase tracking-wider text-[9.5px] ${
                         statusFilter === st
-                          ? 'bg-slate-900 text-cyan-300 shadow-2xs border border-slate-700'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_12px_rgba(16,185,129,0.5)]'
+                          : 'text-slate-400 hover:text-emerald-400 hover:bg-slate-800/60'
                       }`}
                     >
-                      {st === 'tersedia' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />}
-                      {st === 'dipinjam' && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse shrink-0" />}
+                      {st === 'tersedia' && <span className="w-1.5 h-1.5 rounded-full bg-slate-950 shrink-0" />}
+                      {st === 'dipinjam' && <span className="w-1.5 h-1.5 rounded-full bg-slate-950 shrink-0" />}
                       <span>{st === 'all' ? 'Semua' : st}</span>
                     </button>
                   ))}
@@ -1236,14 +1242,14 @@ export default function PublicMonitorPage() {
                         onClick={() => setActiveTab(cat)}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 ${
                           activeTab === cat
-                            ? 'bg-slate-900 text-white shadow-2xs ring-1 ring-slate-800'
-                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                            ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_12px_rgba(16,185,129,0.4)]'
+                            : 'bg-[#0a0f19] border border-slate-800 text-slate-300 hover:border-emerald-500/40 hover:text-emerald-400'
                         }`}
                       >
-                        {isLp && <Laptop className="w-3.5 h-3.5 opacity-80" />}
-                        {isPC && <Monitor className="w-3.5 h-3.5 opacity-80" />}
-                        {isTools && <Wrench className="w-3.5 h-3.5 opacity-80" />}
-                        {!isLp && !isPC && !isTools && <Layers className="w-3.5 h-3.5 opacity-80" />}
+                        {isLp && <Laptop className="w-3.5 h-3.5 opacity-90" />}
+                        {isPC && <Monitor className="w-3.5 h-3.5 opacity-90" />}
+                        {isTools && <Wrench className="w-3.5 h-3.5 opacity-90" />}
+                        {!isLp && !isPC && !isTools && <Layers className="w-3.5 h-3.5 opacity-90" />}
                         <span>{label}</span>
                       </button>
                     );
@@ -1252,13 +1258,13 @@ export default function PublicMonitorPage() {
 
                 {/* Terminal Search */}
                 <div className="relative min-w-[180px] sm:w-68">
-                  <Terminal className="w-3.5 h-3.5 text-blue-600 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <Terminal className="w-3.5 h-3.5 text-emerald-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search kode unit / perangkat / peminjam..."
-                    className="w-full pl-7 pr-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 font-mono placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full pl-7 pr-2.5 py-1.5 bg-[#080d16] border border-slate-800 rounded-lg text-xs text-emerald-300 font-mono placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -1757,7 +1763,7 @@ export default function PublicMonitorPage() {
 }
 
 // ==========================================
-// ADAPTED CARD FOR LAPTOP & PC MONITOR (GAYA TEKNOLOGI MODERN)
+// ADAPTED CARD FOR LAPTOP & PC MONITOR (GAYA TEKNOLOGI MODERN CYBER GAMING)
 // Tampilan jelas, proporsional, dan mengisi ruang
 // ==========================================
 function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
@@ -1768,19 +1774,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
     <div
       className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between group relative overflow-hidden ${
         isAvailable
-          ? 'bg-white border-slate-200/90 hover:border-emerald-400 hover:ring-2 hover:ring-emerald-400/20 shadow-2xs hover:shadow-md'
-          : 'bg-gradient-to-b from-blue-50/30 via-white to-white border-blue-200 hover:border-blue-400 hover:ring-2 hover:ring-blue-400/20 shadow-2xs hover:shadow-md'
+          ? 'bg-[#0c121e] border-slate-800/90 hover:border-emerald-500/60 hover:ring-1 hover:ring-emerald-500/30 hover:shadow-[0_0_16px_rgba(16,185,129,0.2)]'
+          : 'bg-[#0d1424] border-slate-800/90 hover:border-amber-500/60 hover:ring-1 hover:ring-amber-500/30 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)]'
       }`}
     >
       <div>
         {/* Top Badges - Hardware Telemetry */}
         <div className="flex items-center justify-between gap-1.5 mb-2.5">
           <div className="flex items-center gap-1.5 min-w-0">
-            <span className="font-mono text-xs font-black px-2 py-0.5 rounded-md bg-slate-900 text-white shadow-2xs flex items-center gap-1 shrink-0">
-              <span className="text-cyan-400 text-[10px]">#</span>
+            <span className="font-mono text-xs font-black px-2 py-0.5 rounded-md bg-[#060a12] text-white border border-slate-800 shadow-2xs flex items-center gap-1 shrink-0">
+              <span className="text-emerald-400 text-[10px]">#</span>
               {item.kode_barang}
             </span>
-            <span className="text-[9.5px] font-mono text-slate-500 font-semibold uppercase tracking-wider truncate">
+            <span className="text-[9.5px] font-mono text-slate-400 font-semibold uppercase tracking-wider truncate">
               {isLaptop ? 'SYS // LAPTOP' : 'SYS // PC_LAB'}
             </span>
           </div>
@@ -1788,19 +1794,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
           <span
             className={`inline-flex items-center gap-1.5 text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
               isAvailable
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200/90'
-                : 'bg-blue-50 text-blue-700 border-blue-200/90'
+                ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
+                : 'bg-amber-950/60 text-amber-300 border-amber-500/40 shadow-[0_0_8px_rgba(245,158,11,0.2)]'
             }`}
           >
             <span className="relative flex h-2 w-2 shrink-0">
               <span
                 className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  isAvailable ? 'bg-emerald-400' : 'bg-blue-400'
+                  isAvailable ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
               />
               <span
                 className={`relative inline-flex rounded-full h-2 w-2 ${
-                  isAvailable ? 'bg-emerald-500' : 'bg-blue-500'
+                  isAvailable ? 'bg-emerald-400' : 'bg-amber-400'
                 }`}
               />
             </span>
@@ -1809,19 +1815,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
         </div>
 
         {/* Prominent Photo Area (Viewport Skematik CAD / Lab Hardware) */}
-        <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-200/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-slate-300 transition-colors">
+        <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-800/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-emerald-500/40 transition-colors">
           {/* Laser Scanning Beam on Hover */}
           <div className="laser-sweep-line z-20" />
 
           {/* Schematic Viewfinder HUD Corners */}
-          <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
-          <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
-          <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
-          <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-slate-300 group-hover:border-cyan-500 transition-colors pointer-events-none" />
+          <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
 
           {/* Schematic Crosshair Marks */}
-          <span className="absolute top-2 left-2.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
-          <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute top-2 left-2.5 font-mono text-[9px] text-emerald-500/50 group-hover:text-emerald-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-emerald-500/50 group-hover:text-emerald-400 select-none leading-none pointer-events-none">+</span>
 
           <img
             src={isLaptop ? '/laptop.png' : '/pc.jpg'}
@@ -1834,29 +1840,29 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
 
         {/* Title and Specs */}
         <div>
-          <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug truncate group-hover:text-blue-600 transition-colors">
+          <h4 className="font-extrabold text-xs sm:text-sm text-slate-100 leading-snug truncate group-hover:text-emerald-400 transition-colors">
             {item.nama_barang}
           </h4>
-          <p className="text-[11px] font-mono text-slate-500 truncate mt-0.5">
+          <p className="text-[11px] font-mono text-slate-400 truncate mt-0.5">
             {item.spesifikasi || (isLaptop ? 'Unit Laptop Praktikum RPL' : 'Workstation Lab RPL')}
           </p>
         </div>
 
         {/* Borrower details if borrowed - Telemetri Sesi Peminjam */}
         {!isAvailable && item.active_loan && (
-          <div className="mt-2.5 p-2 rounded-xl bg-blue-50/80 border border-blue-100 text-[11px] space-y-1">
-            <div className="flex items-center justify-between font-bold text-slate-800">
+          <div className="mt-2.5 p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] space-y-1">
+            <div className="flex items-center justify-between font-bold text-slate-200">
               <span className="truncate flex items-center gap-1.5">
-                <User className="w-3 h-3 text-blue-600 shrink-0" />
+                <User className="w-3 h-3 text-emerald-400 shrink-0" />
                 {item.active_loan.nama_siswa}
               </span>
-              <span className="font-mono text-blue-700 bg-blue-100/90 px-1.5 py-0.2 rounded text-[9.5px] font-bold shrink-0">
+              <span className="font-mono text-amber-300 bg-amber-950/80 border border-amber-500/40 px-1.5 py-0.2 rounded text-[9.5px] font-bold shrink-0">
                 ⏱ {item.active_loan.durasi_sekarang}
               </span>
             </div>
-            <div className="text-slate-600 flex justify-between text-[10px]">
-              <span>Kelas: <strong className="text-slate-800">{item.active_loan.kelas}</strong></span>
-              <span className="italic truncate max-w-[130px] text-slate-500">
+            <div className="text-slate-400 flex justify-between text-[10px]">
+              <span>Kelas: <strong className="text-slate-200">{item.active_loan.kelas}</strong></span>
+              <span className="italic truncate max-w-[130px] text-slate-400">
                 &ldquo;{item.active_loan.kebutuhan}&rdquo;
               </span>
             </div>
@@ -1865,10 +1871,10 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
       </div>
 
       {isAvailable && (
-        <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px] font-mono text-emerald-700 font-bold">
-          <span className="text-slate-400 font-normal text-[10px]">STATUS: SIAP PAKAI</span>
-          <span className="flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> READY DI LAB
+        <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10.5px] font-mono text-emerald-400 font-bold">
+          <span className="text-slate-500 font-normal text-[10px]">STATUS: SIAP PAKAI</span>
+          <span className="flex items-center gap-1 text-emerald-400">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> READY DI LAB
           </span>
         </div>
       )}
@@ -1889,47 +1895,46 @@ function PeralatanCompactListItem({ item }: { item: BarangItem }) {
     <div
       className={`p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
         isAllBorrowed
-          ? 'bg-rose-50/30 border-rose-200'
-          : 'bg-white border-slate-200/90 shadow-2xs hover:border-slate-300'
+          ? 'bg-rose-950/20 border-rose-900/50'
+          : 'bg-[#0c121e] border-slate-800/90 shadow-2xs hover:border-emerald-500/40 hover:shadow-[0_0_12px_rgba(16,185,129,0.15)]'
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0">
         <div
           className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 shadow-2xs ${
             isATK
-              ? 'bg-blue-50 border-blue-200 text-blue-700'
-              : 'bg-amber-50 border-amber-200 text-amber-700'
+              ? 'bg-blue-950/80 border-blue-500/30 text-blue-400'
+              : 'bg-emerald-950/80 border-emerald-500/30 text-emerald-400'
           }`}
         >
           {isATK ? (
-            <Layers className="w-4.5 h-4.5 text-blue-600" />
+            <Layers className="w-4.5 h-4.5 text-blue-400" />
           ) : (
-            <Wrench className="w-4.5 h-4.5 text-amber-600" />
+            <Wrench className="w-4.5 h-4.5 text-emerald-400" />
           )}
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-900 text-white shadow-2xs">
+            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#060a12] text-emerald-400 border border-emerald-500/30 shadow-2xs">
               {item.kode_barang}
             </span>
-            <h4 className="font-bold text-xs sm:text-sm text-slate-900 truncate">{item.nama_barang}</h4>
+            <h4 className="font-bold text-xs sm:text-sm text-slate-100 truncate">{item.nama_barang}</h4>
           </div>
           {item.spesifikasi && (
-            <p className="text-[11px] font-mono text-slate-500 truncate mt-0.5">{item.spesifikasi}</p>
+            <p className="text-[11px] font-mono text-slate-400 truncate mt-0.5">{item.spesifikasi}</p>
           )}
         </div>
       </div>
 
-      <div className="text-right shrink-0">
-        <div className="text-xs sm:text-sm font-mono font-bold text-slate-900">
-          <span className={`${isAvailable ? 'text-emerald-600' : 'text-rose-600'} font-extrabold`}>
-            {item.jumlah_tersedia}
-          </span>{' '}
-          /{' '}
-          {item.jumlah_total} {item.satuan}
-        </div>
-        <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400">
-          {isAvailable ? 'READY' : 'BORROWED'}
+      <div className="flex items-center gap-2 shrink-0">
+        <span
+          className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold border ${
+            isAvailable
+              ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]'
+              : 'bg-rose-950/60 text-rose-400 border-rose-500/40'
+          }`}
+        >
+          {item.jumlah_tersedia} / {item.jumlah_total} Tersedia
         </span>
       </div>
     </div>

@@ -23,20 +23,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="h-full light" style={{ colorScheme: 'light' }}>
+    <html lang="id" className="h-full dark" style={{ colorScheme: 'dark' }}>
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.remove('dark');document.documentElement.classList.add('light');try{localStorage.removeItem('rpl_theme');}catch(e){}`,
+            __html: `document.documentElement.classList.remove('light');document.documentElement.classList.add('dark');try{localStorage.setItem('rpl_theme','dark');}catch(e){}`,
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#f1f5f9] text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
-        <Navbar />
-        <main className="flex-1 min-h-0 w-full max-w-[1850px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex flex-col">
-          {children}
-        </main>
-        <Footer />
+      <body className="min-h-screen flex flex-col bg-[#070a0f] text-slate-100 antialiased selection:bg-emerald-500 selection:text-black relative">
+        {/* Subtle Ambient Gaming Green Grid & Top Radial Aura */}
+        <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(16,185,129,0.12),transparent_70%)]" />
+        <div className="relative z-10 flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-1 min-h-0 w-full max-w-[1850px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex flex-col">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
