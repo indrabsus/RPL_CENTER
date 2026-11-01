@@ -1111,14 +1111,14 @@ export default function PublicMonitorPage() {
               </div>
             ) : (
               <div
-                className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b1120] p-1.5 shadow-inner tech-dot-dark"
+                className="relative overflow-hidden rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-100/70 dark:bg-[#0b1120] p-1.5 shadow-inner tech-dot-dark"
                 onMouseEnter={() => setIsPhotoPaused(true)}
                 onMouseLeave={() => setIsPhotoPaused(false)}
               >
                 {/* Edge fade gradient mask left */}
-                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0b1120] via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-100 dark:from-[#0b1120] via-slate-100/70 dark:via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
                 {/* Edge fade gradient mask right */}
-                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0b1120] via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-100 dark:from-[#0b1120] via-slate-100/70 dark:via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
 
                 {/* Infinite Marquee Reel */}
                 <div
@@ -1133,7 +1133,7 @@ export default function PublicMonitorPage() {
                     <div
                       key={`${item.id}-${idx}`}
                       onClick={() => setPreviewPhoto(item)}
-                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-cyan-400 hover:shadow-[0_0_18px_rgba(6,182,212,0.4)]"
+                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-200/90 dark:border-slate-700/80 bg-white dark:bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-blue-400 dark:hover:border-cyan-400 hover:shadow-md dark:hover:shadow-[0_0_18px_rgba(6,182,212,0.4)]"
                       title={`${item.judul} (Klik untuk perbesar)`}
                     >
                       {/* Laser Scanning Line on Hover */}

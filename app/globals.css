@@ -97,6 +97,22 @@ html.dark .text-slate-500:not(.kartu-kontrol-sheet *):not(.group\/note *) {
   color: #94a3b8 !important;
 }
 
+/* Dark Mode Hover Contrast Safeguards (Prevent White-on-White Hover Glitch) */
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-100:hover,
+html.dark .hover\:bg-slate-200:hover,
+html.dark .group:hover .group-hover\:bg-slate-100,
+html.dark .group:hover .group-hover\:bg-slate-200 {
+  background-color: #1a253c !important;
+}
+
+html.dark button:hover .text-slate-800,
+html.dark button:hover .text-slate-700,
+html.dark a:hover .text-slate-800,
+html.dark a:hover .text-slate-700 {
+  color: #f1f5f9 !important;
+}
+
 html.dark footer {
   background-color: #080c14 !important;
   border-color: #1e293b !important;
@@ -162,6 +178,12 @@ html.dark .kartu-kontrol-sheet .text-slate-500 {
 
 /* Notebook & Sticky Notes (Buku Catatan Agenda & Post-It) */
 .notebook-paper {
+  background-color: #fbfbfa;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.35) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+
+html.dark .notebook-paper {
   background-color: #0b101a;
   background-image: radial-gradient(rgba(16, 185, 129, 0.12) 1.2px, transparent 1.2px);
   background-size: 16px 16px;
@@ -188,9 +210,15 @@ html.dark .kartu-kontrol-sheet .text-slate-500 {
 }
 
 .sticky-fold-shadow {
+  box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+html.dark .sticky-fold-shadow {
   box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25);
 }
 .sticky-fold-shadow:hover {
+  box-shadow: 0 12px 24px -3px rgba(0, 0, 0, 0.18);
+}
+html.dark .sticky-fold-shadow:hover {
   box-shadow: 0 12px 24px -3px rgba(0, 0, 0, 0.5), 0 0 15px rgba(16, 185, 129, 0.2);
 }
 
@@ -202,10 +230,16 @@ html.dark .kartu-kontrol-sheet .text-slate-500 {
   background: transparent;
 }
 .notebook-paper ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
+html.dark .notebook-paper ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
 .notebook-paper ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+html.dark .notebook-paper ::-webkit-scrollbar-thumb:hover {
   background: #10b981;
 }
 
@@ -233,16 +267,30 @@ html.dark .kartu-kontrol-sheet .text-slate-500 {
 
 /* Tech Grid & Cyber Accents for Dokumentasi & Sarpras */
 .tech-grid-pattern {
+  background-image: radial-gradient(rgba(100, 116, 139, 0.18) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+html.dark .tech-grid-pattern {
   background-image: radial-gradient(rgba(16, 185, 129, 0.18) 1px, transparent 1px);
   background-size: 14px 14px;
 }
 
 .tech-dot-dark {
+  background-image: radial-gradient(rgba(100, 116, 139, 0.22) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+html.dark .tech-dot-dark {
   background-image: radial-gradient(rgba(16, 185, 129, 0.2) 1px, transparent 1px);
   background-size: 14px 14px;
 }
 
 .tech-schematic-bg {
+  background-color: #f1f5f9;
+  background-image: linear-gradient(to right, rgba(148, 163, 184, 0.25) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(148, 163, 184, 0.25) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+html.dark .tech-schematic-bg {
   background-color: #080c14;
   background-image: linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
                     linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
