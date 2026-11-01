@@ -44,7 +44,9 @@ import {
   BookOpen,
   Tag,
   Filter,
-  X
+  X,
+  Play,
+  Pause
 } from 'lucide-react';
 import {
   fetchBarang,
@@ -373,30 +375,18 @@ export default function PublicMonitorPage() {
     loadDokumentasiData();
   }, []);
 
-  // Horizontal photo reel auto-scroll
-  const photoScrollRef = useRef<HTMLDivElement>(null);
+  // Horizontal photo reel infinite marquee stream
   const [isPhotoPaused, setIsPhotoPaused] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<RplDokumentasiItem | null>(null);
 
-  useEffect(() => {
-    if (isPhotoPaused || dokumentasiList.length <= 1) return;
-    const interval = setInterval(() => {
-      const el = photoScrollRef.current;
-      if (!el) return;
-      if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) {
-        el.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        el.scrollLeft += 1;
-      }
-    }, 30);
-    return () => clearInterval(interval);
-  }, [isPhotoPaused, dokumentasiList.length]);
-
-  const scrollPhotos = (dir: 'left' | 'right') => {
-    const el = photoScrollRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir === 'left' ? -280 : 280, behavior: 'smooth' });
-  };
+  // Duplikat foto agar animasi CSS berjalan mengalir terus looping tanpa jeda / putus
+  const marqueePhotos = useMemo(() => {
+    if (!dokumentasiList || dokumentasiList.length === 0) return [];
+    if (dokumentasiList.length < 5) {
+      return [...dokumentasiList, ...dokumentasiList, ...dokumentasiList, ...dokumentasiList];
+    }
+    return [...dokumentasiList, ...dokumentasiList];
+  }, [dokumentasiList]);
 
   const loadData = async (silent = false) => {
     if (!silent) setLoading(true);
@@ -1195,25 +1185,29 @@ export default function PublicMonitorPage() {
               </div>
 
               <div className="flex items-center gap-1 shrink-0">
-                {dokumentasiList.length > 2 && (
-                  <div className="flex items-center gap-0.5">
-                    <button
-                      type="button"
-                      onClick={() => scrollPhotos('left')}
-                      className="p-1 rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 cursor-pointer transition-colors"
-                      title="Geser Kiri"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => scrollPhotos('right')}
-                      className="p-1 rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 cursor-pointer transition-colors"
-                      title="Geser Kanan"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                {dokumentasiList.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsPhotoPaused((prev) => !prev)}
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold cursor-pointer transition-colors ${
+                      isPhotoPaused
+                        ? 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-700'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
+                    }`}
+                    title={isPhotoPaused ? 'Lanjutkan Animasi Berjalan' : 'Jeda Animasi'}
+                  >
+                    {isPhotoPaused ? (
+                      <>
+                        <Play className="w-2.5 h-2.5 fill-current" />
+                        <span>Play</span>
+                      </>
+                    ) : (
+                      <>
+                        <Pause className="w-2.5 h-2.5 fill-current" />
+                        <span>Pause</span>
+                      </>
+                    )}
+                  </button>
                 )}
 
                 {authRole === 'admin' && (
@@ -1239,7 +1233,7 @@ export default function PublicMonitorPage() {
               </div>
             </div>
 
-            {/* Horizontal Moving Photo Strip (Menyesuaikan Asli Portrait & Landscape) */}
+            {/* Horizontal Continuous Flowing Marquee Strip (Menyesuaikan Natural Portrait & Landscape) */}
             {dokumentasiList.length === 0 ? (
               <div className="h-28 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
                 <ImageIcon className="w-6 h-6 mb-1 opacity-50" />
@@ -1247,51 +1241,66 @@ export default function PublicMonitorPage() {
               </div>
             ) : (
               <div
-                ref={photoScrollRef}
+                className="relative overflow-hidden rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-900/95 py-1"
                 onMouseEnter={() => setIsPhotoPaused(true)}
                 onMouseLeave={() => setIsPhotoPaused(false)}
-                className="flex items-center gap-2.5 overflow-x-auto scrollbar-none py-0.5 select-none scroll-smooth"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {dokumentasiList.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => setPreviewPhoto(item)}
-                    className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-200/90 dark:border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-transform duration-200 hover:scale-[1.02] hover:shadow-md"
-                    title={`${item.judul} (Klik untuk perbesar)`}
-                  >
-                    {/* Natural Ratio: Portrait or Landscape */}
-                    <img
-                      src={getFotoUrl(item.foto_url || item.foto)}
-                      alt={item.judul}
-                      className="h-full w-auto max-w-none object-cover"
-                    />
+                {/* Edge fade gradient mask left */}
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-900 via-slate-900/60 to-transparent z-10 pointer-events-none" />
+                {/* Edge fade gradient mask right */}
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900 via-slate-900/60 to-transparent z-10 pointer-events-none" />
 
-                    {/* Gradient Overlay at Bottom */}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent p-1.5 pt-4 pointer-events-none">
-                      <div className="text-[8.5px] font-mono text-purple-300 font-bold mb-0.5 truncate">
-                        {item.tanggal || 'Dokumentasi'}
+                {/* Infinite Marquee Reel */}
+                <div
+                  className={`animate-marquee-flow flex items-center gap-2.5 select-none ${
+                    isPhotoPaused ? 'marquee-paused' : ''
+                  }`}
+                  style={{
+                    animationDuration: `${Math.max(28, marqueePhotos.length * 4)}s`,
+                  }}
+                >
+                  {marqueePhotos.map((item, idx) => (
+                    <div
+                      key={`${item.id}-${idx}`}
+                      onClick={() => setPreviewPhoto(item)}
+                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950 shadow-2xs group/foto relative cursor-pointer transition-all duration-200 hover:scale-[1.03] hover:border-purple-400 hover:shadow-lg"
+                      title={`${item.judul} (Klik untuk perbesar)`}
+                    >
+                      {/* Natural Ratio: Portrait or Landscape */}
+                      <img
+                        src={getFotoUrl(item.foto_url || item.foto)}
+                        alt={item.judul}
+                        loading="lazy"
+                        className="h-full w-auto max-w-none object-cover block"
+                      />
+
+                      {/* Gradient Overlay at Bottom */}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent p-1.5 pt-4 pointer-events-none">
+                        <div className="text-[8.5px] font-mono text-purple-300 font-bold mb-0.5 truncate">
+                          {item.tanggal || 'Dokumentasi'}
+                        </div>
+                        <p className="text-white font-bold text-[10.5px] leading-tight line-clamp-1 drop-shadow-xs">
+                          {item.judul}
+                        </p>
                       </div>
-                      <p className="text-white font-bold text-[10.5px] leading-tight line-clamp-1 drop-shadow-xs">
-                        {item.judul}
-                      </p>
-                    </div>
 
-                    {/* Admin Delete Action */}
-                    {authRole === 'admin' && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteDokumentasi(item.id);
-                        }}
-                        className="absolute top-1 right-1 p-1 rounded-md bg-slate-900/85 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-xs opacity-0 group-hover/foto:opacity-100"
-                        title="Hapus foto ini"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </button>
-                    )}
-                  </div>
-                ))}
+                      {/* Admin Delete Action */}
+                      {authRole === 'admin' && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDokumentasi(item.id);
+                          }}
+                          className="absolute top-1 right-1 p-1 rounded-md bg-slate-900/85 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-xs opacity-0 group-hover/foto:opacity-100"
+                          title="Hapus foto ini"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

@@ -219,3 +219,26 @@ html.dark .notebook-paper ::-webkit-scrollbar-thumb {
   background: #eab308;
 }
 
+/* Infinite Smooth Photo Marquee Flow */
+@keyframes photoMarqueeStream {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-flow {
+  display: flex;
+  width: max-content;
+  animation: photoMarqueeStream 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-flow:hover,
+.marquee-paused {
+  animation-play-state: paused !important;
+}
+
+
