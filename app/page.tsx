@@ -150,98 +150,114 @@ function getFotoUrl(url?: string | null): string {
 const STICKY_PALETTES = [
   {
     name: 'yellow',
-    bg: 'bg-[#fef9c3]',
-    border: 'border-[#fde047]',
-    text: 'text-amber-950',
-    title: 'text-amber-950',
-    desc: 'text-amber-900/85',
-    dateBadge: 'bg-amber-100 text-amber-900 border-amber-300',
-    classBadge: 'bg-amber-200/90 text-amber-950 border-amber-300',
-    pinColor: 'text-amber-600',
+    // Light: Pastel Yellow | Dark: Tactical Cyber Amber/Gold
+    bg: 'bg-[#fef9c3] dark:bg-[#14120a]',
+    border: 'border-[#fde047] dark:border-amber-500/35 hover:dark:border-amber-400',
+    text: 'text-amber-950 dark:text-amber-200',
+    title: 'text-amber-950 dark:text-amber-100',
+    desc: 'text-amber-900/85 dark:text-amber-200/70',
+    dateBadge: 'bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-500/40',
+    classBadge: 'bg-amber-200/90 text-amber-950 border-amber-300 dark:bg-amber-900/40 dark:text-amber-200 dark:border-amber-500/30',
+    catBadge: 'bg-white/85 text-amber-950 dark:bg-black/40 dark:text-amber-300 dark:border-amber-500/30',
+    pinColor: 'text-amber-600 dark:text-amber-400',
     washiRotate: 'rotate-[-1.5deg]',
   },
   {
     name: 'pink',
-    bg: 'bg-[#ffe4e6]',
-    border: 'border-[#fecdd3]',
-    text: 'text-rose-950',
-    title: 'text-rose-950',
-    desc: 'text-rose-900/85',
-    dateBadge: 'bg-rose-100 text-rose-900 border-rose-300',
-    classBadge: 'bg-rose-200/90 text-rose-950 border-rose-300',
-    pinColor: 'text-rose-500',
+    // Light: Pastel Pink | Dark: Cyber Rose/Neon Magenta
+    bg: 'bg-[#ffe4e6] dark:bg-[#160a12]',
+    border: 'border-[#fecdd3] dark:border-rose-500/35 hover:dark:border-rose-400',
+    text: 'text-rose-950 dark:text-rose-200',
+    title: 'text-rose-950 dark:text-rose-100',
+    desc: 'text-rose-900/85 dark:text-rose-200/70',
+    dateBadge: 'bg-rose-100 text-rose-900 border-rose-300 dark:bg-rose-950/70 dark:text-rose-300 dark:border-rose-500/40',
+    classBadge: 'bg-rose-200/90 text-rose-950 border-rose-300 dark:bg-rose-900/40 dark:text-rose-200 dark:border-rose-500/30',
+    catBadge: 'bg-white/85 text-rose-950 dark:bg-black/40 dark:text-rose-300 dark:border-rose-500/30',
+    pinColor: 'text-rose-500 dark:text-rose-400',
     washiRotate: 'rotate-[1.2deg]',
   },
   {
     name: 'mint',
-    bg: 'bg-[#dcfce7]',
-    border: 'border-[#bbf7d0]',
-    text: 'text-emerald-950',
-    title: 'text-emerald-950',
-    desc: 'text-emerald-900/85',
-    dateBadge: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-    classBadge: 'bg-emerald-200/90 text-emerald-950 border-emerald-300',
-    pinColor: 'text-emerald-600',
+    // Light: Pastel Mint | Dark: Gaming Neon Emerald
+    bg: 'bg-[#dcfce7] dark:bg-[#071510]',
+    border: 'border-[#bbf7d0] dark:border-emerald-500/35 hover:dark:border-emerald-400',
+    text: 'text-emerald-950 dark:text-emerald-200',
+    title: 'text-emerald-950 dark:text-emerald-100',
+    desc: 'text-emerald-900/85 dark:text-emerald-200/70',
+    dateBadge: 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-500/40',
+    classBadge: 'bg-emerald-200/90 text-emerald-950 border-emerald-300 dark:bg-emerald-900/40 dark:text-emerald-200 dark:border-emerald-500/30',
+    catBadge: 'bg-white/85 text-emerald-950 dark:bg-black/40 dark:text-emerald-300 dark:border-emerald-500/30',
+    pinColor: 'text-emerald-600 dark:text-emerald-400',
     washiRotate: 'rotate-[-0.8deg]',
   },
   {
     name: 'sky',
-    bg: 'bg-[#e0f2fe]',
-    border: 'border-[#bae6fd]',
-    text: 'text-sky-950',
-    title: 'text-sky-950',
-    desc: 'text-sky-900/85',
-    dateBadge: 'bg-sky-100 text-sky-900 border-sky-300',
-    classBadge: 'bg-sky-200/90 text-sky-950 border-sky-300',
-    pinColor: 'text-sky-600',
+    // Light: Pastel Sky Blue | Dark: Cyber Cyan
+    bg: 'bg-[#e0f2fe] dark:bg-[#07131e]',
+    border: 'border-[#bae6fd] dark:border-cyan-500/35 hover:dark:border-cyan-400',
+    text: 'text-sky-950 dark:text-cyan-200',
+    title: 'text-sky-950 dark:text-cyan-100',
+    desc: 'text-sky-900/85 dark:text-cyan-200/70',
+    dateBadge: 'bg-sky-100 text-sky-900 border-sky-300 dark:bg-cyan-950/70 dark:text-cyan-300 dark:border-cyan-500/40',
+    classBadge: 'bg-sky-200/90 text-sky-950 border-sky-300 dark:bg-cyan-900/40 dark:text-cyan-200 dark:border-cyan-500/30',
+    catBadge: 'bg-white/85 text-sky-950 dark:bg-black/40 dark:text-cyan-300 dark:border-cyan-500/30',
+    pinColor: 'text-sky-600 dark:text-cyan-400',
     washiRotate: 'rotate-[1.5deg]',
   },
   {
     name: 'purple',
-    bg: 'bg-[#f3e8ff]',
-    border: 'border-[#e9d5ff]',
-    text: 'text-purple-950',
-    title: 'text-purple-950',
-    desc: 'text-purple-900/85',
-    dateBadge: 'bg-purple-100 text-purple-900 border-purple-300',
-    classBadge: 'bg-purple-200/90 text-purple-950 border-purple-300',
-    pinColor: 'text-purple-500',
+    // Light: Pastel Lavender | Dark: Cyber Neon Violet
+    bg: 'bg-[#f3e8ff] dark:bg-[#120a1c]',
+    border: 'border-[#e9d5ff] dark:border-purple-500/35 hover:dark:border-purple-400',
+    text: 'text-purple-950 dark:text-purple-200',
+    title: 'text-purple-950 dark:text-purple-100',
+    desc: 'text-purple-900/85 dark:text-purple-200/70',
+    dateBadge: 'bg-purple-100 text-purple-900 border-purple-300 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-500/40',
+    classBadge: 'bg-purple-200/90 text-purple-950 border-purple-300 dark:bg-purple-900/40 dark:text-purple-200 dark:border-purple-500/30',
+    catBadge: 'bg-white/85 text-purple-950 dark:bg-black/40 dark:text-purple-300 dark:border-purple-500/30',
+    pinColor: 'text-purple-500 dark:text-purple-400',
     washiRotate: 'rotate-[-1.2deg]',
   },
   {
     name: 'peach',
-    bg: 'bg-[#ffedd5]',
-    border: 'border-[#fed7aa]',
-    text: 'text-orange-950',
-    title: 'text-orange-950',
-    desc: 'text-orange-900/85',
-    dateBadge: 'bg-orange-100 text-orange-900 border-orange-300',
-    classBadge: 'bg-orange-200/90 text-orange-950 border-orange-300',
-    pinColor: 'text-orange-600',
+    // Light: Pastel Peach | Dark: Cyber Deep Orange
+    bg: 'bg-[#ffedd5] dark:bg-[#150d07]',
+    border: 'border-[#fed7aa] dark:border-orange-500/35 hover:dark:border-orange-400',
+    text: 'text-orange-950 dark:text-orange-200',
+    title: 'text-orange-950 dark:text-orange-100',
+    desc: 'text-orange-900/85 dark:text-orange-200/70',
+    dateBadge: 'bg-orange-100 text-orange-900 border-orange-300 dark:bg-orange-950/70 dark:text-orange-300 dark:border-orange-500/40',
+    classBadge: 'bg-orange-200/90 text-orange-950 border-orange-300 dark:bg-orange-900/40 dark:text-orange-200 dark:border-orange-500/30',
+    catBadge: 'bg-white/85 text-orange-950 dark:bg-black/40 dark:text-orange-300 dark:border-orange-500/30',
+    pinColor: 'text-orange-600 dark:text-orange-400',
     washiRotate: 'rotate-[0.9deg]',
   },
   {
     name: 'teal',
-    bg: 'bg-[#ccfbf1]',
-    border: 'border-[#99f6e4]',
-    text: 'text-teal-950',
-    title: 'text-teal-950',
-    desc: 'text-teal-900/85',
-    dateBadge: 'bg-teal-100 text-teal-900 border-teal-300',
-    classBadge: 'bg-teal-200/90 text-teal-950 border-teal-300',
-    pinColor: 'text-teal-600',
+    // Light: Pastel Teal | Dark: Gaming Deep Teal
+    bg: 'bg-[#ccfbf1] dark:bg-[#061514]',
+    border: 'border-[#99f6e4] dark:border-teal-500/35 hover:dark:border-teal-400',
+    text: 'text-teal-950 dark:text-teal-200',
+    title: 'text-teal-950 dark:text-teal-100',
+    desc: 'text-teal-900/85 dark:text-teal-200/70',
+    dateBadge: 'bg-teal-100 text-teal-900 border-teal-300 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-500/40',
+    classBadge: 'bg-teal-200/90 text-teal-950 border-teal-300 dark:bg-teal-900/40 dark:text-teal-200 dark:border-teal-500/30',
+    catBadge: 'bg-white/85 text-teal-950 dark:bg-black/40 dark:text-teal-300 dark:border-teal-500/30',
+    pinColor: 'text-teal-600 dark:text-teal-400',
     washiRotate: 'rotate-[-1.3deg]',
   },
   {
     name: 'indigo',
-    bg: 'bg-[#e0e7ff]',
-    border: 'border-[#c7d2fe]',
-    text: 'text-indigo-950',
-    title: 'text-indigo-950',
-    desc: 'text-indigo-900/85',
-    dateBadge: 'bg-indigo-100 text-indigo-900 border-indigo-300',
-    classBadge: 'bg-indigo-200/90 text-indigo-950 border-indigo-300',
-    pinColor: 'text-indigo-600',
+    // Light: Pastel Indigo | Dark: Cyber Deep Indigo
+    bg: 'bg-[#e0e7ff] dark:bg-[#090e20]',
+    border: 'border-[#c7d2fe] dark:border-indigo-500/35 hover:dark:border-indigo-400',
+    text: 'text-indigo-950 dark:text-indigo-200',
+    title: 'text-indigo-950 dark:text-indigo-100',
+    desc: 'text-indigo-900/85 dark:text-indigo-200/70',
+    dateBadge: 'bg-indigo-100 text-indigo-900 border-indigo-300 dark:bg-indigo-950/70 dark:text-indigo-300 dark:border-indigo-500/40',
+    classBadge: 'bg-indigo-200/90 text-indigo-950 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-200 dark:border-indigo-500/30',
+    catBadge: 'bg-white/85 text-indigo-950 dark:bg-black/40 dark:text-indigo-300 dark:border-indigo-500/30',
+    pinColor: 'text-indigo-600 dark:text-indigo-400',
     washiRotate: 'rotate-[1.1deg]',
   },
 ];
@@ -903,7 +919,7 @@ export default function PublicMonitorPage() {
 
                               {/* Kategori Badge */}
                               <span
-                                className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-white/85 border border-black/10 ${palette.text}`}
+                                className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 border ${palette.catBadge}`}
                               >
                                 {item.kategori}
                               </span>
@@ -1004,31 +1020,31 @@ export default function PublicMonitorPage() {
         <div className="lg:col-span-9 flex flex-col gap-2.5 min-h-0 lg:h-full lg:max-h-full lg:overflow-hidden">
 
           {/* Card 2: Dokumentasi Kegiatan RPL (Digital Lab Viewfinder Stream) */}
-          <div className="bg-[#0c121e] border border-slate-800 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden relative">
+          <div className="bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden relative transition-colors duration-200">
             {/* Top Gaming Accent Line with Cyber Scanning Beam */}
-            <div className="h-0.5 w-full bg-slate-800 relative overflow-hidden shrink-0 -mx-2.5 sm:-mx-3 -mt-2 sm:-mt-2.5 mb-1 w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)]">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-400 to-teal-400" />
+            <div className="h-0.5 w-full bg-slate-200 dark:bg-slate-800 relative overflow-hidden shrink-0 -mx-2.5 sm:-mx-3 -mt-2 sm:-mt-2.5 mb-1 w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)]">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400 dark:from-emerald-600 dark:via-green-400 dark:to-teal-400" />
               <div className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan" />
             </div>
 
             {/* Header Dokumentasi - Gaya Telemetri Teknologi */}
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-6 h-6 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs">
-                  <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                <div className="w-6 h-6 rounded-lg bg-cyan-50 dark:bg-emerald-950/70 border border-cyan-200/80 dark:border-emerald-500/40 text-cyan-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Radio className="w-3.5 h-3.5 text-cyan-600 dark:text-emerald-400 animate-pulse" />
                 </div>
                 <div className="flex items-center gap-2 min-w-0">
-                  <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight truncate">
+                  <h2 className="font-extrabold text-slate-900 dark:text-slate-100 text-xs sm:text-sm leading-tight truncate">
                     Dokumentasi Kegiatan RPL
                   </h2>
-                  <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/40 flex items-center gap-1.5 shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.25)]">
+                  <span className="text-[9px] font-mono font-bold text-cyan-700 dark:text-emerald-400 bg-cyan-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-cyan-200 dark:border-emerald-500/40 flex items-center gap-1.5 shrink-0 shadow-2xs dark:shadow-[0_0_8px_rgba(16,185,129,0.25)]">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 dark:bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500 dark:bg-emerald-400" />
                     </span>
                     LIVE FEED
                   </span>
-                  <span className="text-[9px] font-mono font-bold text-rose-400 bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-500/40 flex items-center gap-1 shrink-0">
+                  <span className="text-[9px] font-mono font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-500/40 flex items-center gap-1 shrink-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                     REC
                   </span>
@@ -1045,19 +1061,19 @@ export default function PublicMonitorPage() {
                     onClick={() => setIsPhotoPaused((prev) => !prev)}
                     className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-mono font-bold cursor-pointer transition-colors shadow-2xs ${
                       isPhotoPaused
-                        ? 'border-amber-500/40 bg-amber-950/60 text-amber-300 hover:bg-amber-900/60'
-                        : 'border-slate-800 bg-[#090e18] text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40'
+                        ? 'border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 hover:bg-amber-100'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#090e18] text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:text-emerald-400 dark:hover:border-emerald-500/40'
                     }`}
                     title={isPhotoPaused ? 'Lanjutkan Animasi Berjalan' : 'Jeda Animasi'}
                   >
                     {isPhotoPaused ? (
                       <>
-                        <Play className="w-2.5 h-2.5 fill-current text-amber-400" />
+                        <Play className="w-2.5 h-2.5 fill-current text-amber-600 dark:text-amber-400" />
                         <span>RESUME</span>
                       </>
                     ) : (
                       <>
-                        <Pause className="w-2.5 h-2.5 fill-current text-slate-400" />
+                        <Pause className="w-2.5 h-2.5 fill-current text-slate-600 dark:text-slate-400" />
                         <span>PAUSE</span>
                       </>
                     )}
@@ -1077,10 +1093,10 @@ export default function PublicMonitorPage() {
                       setPreviewUrl(null);
                       setShowDokumentasiModal(true);
                     }}
-                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 text-[10px] font-mono font-black cursor-pointer shadow-[0_0_10px_rgba(16,185,129,0.3)] shrink-0"
+                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 dark:bg-emerald-600 hover:bg-slate-800 dark:hover:bg-emerald-500 text-cyan-300 dark:text-slate-950 text-[10px] font-mono font-black cursor-pointer shadow-2xs dark:shadow-[0_0_10px_rgba(16,185,129,0.3)] shrink-0 border border-slate-700 dark:border-transparent"
                     title="Upload Foto Kegiatan"
                   >
-                    <Plus className="w-3 h-3 text-slate-950 stroke-[3]" />
+                    <Plus className="w-3 h-3 text-cyan-400 dark:text-slate-950 stroke-[3]" />
                     <span>UPLOAD</span>
                   </button>
                 )}
@@ -1170,58 +1186,58 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
-          <div className="bg-[#0c121e] border border-slate-800 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative">
+          <div className="bg-white dark:bg-[#0c121e] border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative transition-colors duration-200">
             {/* Top Tech Accent Line with Laser Scanning Beam Animation */}
-            <div className="h-0.5 w-full bg-slate-800 relative overflow-hidden shrink-0">
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-400 to-lime-300" />
+            <div className="h-0.5 w-full bg-slate-200 dark:bg-slate-800 relative overflow-hidden shrink-0">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400 dark:from-emerald-600 dark:via-green-400 dark:to-lime-300" />
               <div className="absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan" />
             </div>
 
             {/* Header with Search and Category Filter - Gaya Pusat Kendali Teknologi */}
-            <div className="p-3 border-b border-slate-800 shrink-0 bg-[#0d1424]/80 space-y-2.5">
+            <div className="p-3 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-slate-50/60 dark:bg-[#0d1424]/80 space-y-2.5">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                    <Cpu className="w-4 h-4 text-emerald-400" />
+                  <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-emerald-950/70 border border-blue-200/80 dark:border-emerald-500/40 text-blue-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs dark:shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                    <Cpu className="w-4 h-4 text-blue-600 dark:text-emerald-400" />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="font-extrabold text-slate-100 text-xs sm:text-sm leading-tight truncate">
+                    <h2 className="font-extrabold text-slate-900 dark:text-slate-100 text-xs sm:text-sm leading-tight truncate">
                       Peminjaman Alat &amp; Inventaris Lab RPL
                     </h2>
                     <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                      <span className="text-[9.5px] font-mono text-emerald-400 font-medium flex items-center gap-1.5 truncate">
+                      <span className="text-[9.5px] font-mono text-slate-500 dark:text-emerald-400 font-medium flex items-center gap-1.5 truncate">
                         <span className="relative flex h-2 w-2 shrink-0">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-emerald-400" />
                         </span>
                         TELEMETRY // REALTIME HARDWARE MONITOR
                       </span>
 
                       {/* Animated Activity Waveform */}
-                      <div className="hidden sm:flex items-center gap-0.5 h-3 px-1 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/40" title="Telemetry Activity">
-                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-1 shadow-[0_0_4px_#34d399]" />
-                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-2 shadow-[0_0_4px_#34d399]" />
-                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-3 shadow-[0_0_4px_#34d399]" />
-                        <span className="w-0.5 bg-emerald-400 rounded-full animate-data-wave-4 shadow-[0_0_4px_#34d399]" />
+                      <div className="hidden sm:flex items-center gap-0.5 h-3 px-1 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/90 dark:border-emerald-500/40" title="Telemetry Activity">
+                        <span className="w-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-data-wave-1 dark:shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-data-wave-2 dark:shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-data-wave-3 dark:shadow-[0_0_4px_#34d399]" />
+                        <span className="w-0.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-data-wave-4 dark:shadow-[0_0_4px_#34d399]" />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Status Toggle - High-Tech Segmented Pills */}
-                <div className="flex items-center gap-1 bg-[#090d16] p-0.5 rounded-xl border border-slate-800 text-[10.5px] font-mono font-bold shadow-2xs shrink-0">
+                <div className="flex items-center gap-1 bg-slate-200/70 dark:bg-[#090d16] p-0.5 rounded-xl border border-slate-300/60 dark:border-slate-800 text-[10.5px] font-mono font-bold shadow-2xs shrink-0">
                   {(['all', 'tersedia', 'dipinjam'] as const).map((st) => (
                     <button
                       key={st}
                       onClick={() => setStatusFilter(st)}
                       className={`px-2.5 py-0.5 rounded-lg transition-all cursor-pointer flex items-center gap-1 uppercase tracking-wider text-[9.5px] ${
                         statusFilter === st
-                          ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_12px_rgba(16,185,129,0.5)]'
-                          : 'text-slate-400 hover:text-emerald-400 hover:bg-slate-800/60'
+                          ? 'bg-slate-900 text-cyan-300 shadow-2xs border border-slate-700 dark:bg-emerald-500 dark:text-slate-950 dark:border-transparent dark:shadow-[0_0_12px_rgba(16,185,129,0.5)]'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                       }`}
                     >
-                      {st === 'tersedia' && <span className="w-1.5 h-1.5 rounded-full bg-slate-950 shrink-0" />}
-                      {st === 'dipinjam' && <span className="w-1.5 h-1.5 rounded-full bg-slate-950 shrink-0" />}
+                      {st === 'tersedia' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 dark:bg-slate-950 shrink-0" />}
+                      {st === 'dipinjam' && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 dark:bg-slate-950 animate-pulse shrink-0" />}
                       <span>{st === 'all' ? 'Semua' : st}</span>
                     </button>
                   ))}
@@ -1242,14 +1258,14 @@ export default function PublicMonitorPage() {
                         onClick={() => setActiveTab(cat)}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 ${
                           activeTab === cat
-                            ? 'bg-emerald-500 text-slate-950 font-black shadow-[0_0_12px_rgba(16,185,129,0.4)]'
-                            : 'bg-[#0a0f19] border border-slate-800 text-slate-300 hover:border-emerald-500/40 hover:text-emerald-400'
+                            ? 'bg-slate-900 text-white shadow-2xs ring-1 ring-slate-800 dark:bg-emerald-500 dark:text-slate-950 dark:ring-0 dark:shadow-[0_0_12px_rgba(16,185,129,0.4)]'
+                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:bg-[#0a0f19] dark:border-slate-800 dark:text-slate-300 dark:hover:border-emerald-500/40 dark:hover:text-emerald-400'
                         }`}
                       >
-                        {isLp && <Laptop className="w-3.5 h-3.5 opacity-90" />}
-                        {isPC && <Monitor className="w-3.5 h-3.5 opacity-90" />}
-                        {isTools && <Wrench className="w-3.5 h-3.5 opacity-90" />}
-                        {!isLp && !isPC && !isTools && <Layers className="w-3.5 h-3.5 opacity-90" />}
+                        {isLp && <Laptop className="w-3.5 h-3.5 opacity-80" />}
+                        {isPC && <Monitor className="w-3.5 h-3.5 opacity-80" />}
+                        {isTools && <Wrench className="w-3.5 h-3.5 opacity-80" />}
+                        {!isLp && !isPC && !isTools && <Layers className="w-3.5 h-3.5 opacity-80" />}
                         <span>{label}</span>
                       </button>
                     );
@@ -1258,13 +1274,13 @@ export default function PublicMonitorPage() {
 
                 {/* Terminal Search */}
                 <div className="relative min-w-[180px] sm:w-68">
-                  <Terminal className="w-3.5 h-3.5 text-emerald-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                  <Terminal className="w-3.5 h-3.5 text-blue-600 dark:text-emerald-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search kode unit / perangkat / peminjam..."
-                    className="w-full pl-7 pr-2.5 py-1.5 bg-[#080d16] border border-slate-800 rounded-lg text-xs text-emerald-300 font-mono placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="w-full pl-7 pr-2.5 py-1.5 bg-white dark:bg-[#080d16] border border-slate-200 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-emerald-300 font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-emerald-500 focus:border-blue-500 dark:focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -1774,19 +1790,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
     <div
       className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between group relative overflow-hidden ${
         isAvailable
-          ? 'bg-[#0c121e] border-slate-800/90 hover:border-emerald-500/60 hover:ring-1 hover:ring-emerald-500/30 hover:shadow-[0_0_16px_rgba(16,185,129,0.2)]'
-          : 'bg-[#0d1424] border-slate-800/90 hover:border-amber-500/60 hover:ring-1 hover:ring-amber-500/30 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)]'
+          ? 'bg-white dark:bg-[#0c121e] border-slate-200/90 dark:border-slate-800/90 hover:border-emerald-400 dark:hover:border-emerald-500/60 hover:ring-1 hover:ring-emerald-400/20 dark:hover:ring-emerald-500/30 shadow-2xs hover:shadow-md dark:hover:shadow-[0_0_16px_rgba(16,185,129,0.2)]'
+          : 'bg-gradient-to-b from-blue-50/30 via-white to-white dark:from-[#0d1424] dark:via-[#0d1424] dark:to-[#0d1424] border-blue-200 dark:border-slate-800/90 hover:border-blue-400 dark:hover:border-amber-500/60 hover:ring-1 hover:ring-blue-400/20 dark:hover:ring-amber-500/30 shadow-2xs hover:shadow-md dark:hover:shadow-[0_0_16px_rgba(245,158,11,0.15)]'
       }`}
     >
       <div>
         {/* Top Badges - Hardware Telemetry */}
         <div className="flex items-center justify-between gap-1.5 mb-2.5">
           <div className="flex items-center gap-1.5 min-w-0">
-            <span className="font-mono text-xs font-black px-2 py-0.5 rounded-md bg-[#060a12] text-white border border-slate-800 shadow-2xs flex items-center gap-1 shrink-0">
-              <span className="text-emerald-400 text-[10px]">#</span>
+            <span className="font-mono text-xs font-black px-2 py-0.5 rounded-md bg-slate-900 text-white dark:bg-[#060a12] border border-transparent dark:border-slate-800 shadow-2xs flex items-center gap-1 shrink-0">
+              <span className="text-cyan-400 dark:text-emerald-400 text-[10px]">#</span>
               {item.kode_barang}
             </span>
-            <span className="text-[9.5px] font-mono text-slate-400 font-semibold uppercase tracking-wider truncate">
+            <span className="text-[9.5px] font-mono text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider truncate">
               {isLaptop ? 'SYS // LAPTOP' : 'SYS // PC_LAB'}
             </span>
           </div>
@@ -1794,19 +1810,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
           <span
             className={`inline-flex items-center gap-1.5 text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
               isAvailable
-                ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
-                : 'bg-amber-950/60 text-amber-300 border-amber-500/40 shadow-[0_0_8px_rgba(245,158,11,0.2)]'
+                ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-200/90 dark:border-emerald-500/40 dark:shadow-[0_0_8px_rgba(16,185,129,0.25)]'
+                : 'bg-blue-50 dark:bg-amber-950/60 text-blue-700 dark:text-amber-300 border-blue-200/90 dark:border-amber-500/40 dark:shadow-[0_0_8px_rgba(245,158,11,0.2)]'
             }`}
           >
             <span className="relative flex h-2 w-2 shrink-0">
               <span
                 className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  isAvailable ? 'bg-emerald-400' : 'bg-amber-400'
+                  isAvailable ? 'bg-emerald-400' : 'bg-blue-400 dark:bg-amber-400'
                 }`}
               />
               <span
                 className={`relative inline-flex rounded-full h-2 w-2 ${
-                  isAvailable ? 'bg-emerald-400' : 'bg-amber-400'
+                  isAvailable ? 'bg-emerald-500 dark:bg-emerald-400' : 'bg-blue-500 dark:bg-amber-400'
                 }`}
               />
             </span>
@@ -1815,19 +1831,19 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
         </div>
 
         {/* Prominent Photo Area (Viewport Skematik CAD / Lab Hardware) */}
-        <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-800/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-emerald-500/40 transition-colors">
+        <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-200/90 dark:border-slate-800/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-slate-300 dark:group-hover:border-emerald-500/40 transition-colors">
           {/* Laser Scanning Beam on Hover */}
           <div className="laser-sweep-line z-20" />
 
           {/* Schematic Viewfinder HUD Corners */}
-          <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
-          <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
-          <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
-          <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-slate-700 group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t border-l border-slate-300 dark:border-slate-700 group-hover:border-cyan-500 dark:group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t border-r border-slate-300 dark:border-slate-700 group-hover:border-cyan-500 dark:group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b border-l border-slate-300 dark:border-slate-700 group-hover:border-cyan-500 dark:group-hover:border-emerald-400 transition-colors pointer-events-none" />
+          <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b border-r border-slate-300 dark:border-slate-700 group-hover:border-cyan-500 dark:group-hover:border-emerald-400 transition-colors pointer-events-none" />
 
           {/* Schematic Crosshair Marks */}
-          <span className="absolute top-2 left-2.5 font-mono text-[9px] text-emerald-500/50 group-hover:text-emerald-400 select-none leading-none pointer-events-none">+</span>
-          <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-emerald-500/50 group-hover:text-emerald-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute top-2 left-2.5 font-mono text-[9px] text-slate-400 dark:text-emerald-500/50 group-hover:dark:text-emerald-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute bottom-2 right-2.5 font-mono text-[9px] text-slate-400 dark:text-emerald-500/50 group-hover:dark:text-emerald-400 select-none leading-none pointer-events-none">+</span>
 
           <img
             src={isLaptop ? '/laptop.png' : '/pc.jpg'}
@@ -1840,29 +1856,29 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
 
         {/* Title and Specs */}
         <div>
-          <h4 className="font-extrabold text-xs sm:text-sm text-slate-100 leading-snug truncate group-hover:text-emerald-400 transition-colors">
+          <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug truncate group-hover:text-blue-600 dark:group-hover:text-emerald-400 transition-colors">
             {item.nama_barang}
           </h4>
-          <p className="text-[11px] font-mono text-slate-400 truncate mt-0.5">
+          <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate mt-0.5">
             {item.spesifikasi || (isLaptop ? 'Unit Laptop Praktikum RPL' : 'Workstation Lab RPL')}
           </p>
         </div>
 
         {/* Borrower details if borrowed - Telemetri Sesi Peminjam */}
         {!isAvailable && item.active_loan && (
-          <div className="mt-2.5 p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] space-y-1">
-            <div className="flex items-center justify-between font-bold text-slate-200">
+          <div className="mt-2.5 p-2 rounded-xl bg-blue-50/80 dark:bg-slate-900/90 border border-blue-100 dark:border-slate-800 text-[11px] space-y-1">
+            <div className="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200">
               <span className="truncate flex items-center gap-1.5">
-                <User className="w-3 h-3 text-emerald-400 shrink-0" />
+                <User className="w-3 h-3 text-blue-600 dark:text-emerald-400 shrink-0" />
                 {item.active_loan.nama_siswa}
               </span>
-              <span className="font-mono text-amber-300 bg-amber-950/80 border border-amber-500/40 px-1.5 py-0.2 rounded text-[9.5px] font-bold shrink-0">
+              <span className="font-mono text-blue-700 bg-blue-100/90 dark:text-amber-300 dark:bg-amber-950/80 border border-blue-200 dark:border-amber-500/40 px-1.5 py-0.2 rounded text-[9.5px] font-bold shrink-0">
                 ⏱ {item.active_loan.durasi_sekarang}
               </span>
             </div>
-            <div className="text-slate-400 flex justify-between text-[10px]">
-              <span>Kelas: <strong className="text-slate-200">{item.active_loan.kelas}</strong></span>
-              <span className="italic truncate max-w-[130px] text-slate-400">
+            <div className="text-slate-600 dark:text-slate-400 flex justify-between text-[10px]">
+              <span>Kelas: <strong className="text-slate-800 dark:text-slate-200">{item.active_loan.kelas}</strong></span>
+              <span className="italic truncate max-w-[130px] text-slate-500 dark:text-slate-400">
                 &ldquo;{item.active_loan.kebutuhan}&rdquo;
               </span>
             </div>
@@ -1871,10 +1887,10 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
       </div>
 
       {isAvailable && (
-        <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10.5px] font-mono text-emerald-400 font-bold">
-          <span className="text-slate-500 font-normal text-[10px]">STATUS: SIAP PAKAI</span>
-          <span className="flex items-center gap-1 text-emerald-400">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> READY DI LAB
+        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[10.5px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">
+          <span className="text-slate-400 dark:text-slate-500 font-normal text-[10px]">STATUS: SIAP PAKAI</span>
+          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> READY DI LAB
           </span>
         </div>
       )}
@@ -1895,33 +1911,33 @@ function PeralatanCompactListItem({ item }: { item: BarangItem }) {
     <div
       className={`p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
         isAllBorrowed
-          ? 'bg-rose-950/20 border-rose-900/50'
-          : 'bg-[#0c121e] border-slate-800/90 shadow-2xs hover:border-emerald-500/40 hover:shadow-[0_0_12px_rgba(16,185,129,0.15)]'
+          ? 'bg-rose-50/30 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900/50'
+          : 'bg-white dark:bg-[#0c121e] border-slate-200/90 dark:border-slate-800/90 shadow-2xs hover:border-slate-300 dark:hover:border-emerald-500/40 dark:hover:shadow-[0_0_12px_rgba(16,185,129,0.15)]'
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0">
         <div
           className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 shadow-2xs ${
             isATK
-              ? 'bg-blue-950/80 border-blue-500/30 text-blue-400'
-              : 'bg-emerald-950/80 border-emerald-500/30 text-emerald-400'
+              ? 'bg-blue-50 dark:bg-blue-950/80 border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400'
+              : 'bg-amber-50 dark:bg-emerald-950/80 border-amber-200 dark:border-emerald-500/30 text-amber-700 dark:text-emerald-400'
           }`}
         >
           {isATK ? (
-            <Layers className="w-4.5 h-4.5 text-blue-400" />
+            <Layers className="w-4.5 h-4.5 text-blue-600 dark:text-blue-400" />
           ) : (
-            <Wrench className="w-4.5 h-4.5 text-emerald-400" />
+            <Wrench className="w-4.5 h-4.5 text-amber-600 dark:text-emerald-400" />
           )}
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#060a12] text-emerald-400 border border-emerald-500/30 shadow-2xs">
+            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-900 text-white dark:bg-[#060a12] dark:text-emerald-400 dark:border dark:border-emerald-500/30 shadow-2xs">
               {item.kode_barang}
             </span>
-            <h4 className="font-bold text-xs sm:text-sm text-slate-100 truncate">{item.nama_barang}</h4>
+            <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 truncate">{item.nama_barang}</h4>
           </div>
           {item.spesifikasi && (
-            <p className="text-[11px] font-mono text-slate-400 truncate mt-0.5">{item.spesifikasi}</p>
+            <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate mt-0.5">{item.spesifikasi}</p>
           )}
         </div>
       </div>
@@ -1930,8 +1946,8 @@ function PeralatanCompactListItem({ item }: { item: BarangItem }) {
         <span
           className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold border ${
             isAvailable
-              ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]'
-              : 'bg-rose-950/60 text-rose-400 border-rose-500/40'
+              ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-200/90 dark:border-emerald-500/40 dark:shadow-[0_0_8px_rgba(16,185,129,0.2)]'
+              : 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/40'
           }`}
         >
           {item.jumlah_tersedia} / {item.jumlah_total} Tersedia
