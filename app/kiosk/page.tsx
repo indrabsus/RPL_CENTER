@@ -205,8 +205,10 @@ export default function KioskPage() {
   useEffect(() => {
     loadData();
     const interval = setInterval(() => {
-      loadData(true);
-    }, 15000);
+      if (typeof document !== 'undefined' && !document.hidden) {
+        loadData(true);
+      }
+    }, 45000);
     return () => clearInterval(interval);
   }, []);
 

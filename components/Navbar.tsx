@@ -29,13 +29,19 @@ export default function Navbar() {
     guruOnline: true,
   });
 
-  // Polling network stats for navbar badges
+  // Network Stats Fetcher (Throttled & Visibility-Aware)
   useEffect(() => {
     let isMounted = true;
+    let lastFetched = 0;
+
     const loadNet = async () => {
+      if (typeof document !== 'undefined' && document.hidden) return;
+      const now = Date.now();
+      if (now - lastFetched < 30000) return;
       try {
         const net = await fetchNetworkStats();
         if (!isMounted || !net) return;
+        lastFetched = Date.now();
         const siswaStatus =
           net.interfaces?.siswa?.status || net.interfaces?.ether2_difusi?.status || 'online';
         const guruStatus =
@@ -51,10 +57,21 @@ export default function Navbar() {
     };
 
     loadNet();
-    const interval = setInterval(loadNet, 6000);
+    const interval = setInterval(loadNet, 45000);
+    const onVisChange = () => {
+      if (typeof document !== 'undefined' && !document.hidden && Date.now() - lastFetched > 45000) {
+        loadNet();
+      }
+    };
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', onVisChange);
+    }
     return () => {
       isMounted = false;
       clearInterval(interval);
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', onVisChange);
+      }
     };
   }, []);
 
@@ -86,13 +103,18 @@ export default function Navbar() {
     totalDipinjam: number;
   } | null>(null);
 
-  // Listen to stats update events from page.tsx or fetch directly
+  // Listen to stats update events from page.tsx or fetch directly (Throttled & Visibility-Aware)
   useEffect(() => {
     let isMounted = true;
+    let lastFetched = 0;
     const loadBarang = async () => {
+      if (typeof document !== 'undefined' && document.hidden) return;
+      const now = Date.now();
+      if (now - lastFetched < 30000) return;
       try {
         const res = await fetchBarang();
         if (!isMounted || !res) return;
+        lastFetched = Date.now();
         const totalDipinjam = (res.barang || [])
           .filter((b) => b.status === 'dipinjam')
           .reduce((acc, b) => acc + (b.unit_dipinjam || 1), 0);
@@ -113,11 +135,22 @@ export default function Navbar() {
       }
     };
     window.addEventListener('sarpras-stats-update', handleStats);
-    const interval = setInterval(loadBarang, 10000);
+    const interval = setInterval(loadBarang, 60000);
+    const onVisChange = () => {
+      if (typeof document !== 'undefined' && !document.hidden && Date.now() - lastFetched > 60000) {
+        loadBarang();
+      }
+    };
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', onVisChange);
+    }
     return () => {
       isMounted = false;
       window.removeEventListener('sarpras-stats-update', handleStats);
       clearInterval(interval);
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', onVisChange);
+      }
     };
   }, []);
 
