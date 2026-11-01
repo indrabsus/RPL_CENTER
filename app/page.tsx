@@ -92,15 +92,45 @@ function formatTimelineDate(dateStr?: string | null) {
   }
 }
 
-function getItemKelas(item: RplTimelineItem): '10' | '11' | '12' | 'all' {
-  if ((item as any).kelas === '10' || (item as any).kelas === '11' || (item as any).kelas === '12') {
-    return (item as any).kelas;
+function getItemClasses(item: RplTimelineItem): ('10' | '11' | '12')[] | 'all' {
+  const rawKelas = (item as any).kelas;
+  if (rawKelas) {
+    if (rawKelas === 'all') return 'all';
+    const parts = String(rawKelas).split(',').map((s) => s.trim());
+    const valid = parts.filter((p): p is '10' | '11' | '12' =>
+      ['10', '11', '12'].includes(p)
+    );
+    if (valid.length === 0 || valid.length === 3) return 'all';
+    return valid;
   }
+  // Fallback to text parsing for legacy items
   const text = `${item.nama_kegiatan} ${item.keterangan || ''}`.toLowerCase();
-  if (text.includes('kelas 10') || text.includes('kelas x ') || text.includes('kelas x-') || text.includes('[kelas 10]')) return '10';
-  if (text.includes('kelas 11') || text.includes('kelas xi ') || text.includes('kelas xi-') || text.includes('[kelas 11]')) return '11';
-  if (text.includes('kelas 12') || text.includes('kelas xii ') || text.includes('kelas xii-') || text.includes('[kelas 12]') || text.includes('ukk') || text.includes('tka')) return '12';
-  return 'all';
+  const detected: ('10' | '11' | '12')[] = [];
+  if (
+    text.includes('kelas 10') ||
+    text.includes('kelas x ') ||
+    text.includes('kelas x-') ||
+    text.includes('[kelas 10]')
+  )
+    detected.push('10');
+  if (
+    text.includes('kelas 11') ||
+    text.includes('kelas xi ') ||
+    text.includes('kelas xi-') ||
+    text.includes('[kelas 11]')
+  )
+    detected.push('11');
+  if (
+    text.includes('kelas 12') ||
+    text.includes('kelas xii ') ||
+    text.includes('kelas xii-') ||
+    text.includes('[kelas 12]') ||
+    text.includes('ukk') ||
+    text.includes('tka')
+  )
+    detected.push('12');
+  if (detected.length === 0 || detected.length === 3) return 'all';
+  return detected;
 }
 
 function getFotoUrl(url?: string | null): string {
@@ -285,7 +315,7 @@ export default function PublicMonitorPage() {
     kategori: string;
     keterangan: string;
     status: 'belum_dimulai' | 'sedang_berlangsung' | 'selesai';
-    kelas: 'all' | '10' | '11' | '12';
+    selectedClasses: ('10' | '11' | '12')[];
   }>({
     nama_kegiatan: '',
     tanggal: new Date().toISOString().split('T')[0],
@@ -293,7 +323,7 @@ export default function PublicMonitorPage() {
     kategori: 'Kejuruan',
     keterangan: '',
     status: 'belum_dimulai',
-    kelas: 'all',
+    selectedClasses: ['10', '11', '12'],
   });
 
   // Dokumentasi / Kegiatan Admin Upload Modal State
@@ -488,23 +518,18 @@ export default function PublicMonitorPage() {
       const isTBD = timelineForm.isDateTBD || !timelineForm.tanggal;
       const finalTanggal = isTBD ? null : timelineForm.tanggal;
 
-      let finalKeterangan = timelineForm.keterangan || '';
-      if (timelineForm.kelas && timelineForm.kelas !== 'all') {
-        if (
-          !finalKeterangan.includes(`[Kelas ${timelineForm.kelas}]`) &&
-          !timelineForm.nama_kegiatan.includes(`Kelas ${timelineForm.kelas}`)
-        ) {
-          finalKeterangan = `[Kelas ${timelineForm.kelas}] ${finalKeterangan}`.trim();
-        }
-      }
+      const finalKelas =
+        timelineForm.selectedClasses.length === 3 || timelineForm.selectedClasses.length === 0
+          ? 'all'
+          : [...timelineForm.selectedClasses].sort().join(',');
 
       await submitTimelineAction({
         pin: authPin,
         action: timelineForm.id ? 'update' : 'add',
         ...timelineForm,
         tanggal: finalTanggal,
-        keterangan: finalKeterangan,
-        kelas: timelineForm.kelas || 'all',
+        keterangan: timelineForm.keterangan || '',
+        kelas: finalKelas,
       });
       setShowTimelineModal(false);
       setTimelineForm({
@@ -514,7 +539,7 @@ export default function PublicMonitorPage() {
         kategori: 'Kejuruan',
         keterangan: '',
         status: 'belum_dimulai',
-        kelas: 'all',
+        selectedClasses: ['10', '11', '12'],
       });
       loadTimelineData();
     } catch (err: any) {
@@ -695,8 +720,9 @@ export default function PublicMonitorPage() {
   const filteredTimelineList = useMemo(() => {
     return timelineList.filter((item) => {
       if (timelineClassFilter === 'all') return true;
-      const itemClass = getItemKelas(item);
-      return itemClass === timelineClassFilter || itemClass === 'all';
+      const classes = getItemClasses(item);
+      if (classes === 'all') return true;
+      return classes.includes(timelineClassFilter);
     });
   }, [timelineList, timelineClassFilter]);
 
@@ -761,7 +787,10 @@ export default function PublicMonitorPage() {
                       kategori: 'Kejuruan',
                       keterangan: '',
                       status: 'belum_dimulai',
-                      kelas: timelineClassFilter === 'all' ? '12' : timelineClassFilter,
+                      selectedClasses:
+                        timelineClassFilter === 'all'
+                          ? ['10', '11', '12']
+                          : [timelineClassFilter],
                     });
                     setShowTimelineModal(true);
                   }}
@@ -821,7 +850,6 @@ export default function PublicMonitorPage() {
                   const isDone = itemStatus === 'selesai';
                   const palette = STICKY_PALETTES[idx % STICKY_PALETTES.length];
                   const rotation = STICKY_ROTATIONS[idx % STICKY_ROTATIONS.length];
-                  const itemClass = getItemKelas(item);
                   const isDateTBD =
                     !item.tanggal ||
                     item.tanggal === 'belum_ditentukan' ||
@@ -867,10 +895,25 @@ export default function PublicMonitorPage() {
                                 {formatTimelineDate(item.tanggal)}
                               </span>
 
-                              {/* Kelas Badge */}
-                              <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700">
-                                {itemClass === 'all' ? 'Semua Kelas' : `Kelas ${itemClass}`}
-                              </span>
+                              {/* Kelas Badge(s) */}
+                              {(() => {
+                                const classes = getItemClasses(item);
+                                if (classes === 'all') {
+                                  return (
+                                    <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700">
+                                      Semua Kelas
+                                    </span>
+                                  );
+                                }
+                                return classes.map((c) => (
+                                  <span
+                                    key={c}
+                                    className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 bg-amber-200/90 dark:bg-amber-900/80 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700"
+                                  >
+                                    Kelas {c}
+                                  </span>
+                                ));
+                              })()}
 
                               {/* Kategori Badge */}
                               <span
@@ -930,6 +973,7 @@ export default function PublicMonitorPage() {
                                     item.tanggal === 'belum_ditentukan' ||
                                     item.tanggal === '0000-00-00' ||
                                     item.tanggal.toLowerCase().includes('belum');
+                                  const classes = getItemClasses(item);
                                   setTimelineForm({
                                     id: item.id,
                                     nama_kegiatan: item.nama_kegiatan,
@@ -938,7 +982,8 @@ export default function PublicMonitorPage() {
                                     kategori: item.kategori,
                                     keterangan: item.keterangan || '',
                                     status: itemStatus,
-                                    kelas: getItemKelas(item),
+                                    selectedClasses:
+                                      classes === 'all' ? ['10', '11', '12'] : classes,
                                   });
                                   setShowTimelineModal(true);
                                 }}
@@ -1445,30 +1490,82 @@ export default function PublicMonitorPage() {
                 />
               </div>
 
-              {/* Target Kelas / Tingkat */}
+              {/* Target Kelas / Tingkat (Multi-Select) */}
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Target Kelas / Tingkat:</label>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {[
-                    { id: 'all', label: 'Semua' },
-                    { id: '10', label: 'Kelas 10' },
-                    { id: '11', label: 'Kelas 11' },
-                    { id: '12', label: 'Kelas 12' },
-                  ].map((cls) => (
-                    <button
-                      key={cls.id}
-                      type="button"
-                      onClick={() => setTimelineForm({ ...timelineForm, kelas: cls.id as any })}
-                      className={`py-1.5 px-1 rounded-lg text-xs font-bold border transition-all text-center cursor-pointer ${
-                        timelineForm.kelas === cls.id
-                          ? 'bg-amber-400 border-amber-500 text-amber-950 font-black shadow-2xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {cls.label}
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-slate-700 font-bold">Target Kelas / Tingkat:</label>
+                  <span className="text-[10.5px] text-amber-800 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                    {timelineForm.selectedClasses.length === 3 || timelineForm.selectedClasses.length === 0
+                      ? 'Semua Kelas (10, 11, 12)'
+                      : `Kelas ${[...timelineForm.selectedClasses].sort().join(' & ')}`}
+                  </span>
                 </div>
+                <div className="grid grid-cols-4 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setTimelineForm({
+                        ...timelineForm,
+                        selectedClasses: ['10', '11', '12'],
+                      });
+                    }}
+                    className={`py-1.5 px-1 rounded-lg text-xs font-bold border transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                      timelineForm.selectedClasses.length === 3 || timelineForm.selectedClasses.length === 0
+                        ? 'bg-amber-400 border-amber-500 text-amber-950 font-black shadow-2xs ring-1 ring-amber-500'
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    <span>Semua</span>
+                    {(timelineForm.selectedClasses.length === 3 || timelineForm.selectedClasses.length === 0) && (
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    )}
+                  </button>
+
+                  {(['10', '11', '12'] as const).map((cls) => {
+                    const isAll =
+                      timelineForm.selectedClasses.length === 3 ||
+                      timelineForm.selectedClasses.length === 0;
+                    const isSelected = !isAll && timelineForm.selectedClasses.includes(cls);
+                    return (
+                      <button
+                        key={cls}
+                        type="button"
+                        onClick={() => {
+                          const current = timelineForm.selectedClasses;
+                          let next: ('10' | '11' | '12')[];
+                          if (current.length === 3 || current.length === 0) {
+                            // If currently Semua, clicking one selects only that one
+                            next = [cls];
+                          } else if (current.includes(cls)) {
+                            // Deselect cls
+                            next = current.filter((c) => c !== cls);
+                            if (next.length === 0) next = ['10', '11', '12'];
+                          } else {
+                            // Add cls
+                            next = [...current, cls];
+                          }
+                          setTimelineForm({
+                            ...timelineForm,
+                            selectedClasses: next,
+                          });
+                        }}
+                        className={`py-1.5 px-1 rounded-lg text-xs font-bold border transition-all text-center cursor-pointer flex items-center justify-center gap-1 ${
+                          isSelected
+                            ? 'bg-amber-400 border-amber-500 text-amber-950 font-black shadow-2xs ring-1 ring-amber-500'
+                            : isAll
+                            ? 'bg-amber-100/70 border-amber-300/80 text-amber-900 font-semibold'
+                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                        }`}
+                      >
+                        <span>Kelas {cls}</span>
+                        {(isSelected || isAll) && <Check className="w-3 h-3 stroke-[3]" />}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[10px] text-slate-500 mt-1 italic">
+                  *Klik untuk memilih lebih dari 1 kelas (misal Kelas 10 &amp; 11).
+                </p>
               </div>
 
               {/* Tanggal & Kategori */}
