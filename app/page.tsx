@@ -46,7 +46,10 @@ import {
   Filter,
   X,
   Play,
-  Pause
+  Pause,
+  Cpu,
+  Radio,
+  Terminal,
 } from 'lucide-react';
 import {
   fetchBarang,
@@ -1000,45 +1003,49 @@ export default function PublicMonitorPage() {
         {/* ========================================================== */}
         <div className="lg:col-span-9 flex flex-col gap-2.5 min-h-0 lg:h-full lg:max-h-full lg:overflow-hidden">
 
-          {/* Card 2: Dokumentasi Kegiatan RPL (Berjajar Horizontal Bergerak Sendiri) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden">
-            {/* Header Dokumentasi */}
+          {/* Card 2: Dokumentasi Kegiatan RPL (Digital Lab Viewfinder Stream) */}
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden relative">
+            {/* Header Dokumentasi - Gaya Telemetri Teknologi */}
             <div className="flex items-center justify-between px-1">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <div className="w-6 h-6 rounded-lg bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                  <ImageIcon className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-6 h-6 rounded-lg bg-cyan-50 border border-cyan-200/80 text-cyan-600 flex items-center justify-center shrink-0 shadow-2xs">
+                  <Radio className="w-3.5 h-3.5 text-cyan-600 animate-pulse" />
                 </div>
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <h2 className="font-bold text-slate-900 text-xs leading-tight truncate">
+                <div className="flex items-center gap-2 min-w-0">
+                  <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
                     Dokumentasi Kegiatan RPL
                   </h2>
-                  <span className="text-[9px] text-purple-700 font-bold bg-purple-50 px-1.5 py-0.2 rounded border border-purple-200/70 shrink-0">
-                    {dokumentasiList.length} Foto
+                  <span className="text-[9px] font-mono font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-200 flex items-center gap-1 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                    LIVE FEED
+                  </span>
+                  <span className="text-[9px] font-mono text-slate-400 font-bold hidden sm:inline shrink-0">
+                    [{dokumentasiList.length} LOG_ITEMS]
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="flex items-center gap-1.5 shrink-0">
                 {dokumentasiList.length > 1 && (
                   <button
                     type="button"
                     onClick={() => setIsPhotoPaused((prev) => !prev)}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold cursor-pointer transition-colors ${
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-mono font-bold cursor-pointer transition-colors shadow-2xs ${
                       isPhotoPaused
-                        ? 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-700'
-                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
+                        ? 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
                     }`}
                     title={isPhotoPaused ? 'Lanjutkan Animasi Berjalan' : 'Jeda Animasi'}
                   >
                     {isPhotoPaused ? (
                       <>
-                        <Play className="w-2.5 h-2.5 fill-current" />
-                        <span>Play</span>
+                        <Play className="w-2.5 h-2.5 fill-current text-amber-600" />
+                        <span>RESUME</span>
                       </>
                     ) : (
                       <>
-                        <Pause className="w-2.5 h-2.5 fill-current" />
-                        <span>Pause</span>
+                        <Pause className="w-2.5 h-2.5 fill-current text-slate-600" />
+                        <span>PAUSE</span>
                       </>
                     )}
                   </button>
@@ -1057,32 +1064,32 @@ export default function PublicMonitorPage() {
                       setPreviewUrl(null);
                       setShowDokumentasiModal(true);
                     }}
-                    className="flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-bold cursor-pointer shadow-2xs shrink-0"
+                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900 hover:bg-slate-800 text-cyan-300 text-[10px] font-mono font-bold cursor-pointer shadow-2xs shrink-0 border border-slate-700"
                     title="Upload Foto Kegiatan"
                   >
-                    <Plus className="w-3 h-3" />
-                    <span>Upload</span>
+                    <Plus className="w-3 h-3 text-cyan-400" />
+                    <span>UPLOAD</span>
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Horizontal Continuous Flowing Marquee Strip (Menyesuaikan Natural Portrait & Landscape) */}
+            {/* Horizontal Continuous Flowing Marquee Strip (Digital Lab Holo-Reel) */}
             {dokumentasiList.length === 0 ? (
-              <div className="h-28 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
+              <div className="h-28 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs tech-grid-pattern">
                 <ImageIcon className="w-6 h-6 mb-1 opacity-50" />
-                <span>Belum ada foto kegiatan.</span>
+                <span className="font-mono text-[11px]">Belum ada arsip foto kegiatan.</span>
               </div>
             ) : (
               <div
-                className="relative overflow-hidden rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-900/95 py-1"
+                className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b1120] p-1.5 shadow-inner tech-dot-dark"
                 onMouseEnter={() => setIsPhotoPaused(true)}
                 onMouseLeave={() => setIsPhotoPaused(false)}
               >
                 {/* Edge fade gradient mask left */}
-                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-900 via-slate-900/60 to-transparent z-10 pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0b1120] via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
                 {/* Edge fade gradient mask right */}
-                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900 via-slate-900/60 to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0b1120] via-[#0b1120]/70 to-transparent z-10 pointer-events-none" />
 
                 {/* Infinite Marquee Reel */}
                 <div
@@ -1097,9 +1104,13 @@ export default function PublicMonitorPage() {
                     <div
                       key={`${item.id}-${idx}`}
                       onClick={() => setPreviewPhoto(item)}
-                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950 shadow-2xs group/foto relative cursor-pointer transition-all duration-200 hover:scale-[1.03] hover:border-purple-400 hover:shadow-lg"
+                      className="h-28 sm:h-32 shrink-0 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-900 shadow-2xs group/foto relative cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
                       title={`${item.judul} (Klik untuk perbesar)`}
                     >
+                      {/* Viewfinder Corner Accents */}
+                      <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-cyan-400/70 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+                      <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-cyan-400/70 z-10 pointer-events-none opacity-0 group-hover/foto:opacity-100 transition-opacity" />
+
                       {/* Natural Ratio: Portrait or Landscape */}
                       <img
                         src={getFotoUrl(item.foto_url || item.foto)}
@@ -1108,10 +1119,11 @@ export default function PublicMonitorPage() {
                         className="h-full w-auto max-w-none object-cover block"
                       />
 
-                      {/* Gradient Overlay at Bottom */}
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent p-1.5 pt-4 pointer-events-none">
-                        <div className="text-[8.5px] font-mono text-purple-300 font-bold mb-0.5 truncate">
-                          {item.tanggal || 'Dokumentasi'}
+                      {/* Glass HUD Overlay at Bottom */}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent p-1.5 pt-4 pointer-events-none backdrop-blur-[1px]">
+                        <div className="text-[8.5px] font-mono text-cyan-300 font-bold mb-0.5 truncate flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-cyan-400" />
+                          {item.tanggal || 'ARCHIVE'}
                         </div>
                         <p className="text-white font-bold text-[10.5px] leading-tight line-clamp-1 drop-shadow-xs">
                           {item.judul}
@@ -1126,7 +1138,7 @@ export default function PublicMonitorPage() {
                             e.stopPropagation();
                             handleDeleteDokumentasi(item.id);
                           }}
-                          className="absolute top-1 right-1 p-1 rounded-md bg-slate-900/85 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-xs opacity-0 group-hover/foto:opacity-100"
+                          className="absolute top-1 right-1 p-1 rounded-md bg-slate-900/90 hover:bg-rose-600 text-white transition-colors cursor-pointer shadow-xs opacity-0 group-hover/foto:opacity-100 z-20 border border-slate-700"
                           title="Hapus foto ini"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -1140,69 +1152,85 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full">
-            {/* Header with Search and Category Filter */}
-            <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/50 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                    <Laptop className="w-4 h-4" />
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full relative">
+            {/* Top Tech Accent Line */}
+            <div className="h-0.5 w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 shrink-0" />
+
+            {/* Header with Search and Category Filter - Gaya Pusat Kendali Teknologi */}
+            <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/60 space-y-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-blue-50 border border-blue-200/80 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs">
+                    <Cpu className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div>
-                    <h2 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight">
-                      Peminjaman Alat &amp; Barang RPL
+                  <div className="min-w-0">
+                    <h2 className="font-extrabold text-slate-900 text-xs sm:text-sm leading-tight truncate">
+                      Peminjaman Alat &amp; Inventaris Lab RPL
                     </h2>
-                    <p className="text-[10px] text-slate-500 font-medium">
-                      Monitoring sarpras lab &amp; status peminjaman aktif
+                    <p className="text-[9.5px] font-mono text-slate-500 font-medium flex items-center gap-1.5 mt-0.5 truncate">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                      TELEMETRY // REALTIME HARDWARE MONITOR &amp; INVENTORY
                     </p>
                   </div>
                 </div>
 
-                {/* Status Toggle */}
-                <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-[11px] font-bold">
+                {/* Status Toggle - High-Tech Segmented Pills */}
+                <div className="flex items-center gap-1 bg-slate-200/70 p-0.5 rounded-xl border border-slate-300/60 text-[10.5px] font-mono font-bold shadow-2xs shrink-0">
                   {(['all', 'tersedia', 'dipinjam'] as const).map((st) => (
                     <button
                       key={st}
                       onClick={() => setStatusFilter(st)}
-                      className={`px-2 py-0.5 rounded-md transition-all cursor-pointer capitalize ${
+                      className={`px-2.5 py-0.5 rounded-lg transition-all cursor-pointer flex items-center gap-1 uppercase tracking-wider text-[9.5px] ${
                         statusFilter === st
-                          ? 'bg-white text-slate-900 shadow-2xs'
-                          : 'text-slate-500 hover:text-slate-800'
+                          ? 'bg-slate-900 text-cyan-300 shadow-2xs border border-slate-700'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
-                      {st === 'all' ? 'Semua' : st}
+                      {st === 'tersedia' && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />}
+                      {st === 'dipinjam' && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse shrink-0" />}
+                      <span>{st === 'all' ? 'Semua' : st}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Category tabs & Search bar */}
+              {/* Category tabs & Terminal Search bar */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5">
-                  {['Laptop', 'Ruangan Workshop RPL', 'Peralatan', ...customCategories].map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveTab(cat)}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                        activeTab === cat
-                          ? 'bg-slate-900 text-white shadow-2xs'
-                          : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      {cat === 'Ruangan Workshop RPL' ? 'PC Lab' : cat}
-                    </button>
-                  ))}
+                  {['Laptop', 'Ruangan Workshop RPL', 'Peralatan', ...customCategories].map((cat) => {
+                    const isPC = cat === 'Ruangan Workshop RPL';
+                    const isLp = cat === 'Laptop';
+                    const isTools = cat === 'Peralatan';
+                    const label = isPC ? 'PC Lab' : cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveTab(cat)}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                          activeTab === cat
+                            ? 'bg-slate-900 text-white shadow-2xs ring-1 ring-slate-800'
+                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        {isLp && <Laptop className="w-3.5 h-3.5 opacity-80" />}
+                        {isPC && <Monitor className="w-3.5 h-3.5 opacity-80" />}
+                        {isTools && <Wrench className="w-3.5 h-3.5 opacity-80" />}
+                        {!isLp && !isPC && !isTools && <Layers className="w-3.5 h-3.5 opacity-80" />}
+                        <span>{label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
 
-                {/* Search */}
-                <div className="relative min-w-[180px] sm:w-64">
-                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                {/* Terminal Search */}
+                <div className="relative min-w-[180px] sm:w-68">
+                  <Terminal className="w-3.5 h-3.5 text-blue-600 absolute left-2.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Cari nama perangkat / peminjam..."
-                    className="w-full pl-7 pr-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search kode unit / perangkat / peminjam..."
+                    className="w-full pl-7 pr-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 font-mono placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -1701,7 +1729,7 @@ export default function PublicMonitorPage() {
 }
 
 // ==========================================
-// ADAPTED CARD FOR LAPTOP & PC MONITOR
+// ADAPTED CARD FOR LAPTOP & PC MONITOR (GAYA TEKNOLOGI MODERN)
 // Tampilan jelas, proporsional, dan mengisi ruang
 // ==========================================
 function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
@@ -1710,29 +1738,30 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
 
   return (
     <div
-      className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between group ${
+      className={`p-3.5 rounded-2xl border transition-all flex flex-col justify-between group relative overflow-hidden ${
         isAvailable
-          ? 'bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs'
-          : 'bg-blue-50/20 border-blue-200 shadow-2xs'
+          ? 'bg-white border-slate-200/90 hover:border-emerald-400 hover:ring-2 hover:ring-emerald-400/20 shadow-2xs hover:shadow-md'
+          : 'bg-gradient-to-b from-blue-50/30 via-white to-white border-blue-200 hover:border-blue-400 hover:ring-2 hover:ring-blue-400/20 shadow-2xs hover:shadow-md'
       }`}
     >
       <div>
-        {/* Top Badges */}
-        <div className="flex items-center justify-between gap-1.5 mb-2">
-          <div className="flex items-center gap-1.5">
-            <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200">
+        {/* Top Badges - Hardware Telemetry */}
+        <div className="flex items-center justify-between gap-1.5 mb-2.5">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="font-mono text-xs font-black px-2 py-0.5 rounded-md bg-slate-900 text-white shadow-2xs flex items-center gap-1 shrink-0">
+              <span className="text-cyan-400 text-[10px]">#</span>
               {item.kode_barang}
             </span>
-            <span className="text-[10px] text-slate-500 font-semibold">
-              {isLaptop ? 'Laptop RPL' : 'PC Lab'}
+            <span className="text-[9.5px] font-mono text-slate-500 font-semibold uppercase tracking-wider truncate">
+              {isLaptop ? 'SYS // LAPTOP' : 'SYS // PC_LAB'}
             </span>
           </div>
 
           <span
-            className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
+            className={`inline-flex items-center gap-1 text-[9.5px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shrink-0 ${
               isAvailable
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                : 'bg-blue-50 text-blue-700 border-blue-200'
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200/90'
+                : 'bg-blue-50 text-blue-700 border-blue-200/90'
             }`}
           >
             <span
@@ -1740,32 +1769,36 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
                 isAvailable ? 'bg-emerald-500' : 'bg-blue-500 animate-pulse'
               }`}
             />
-            {isAvailable ? 'Tersedia' : 'Sedang Dipakai'}
+            {isAvailable ? 'READY' : 'IN-USE'}
           </span>
         </div>
 
-        {/* Prominent Photo Area (Jelas, besar, dan proporsional) */}
-        <div className="w-full h-24 sm:h-28 rounded-xl bg-slate-50/90 border border-slate-100 flex items-center justify-center p-2 mb-2.5 overflow-hidden group-hover:border-slate-200 transition-colors">
+        {/* Prominent Photo Area (Viewport Skematik CAD / Lab Hardware) */}
+        <div className="tech-schematic-bg w-full h-24 sm:h-28 rounded-xl border border-slate-200/90 flex items-center justify-center p-2 mb-2.5 relative overflow-hidden group-hover:border-slate-300 transition-colors">
+          {/* Schematic Crosshair Marks */}
+          <span className="absolute top-1 left-1.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
+          <span className="absolute bottom-1 right-1.5 font-mono text-[9px] text-slate-400 select-none leading-none pointer-events-none">+</span>
+
           <img
             src={isLaptop ? '/laptop.png' : '/pc.jpg'}
             alt={item.nama_barang}
             className={`w-full h-full ${
               isLaptop ? 'object-contain' : 'object-cover rounded-lg'
-            } transition-transform duration-300 group-hover:scale-105`}
+            } transition-transform duration-300 group-hover:scale-105 drop-shadow-xs`}
           />
         </div>
 
         {/* Title and Specs */}
         <div>
-          <h4 className="font-bold text-xs sm:text-sm text-slate-900 leading-snug truncate">
+          <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug truncate group-hover:text-blue-600 transition-colors">
             {item.nama_barang}
           </h4>
-          <p className="text-[11px] text-slate-500 truncate mt-0.5">
+          <p className="text-[11px] font-mono text-slate-500 truncate mt-0.5">
             {item.spesifikasi || (isLaptop ? 'Unit Laptop Praktikum RPL' : 'Workstation Lab RPL')}
           </p>
         </div>
 
-        {/* Borrower details if borrowed */}
+        {/* Borrower details if borrowed - Telemetri Sesi Peminjam */}
         {!isAvailable && item.active_loan && (
           <div className="mt-2.5 p-2 rounded-xl bg-blue-50/80 border border-blue-100 text-[11px] space-y-1">
             <div className="flex items-center justify-between font-bold text-slate-800">
@@ -1773,13 +1806,13 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
                 <User className="w-3 h-3 text-blue-600 shrink-0" />
                 {item.active_loan.nama_siswa}
               </span>
-              <span className="font-mono text-blue-600 text-[10px]">
-                {item.active_loan.durasi_sekarang}
+              <span className="font-mono text-blue-700 bg-blue-100/90 px-1.5 py-0.2 rounded text-[9.5px] font-bold shrink-0">
+                ⏱ {item.active_loan.durasi_sekarang}
               </span>
             </div>
             <div className="text-slate-600 flex justify-between text-[10px]">
-              <span>Kelas: <strong>{item.active_loan.kelas}</strong></span>
-              <span className="italic truncate max-w-[130px]">
+              <span>Kelas: <strong className="text-slate-800">{item.active_loan.kelas}</strong></span>
+              <span className="italic truncate max-w-[130px] text-slate-500">
                 &ldquo;{item.active_loan.kebutuhan}&rdquo;
               </span>
             </div>
@@ -1788,10 +1821,10 @@ function ItemMonitorCardAdapted({ item }: { item: BarangItem }) {
       </div>
 
       {isAvailable && (
-        <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-emerald-700 font-semibold">
-          <span className="text-slate-400 font-normal">Kondisi: Siap Pakai</span>
+        <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px] font-mono text-emerald-700 font-bold">
+          <span className="text-slate-400 font-normal text-[10px]">STATUS: SIAP PAKAI</span>
           <span className="flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Ready di Lab
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> READY DI LAB
           </span>
         </div>
       )}
@@ -1813,12 +1846,12 @@ function PeralatanCompactListItem({ item }: { item: BarangItem }) {
       className={`p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
         isAllBorrowed
           ? 'bg-rose-50/30 border-rose-200'
-          : 'bg-white border-slate-200 shadow-2xs hover:border-slate-300'
+          : 'bg-white border-slate-200/90 shadow-2xs hover:border-slate-300'
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0">
         <div
-          className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 ${
+          className={`w-9 h-9 rounded-lg border flex items-center justify-center shrink-0 shadow-2xs ${
             isATK
               ? 'bg-blue-50 border-blue-200 text-blue-700'
               : 'bg-amber-50 border-amber-200 text-amber-700'
@@ -1832,27 +1865,27 @@ function PeralatanCompactListItem({ item }: { item: BarangItem }) {
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200">
+            <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-slate-900 text-white shadow-2xs">
               {item.kode_barang}
             </span>
             <h4 className="font-bold text-xs sm:text-sm text-slate-900 truncate">{item.nama_barang}</h4>
           </div>
           {item.spesifikasi && (
-            <p className="text-[11px] text-slate-500 truncate mt-0.5">{item.spesifikasi}</p>
+            <p className="text-[11px] font-mono text-slate-500 truncate mt-0.5">{item.spesifikasi}</p>
           )}
         </div>
       </div>
 
       <div className="text-right shrink-0">
-        <div className="text-xs sm:text-sm font-bold text-slate-900">
+        <div className="text-xs sm:text-sm font-mono font-bold text-slate-900">
           <span className={`${isAvailable ? 'text-emerald-600' : 'text-rose-600'} font-extrabold`}>
             {item.jumlah_tersedia}
           </span>{' '}
           /{' '}
           {item.jumlah_total} {item.satuan}
         </div>
-        <span className="text-[10px] text-slate-400">
-          {isAvailable ? 'Tersedia' : 'Semua Dipinjam'}
+        <span className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400">
+          {isAvailable ? 'READY' : 'BORROWED'}
         </span>
       </div>
     </div>
