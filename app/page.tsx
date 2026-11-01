@@ -685,18 +685,18 @@ export default function PublicMonitorPage() {
   ).length;
 
   return (
-    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-100px)] max-h-[calc(100vh-100px)] overflow-hidden">
+    <div className="w-full flex-1 flex flex-col min-h-0 lg:h-[calc(100vh-100px)] lg:max-h-[calc(100vh-100px)] lg:overflow-hidden">
       {/* ============================================================ */}
       {/* 12-GRID 2-COLUMN DASHBOARD LAYOUT                            */}
       {/* KOLOM 1: 3 Grid  -> Catatan Agenda RPL (Full Height)         */}
       {/* KOLOM 2: 9 Grid  -> Status, Foto Kegiatan, & Peminjaman      */}
       {/* ============================================================ */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 h-full max-h-full overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 lg:h-full lg:max-h-full lg:overflow-hidden">
 
         {/* ========================================================== */}
         {/* KOLOM 1: 3 GRID (Catatan Agenda RPL - Full Height)         */}
         {/* ========================================================== */}
-        <div className="lg:col-span-3 flex flex-col h-full max-h-full min-h-0 overflow-hidden">
+        <div className="lg:col-span-3 flex flex-col h-[460px] sm:h-[500px] lg:h-full lg:max-h-full min-h-0 overflow-hidden shrink-0 lg:shrink">
           {/* Card 1: Timeline RPL (Buku Catatan Agenda & Sticky Notes Lucu) */}
           <div className="relative notebook-paper border-2 border-amber-300/70 dark:border-slate-700/80 rounded-2xl shadow-sm overflow-hidden flex-1 min-h-0 flex flex-col max-h-full group/notebook">
             {/* Spiral Ring Binding at top edge */}
@@ -968,7 +968,7 @@ export default function PublicMonitorPage() {
         {/* ========================================================== */}
         {/* KOLOM 2: 9 GRID (Dokumentasi RPL & Peminjaman Alat Barang) */}
         {/* ========================================================== */}
-        <div className="lg:col-span-9 flex flex-col gap-2.5 h-full max-h-full min-h-0 overflow-hidden">
+        <div className="lg:col-span-9 flex flex-col gap-2.5 min-h-0 lg:h-full lg:max-h-full lg:overflow-hidden">
 
           {/* Card 2: Dokumentasi Kegiatan RPL (Berjajar Horizontal Bergerak Sendiri) */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs p-2 sm:p-2.5 shrink-0 flex flex-col gap-1.5 overflow-hidden">
@@ -1110,7 +1110,7 @@ export default function PublicMonitorPage() {
           </div>
 
           {/* Card 2C: Peminjaman Alat & Barang RPL Siap Dipinjam (Bawahnya Foto) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-0 flex flex-col max-h-full">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden flex-1 min-h-[500px] lg:min-h-0 flex flex-col lg:max-h-full">
             {/* Header with Search and Category Filter */}
             <div className="p-3 border-b border-slate-100 shrink-0 bg-slate-50/50 space-y-2.5">
               <div className="flex items-center justify-between">
