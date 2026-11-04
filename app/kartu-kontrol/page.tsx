@@ -14,7 +14,8 @@ import {
   ChevronRight,
   Sparkles,
   Info,
-  AlertTriangle
+  AlertTriangle,
+  Settings
 } from 'lucide-react';
 import { INITIAL_STUDENTS_DATA } from '@/lib/studentsData';
 
@@ -36,9 +37,10 @@ interface StudentControl {
   nama: string;
   kelas: string;
   stages: StageProgress;
+  catatan_verif?: string;
 }
 
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwmm490dSJgeUisr4iWEIn8fgmiyQO74XJZM0dOJFbT76qPLCvUD31UP8o6OfbcHpnmOg/exec';
+const DEFAULT_GAS_URL = 'https://exs.sakuci.id/sarpras/kartu-kontrol';
 
 export default function KartuKontrolPage() {
   const [students, setStudents] = useState<StudentControl[]>(INITIAL_STUDENTS_DATA as StudentControl[]);
@@ -63,28 +65,41 @@ export default function KartuKontrolPage() {
     };
   }, []);
 
-  // Load GAS URL from localStorage if configured
+  // Load API/GAS URL from localStorage if configured
   useEffect(() => {
-    const savedUrl = localStorage.getItem('KARTU_KONTROL_GAS_URL') || DEFAULT_GAS_URL;
-    setGasUrl(savedUrl);
-    if (savedUrl) {
-      fetchLiveGasData(savedUrl);
+    let savedUrl = localStorage.getItem('KARTU_KONTROL_GAS_URL');
+    if (!savedUrl || savedUrl.includes('AKfycbwmm490dSJgeUisr4iWEIn8fgmiyQO74XJZM0dOJFbT76qPLCvUD31UP8o6OfbcHpnmOg')) {
+      savedUrl = DEFAULT_GAS_URL;
+      localStorage.setItem('KARTU_KONTROL_GAS_URL', DEFAULT_GAS_URL);
     }
+    setGasUrl(savedUrl);
+    fetchLiveGasData(savedUrl);
   }, []);
 
-  const fetchLiveGasData = async (url: string) => {
+  const fetchLiveGasData = async (url: string, force = false) => {
     if (!url || !url.startsWith('http')) return;
     try {
       setLoading(true);
-      const endpoint = url.includes('?') ? `${url}&action=getJsonData` : `${url}?action=getJsonData`;
+      let endpoint = url;
+      if (url.includes('script.google.com')) {
+        endpoint = url.includes('?') ? `${url}&action=getJsonData` : `${url}?action=getJsonData`;
+      } else if (force) {
+        endpoint = url.includes('?') ? `${url}&refresh=true` : `${url}?refresh=true`;
+      }
       const res = await fetch(endpoint, { cache: 'no-store' });
       const json = await res.json();
       if (json.success && Array.isArray(json.students) && json.students.length > 0) {
         setStudents(json.students);
-        setSelectedStudent(json.students[0]);
+        setSelectedStudent((prev) => {
+          if (!prev) return json.students[0];
+          const matched = json.students.find(
+            (s: StudentControl) => s.nama.toLowerCase() === prev.nama.toLowerCase() || s.rowNumber === prev.rowNumber
+          );
+          return matched || json.students[0];
+        });
       }
     } catch (err) {
-      console.warn('Gagal memuat data dari GAS URL, menggunakan dataset spreadsheet lokal:', err);
+      console.warn('Gagal memuat data dari API/GAS URL, menggunakan dataset spreadsheet lokal:', err);
     } finally {
       setLoading(false);
     }
@@ -172,15 +187,24 @@ export default function KartuKontrolPage() {
           </p>
         </div>
 
-        {/* Action Button: Konfigurasi Spreadsheet GAS */}
+        {/* Action Button: Refresh & Konfigurasi Sync */}
         <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
+          <button
+            onClick={() => fetchLiveGasData(gasUrl, true)}
+            disabled={loading}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-semibold transition-all cursor-pointer shadow-2xs disabled:opacity-50"
+            title="Muat Ulang Data Terbaru dari Spreadsheet"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'Menyinkronkan...' : 'Sinkronkan Sekarang'}</span>
+          </button>
           <button
             onClick={() => setShowGasModal(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0c121e] hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
             title="Pengaturan Integrasi Google Spreadsheet"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-            <span>Sumber Data Sync</span>
+            <Settings className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+            <span>Sumber Data</span>
           </button>
         </div>
       </div>
@@ -427,6 +451,11 @@ export default function KartuKontrolPage() {
                     </td>
                     <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle bg-slate-50/30">
                       {renderParaf(selectedStudent.stages?.verif_dokumen)}
+                      {selectedStudent.catatan_verif && (
+                        <div className="mt-1 px-1.5 py-0.5 text-[9px] font-sans font-medium text-amber-900 bg-amber-50 border border-amber-300 rounded leading-tight max-w-[140px] mx-auto text-left shadow-2xs">
+                          <span className="font-bold">Catatan:</span> {selectedStudent.catatan_verif}
+                        </div>
+                      )}
                     </td>
 
                     <td className="border border-black text-center font-bold">6</td>
@@ -529,12 +558,7 @@ export default function KartuKontrolPage() {
             </div>
 
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Aplikasi ini membaca progres siswa dari Spreadsheet ID{' '}
-              <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-indigo-600 dark:text-emerald-400 font-mono text-[11px]">
-                1yavW4vvGpLbGVg4S_U0krsHAscBZ7JSk_XPZzD7LEh0
-              </code>{' '}
-              pada tab GID <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-indigo-600 dark:text-emerald-400 font-mono text-[11px]">1558767801</code>.
-              Jika Anda telah men-deploy Google Apps Script sebagai Web App, masukkan URL-nya di bawah ini untuk sinkronisasi otomatis secara langsung.
+              Aplikasi ini secara otomatis tersinkronisasi langsung dengan Google Spreadsheet Pengumpulan/Verifikasi UKK (<code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-indigo-600 dark:text-emerald-400 font-mono text-[11px]">1S4ox_feXrmO4cc456NSLrIbZRW1wOcdv9xaQoTSekvQ</code>) melalui endpoint sinkronisasi otomatis kami di bawah ini:
             </p>
 
             <form onSubmit={handleSaveGasUrl} className="space-y-4">

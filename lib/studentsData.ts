@@ -8,14 +8,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum"
   },
   {
     "rowNumber": 9,
@@ -24,14 +25,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum rapi dan lengkap"
   },
   {
     "rowNumber": 10,
@@ -40,14 +42,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi di laporan"
   },
   {
     "rowNumber": 11,
@@ -56,14 +59,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "link hosting belum, laporan belum lengkap"
   },
   {
     "rowNumber": 12,
@@ -72,14 +76,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "hosting belum, laporan belum"
   },
   {
     "rowNumber": 13,
@@ -88,14 +93,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum lengkap"
   },
   {
     "rowNumber": 14,
@@ -104,14 +110,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum lengkap"
   },
   {
     "rowNumber": 15,
@@ -120,14 +127,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi laporan"
   },
   {
     "rowNumber": 16,
@@ -136,14 +144,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum lengkap"
   },
   {
     "rowNumber": 17,
@@ -152,14 +161,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi laporan"
   },
   {
     "rowNumber": 18,
@@ -168,14 +178,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi laporan"
   },
   {
     "rowNumber": 19,
@@ -191,7 +202,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum lengkap"
   },
   {
     "rowNumber": 20,
@@ -223,7 +235,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "hosting belum jalan, laporan belum lengkap belum ada implementasi"
   },
   {
     "rowNumber": 22,
@@ -232,7 +245,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -248,14 +261,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "link hosting gabisa,"
   },
   {
     "rowNumber": 24,
@@ -264,7 +278,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -280,7 +294,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -296,7 +310,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -312,7 +326,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -351,7 +365,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum beres, github gada database, gada data username pass aktor, gada hosting"
   },
   {
     "rowNumber": 30,
@@ -367,7 +382,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum beres, github gada database, gada data username pass aktor, gada hosting"
   },
   {
     "rowNumber": 31,
@@ -383,7 +399,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum beres, github gada database, gada data username pass aktor"
   },
   {
     "rowNumber": 32,
@@ -408,14 +425,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "double data"
   },
   {
     "rowNumber": 34,
@@ -424,14 +442,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 1",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "double data"
   },
   {
     "rowNumber": 35,
@@ -447,7 +466,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum beres, database gada, gada data username pass aktor"
   },
   {
     "rowNumber": 36,
@@ -463,7 +483,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan edit dikit, gada data username pass aktor"
   },
   {
     "rowNumber": 37,
@@ -479,7 +500,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan edit dikit, gada data username pass aktor"
   },
   {
     "rowNumber": 38,
@@ -495,7 +517,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan edit dikit, gada github gatau appnya gimana, gada hosting"
   },
   {
     "rowNumber": 39,
@@ -511,7 +534,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "gada database, gada data username pass aktor, laporan gada"
   },
   {
     "rowNumber": 40,
@@ -527,7 +551,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "laporan belum beres, gada data username pass aktor"
   },
   {
     "rowNumber": 41,
@@ -552,14 +577,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 2",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Github hanya file zip saja"
   },
   {
     "rowNumber": 43,
@@ -575,7 +601,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Github kosong"
   },
   {
     "rowNumber": 44,
@@ -648,7 +675,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 2",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -703,7 +730,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Tidak ada link github"
   },
   {
     "rowNumber": 52,
@@ -719,7 +747,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Tidak ada link github"
   },
   {
     "rowNumber": 53,
@@ -783,7 +812,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "ke"
   },
   {
     "rowNumber": 57,
@@ -879,7 +909,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Tidak ada link github"
   },
   {
     "rowNumber": 63,
@@ -895,7 +926,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Github kosong"
   },
   {
     "rowNumber": 64,
@@ -904,7 +936,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 2",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -927,7 +959,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Github kosong"
   },
   {
     "rowNumber": 66,
@@ -943,7 +976,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Github kosong"
   },
   {
     "rowNumber": 67,
@@ -984,7 +1018,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 2",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1007,7 +1041,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen bagian antarmuka"
   },
   {
     "rowNumber": 71,
@@ -1023,7 +1058,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen"
   },
   {
     "rowNumber": 72,
@@ -1039,7 +1075,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi program + dokumen"
   },
   {
     "rowNumber": 73,
@@ -1055,7 +1092,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "full revisi dokumen"
   },
   {
     "rowNumber": 74,
@@ -1071,7 +1109,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen"
   },
   {
     "rowNumber": 75,
@@ -1087,7 +1126,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 76,
@@ -1103,7 +1143,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Full revisi dokumen"
   },
   {
     "rowNumber": 77,
@@ -1119,7 +1160,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen"
   },
   {
     "rowNumber": 78,
@@ -1128,14 +1170,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Perlu dirapihkan lagi"
   },
   {
     "rowNumber": 79,
@@ -1151,7 +1194,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 80,
@@ -1167,7 +1211,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 81,
@@ -1183,7 +1228,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 82,
@@ -1192,7 +1238,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1208,14 +1254,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Dokumen belum rapih"
   },
   {
     "rowNumber": 84,
@@ -1231,7 +1278,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "full revisi dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 85,
@@ -1247,7 +1295,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi full dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 86,
@@ -1256,14 +1305,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Dokumen belum rapih"
   },
   {
     "rowNumber": 87,
@@ -1272,14 +1322,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "Dokumen belum rapih"
   },
   {
     "rowNumber": 88,
@@ -1295,7 +1346,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + perbaiki tatacara penulisannya + sudah upload ke github"
   },
   {
     "rowNumber": 89,
@@ -1311,7 +1363,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + perbaiki tatacara penulisannya + github 404"
   },
   {
     "rowNumber": 90,
@@ -1327,7 +1380,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 91,
@@ -1343,7 +1397,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 92,
@@ -1359,7 +1414,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "full revisi dokumen + perbaiki tatacara penulisannya + sudah upload ke github"
   },
   {
     "rowNumber": 93,
@@ -1375,7 +1431,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "full revisi dokumen + perbaiki tatacara penulisannya + sudah upload ke github"
   },
   {
     "rowNumber": 94,
@@ -1384,14 +1441,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + github 404"
   },
   {
     "rowNumber": 95,
@@ -1407,7 +1465,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen + sudah upload ke github"
   },
   {
     "rowNumber": 96,
@@ -1416,14 +1475,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "diperiksa",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 97,
@@ -1439,7 +1499,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 98,
@@ -1448,14 +1509,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "full revisi dokumen + perbaiki tatacara penulisannya + sudah upload ke github"
   },
   {
     "rowNumber": 99,
@@ -1464,14 +1526,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 3",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "revisi",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "sudah upload ke github"
   },
   {
     "rowNumber": 100,
@@ -1487,7 +1550,8 @@ export const INITIAL_STUDENTS_DATA = [
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi dokumen bagian perancangan antarmuka"
   },
   {
     "rowNumber": 101,
@@ -1496,7 +1560,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1512,7 +1576,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1528,7 +1592,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1544,7 +1608,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1560,7 +1624,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1576,7 +1640,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1592,7 +1656,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1608,7 +1672,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1624,7 +1688,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1640,7 +1704,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1656,7 +1720,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1672,7 +1736,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1688,7 +1752,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1704,7 +1768,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1720,7 +1784,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1736,7 +1800,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1752,7 +1816,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1768,7 +1832,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1784,7 +1848,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1800,7 +1864,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1816,7 +1880,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1832,7 +1896,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1848,7 +1912,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1864,7 +1928,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1880,7 +1944,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1896,14 +1960,15 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "blank",
+      "verif_dokumen": "acc",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
       "pkl": "blank",
       "uji_laporan_pkl": "blank",
       "saj": "blank"
-    }
+    },
+    "catatan_verif": "revisi di laporan"
   },
   {
     "rowNumber": 127,
@@ -1912,7 +1977,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1928,7 +1993,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1944,7 +2009,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1960,7 +2025,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "revisi",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
@@ -1976,7 +2041,7 @@ export const INITIAL_STUDENTS_DATA = [
     "kelas": "XII RPL 4",
     "stages": {
       "tka": "blank",
-      "verif_dokumen": "acc",
+      "verif_dokumen": "blank",
       "pra_ukk": "blank",
       "prep_ukk": "blank",
       "ukk": "blank",
