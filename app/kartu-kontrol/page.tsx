@@ -455,11 +455,6 @@ export default function KartuKontrolPage() {
                     </td>
                     <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle bg-slate-50/30">
                       {renderParaf(selectedStudent.stages?.verif_dokumen)}
-                      {selectedStudent.catatan_verif && (
-                        <div className="mt-1 px-1.5 py-0.5 text-[9px] font-sans font-medium text-amber-900 bg-amber-50 border border-amber-300 rounded leading-tight max-w-[140px] mx-auto text-left shadow-2xs">
-                          <span className="font-bold">Catatan:</span> {selectedStudent.catatan_verif}
-                        </div>
-                      )}
                     </td>
 
                     <td className="border border-black text-center font-bold">6</td>
