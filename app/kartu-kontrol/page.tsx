@@ -40,7 +40,7 @@ interface StudentControl {
   catatan_verif?: string;
 }
 
-const DEFAULT_GAS_URL = 'https://exs.sakuci.id/sarpras/kartu-kontrol';
+const DEFAULT_GAS_URL = 'https://eks.smksangkuriang1cimahi.sch.id/sarpras/kartu-kontrol';
 
 export default function KartuKontrolPage() {
   const [students, setStudents] = useState<StudentControl[]>(INITIAL_STUDENTS_DATA as StudentControl[]);
@@ -68,7 +68,11 @@ export default function KartuKontrolPage() {
   // Load API/GAS URL from localStorage if configured
   useEffect(() => {
     let savedUrl = localStorage.getItem('KARTU_KONTROL_GAS_URL');
-    if (!savedUrl || savedUrl.includes('AKfycbwmm490dSJgeUisr4iWEIn8fgmiyQO74XJZM0dOJFbT76qPLCvUD31UP8o6OfbcHpnmOg')) {
+    if (
+      !savedUrl ||
+      savedUrl.includes('AKfycbwmm490dSJgeUisr4iWEIn8fgmiyQO74XJZM0dOJFbT76qPLCvUD31UP8o6OfbcHpnmOg') ||
+      savedUrl.includes('exs.sakuci.id')
+    ) {
       savedUrl = DEFAULT_GAS_URL;
       localStorage.setItem('KARTU_KONTROL_GAS_URL', DEFAULT_GAS_URL);
     }
@@ -564,11 +568,11 @@ export default function KartuKontrolPage() {
             <form onSubmit={handleSaveGasUrl} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Google Apps Script Web App URL:
+                  Endpoint Sinkronisasi / Google Apps Script URL:
                 </label>
                 <input
                   type="url"
-                  placeholder="https://script.google.com/macros/s/.../exec"
+                  placeholder="https://eks.smksangkuriang1cimahi.sch.id/sarpras/kartu-kontrol"
                   value={gasUrl}
                   onChange={(e) => setGasUrl(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-[#080d16] border border-slate-200 dark:border-slate-800 rounded-lg text-xs font-mono text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:focus:ring-emerald-500/30 focus:border-indigo-500 dark:focus:border-emerald-500"

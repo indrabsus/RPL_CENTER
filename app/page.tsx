@@ -1160,9 +1160,9 @@ export default function PublicMonitorPage() {
                         onError={(e) => {
                           const target = e.currentTarget;
                           const rawPath = item.foto_url || item.foto || '';
-                          if (rawPath && !target.src.includes('exs.sakuci.id')) {
+                          if (rawPath && !target.src.includes('smksangkuriang1cimahi.sch.id')) {
                             const filename = rawPath.split('/kegiatan/')[1] || rawPath;
-                            target.src = `https://exs.sakuci.id/kegiatan/${filename}`;
+                            target.src = `https://eks.smksangkuriang1cimahi.sch.id/kegiatan/${filename}`;
                           }
                         }}
                       />
@@ -1775,9 +1775,9 @@ export default function PublicMonitorPage() {
                 onError={(e) => {
                   const target = e.currentTarget;
                   const rawPath = previewPhoto.foto_url || previewPhoto.foto || '';
-                  if (rawPath && !target.src.includes('exs.sakuci.id')) {
+                  if (rawPath && !target.src.includes('smksangkuriang1cimahi.sch.id')) {
                     const filename = rawPath.split('/kegiatan/')[1] || rawPath;
-                    target.src = `https://exs.sakuci.id/kegiatan/${filename}`;
+                    target.src = `https://eks.smksangkuriang1cimahi.sch.id/kegiatan/${filename}`;
                   }
                 }}
               />

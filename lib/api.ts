@@ -1,19 +1,16 @@
 /**
  * Sarpras API Client & Types
- * Connects directly to sakuci_express backend at https://exs.sakuci.id/sarpras
+ * Connects to backend at https://eks.smksangkuriang1cimahi.sch.id/sarpras (via Cloudflare)
  */
 
 export function getApiBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_API_BASE_URL) {
     return process.env.NEXT_PUBLIC_API_BASE_URL;
   }
-  if (typeof window !== 'undefined' && window.location.hostname.includes('smksangkuriang1cimahi.sch.id')) {
-    return 'https://eks.smksangkuriang1cimahi.sch.id/sarpras';
-  }
-  return 'https://exs.sakuci.id/sarpras';
+  return 'https://eks.smksangkuriang1cimahi.sch.id/sarpras';
 }
 
-export const API_BASE_URL = 'https://exs.sakuci.id/sarpras';
+export const API_BASE_URL = 'https://eks.smksangkuriang1cimahi.sch.id/sarpras';
 
 export interface ActiveLoan {
   id: number;
