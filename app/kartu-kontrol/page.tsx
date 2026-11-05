@@ -376,7 +376,7 @@ export default function KartuKontrolPage() {
               />
               <div className="w-full text-center pl-16 pr-2 sm:pl-20 sm:pr-0">
                 <h1 className="text-sm sm:text-base md:text-lg font-bold tracking-tight uppercase leading-snug">
-                  YAYASAN PENDIDIKAN SANGKURIANG CIMAHI
+                  YAYASAN PENDIDIKAN DAYANG SUMBI JAYA LESTARI
                   <br />
                   SMK SANGKURIANG 1 CIMAHI
                 </h1>
