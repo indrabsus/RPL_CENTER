@@ -511,18 +511,20 @@ export interface SiswaAbsenPinItem {
 }
 
 export async function verifySiswaAbsenPin(payload: {
-  tingkat: string;
-  nama_kelas: string;
-  pin: string;
-}): Promise<boolean> {
+  tingkat?: string;
+  nama_kelas?: string;
+  pin?: string;
+  username?: string;
+  password?: string;
+}): Promise<{ success: boolean; role?: string; username?: string; isGlobalPetugas?: boolean }> {
   const res = await fetch(`${getApiBaseUrl()}/siswa-absen/verify-pin`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
   const json = await res.json();
-  if (!json.success) throw new Error(json.message || 'PIN Kelas tidak sah');
-  return true;
+  if (!json.success) throw new Error(json.message || 'PIN atau Akun Petugas tidak valid');
+  return json;
 }
 
 export async function fetchSiswaAbsenRoster(params: {
@@ -552,7 +554,9 @@ export async function fetchSiswaAbsenRoster(params: {
 export async function saveSiswaAbsen(payload: {
   tingkat: string;
   nama_kelas: string;
-  pin: string;
+  pin?: string;
+  username?: string;
+  isGlobalPetugas?: boolean;
   tanggal: string;
   nama_petugas: string;
   entries: Array<{

@@ -48,9 +48,11 @@ const CLASS_OPTIONS = [
 export default function SiswaAbsenPage() {
   // Session State
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('petugas');
+  const [password, setPassword] = useState<string>('');
+  const [isGlobalPetugas, setIsGlobalPetugas] = useState<boolean>(true);
   const [selectedTingkat, setSelectedTingkat] = useState<string>('10');
   const [selectedKelas, setSelectedKelas] = useState<string>('PPLG 1');
-  const [inputPin, setInputPin] = useState<string>('');
   const [namaPetugas, setNamaPetugas] = useState<string>('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [verifying, setVerifying] = useState<boolean>(false);
@@ -70,13 +72,15 @@ export default function SiswaAbsenPage() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.tingkat && parsed.nama_kelas && parsed.pin) {
-          setSelectedTingkat(parsed.tingkat);
-          setSelectedKelas(parsed.nama_kelas);
-          setInputPin(parsed.pin);
+        if (parsed.username || (parsed.tingkat && parsed.nama_kelas)) {
+          if (parsed.username) setUsername(parsed.username);
+          if (parsed.password) setPassword(parsed.password);
+          if (parsed.isGlobalPetugas !== undefined) setIsGlobalPetugas(parsed.isGlobalPetugas);
+          if (parsed.tingkat) setSelectedTingkat(parsed.tingkat);
+          if (parsed.nama_kelas) setSelectedKelas(parsed.nama_kelas);
           if (parsed.namaPetugas) setNamaPetugas(parsed.namaPetugas);
           setIsUnlocked(true);
-          loadRosterData(parsed.tingkat, parsed.nama_kelas, tanggal);
+          loadRosterData(parsed.tingkat || '10', parsed.nama_kelas || 'PPLG 1', tanggal);
         }
       } catch (e) {
         localStorage.removeItem('SISWA_ABSEN_SESSION');
@@ -87,8 +91,12 @@ export default function SiswaAbsenPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError(null);
-    if (!inputPin.trim()) {
-      setAuthError('Masukkan PIN Kelas');
+    if (!username.trim()) {
+      setAuthError('Masukkan username akun petugas');
+      return;
+    }
+    if (!password.trim()) {
+      setAuthError('Masukkan password akun petugas');
       return;
     }
     if (!namaPetugas.trim()) {
@@ -98,38 +106,59 @@ export default function SiswaAbsenPage() {
 
     setVerifying(true);
     try {
-      await verifySiswaAbsenPin({
+      const authRes = await verifySiswaAbsenPin({
+        username: username.trim(),
+        password: password.trim(),
         tingkat: selectedTingkat,
         nama_kelas: selectedKelas,
-        pin: inputPin.trim(),
       });
 
       // Save session
       localStorage.setItem(
         'SISWA_ABSEN_SESSION',
         JSON.stringify({
+          username: username.trim(),
+          password: password.trim(),
+          isGlobalPetugas: !!authRes.isGlobalPetugas,
           tingkat: selectedTingkat,
           nama_kelas: selectedKelas,
-          pin: inputPin.trim(),
           namaPetugas: namaPetugas.trim(),
         })
       );
 
+      setIsGlobalPetugas(!!authRes.isGlobalPetugas);
       setIsUnlocked(true);
       await loadRosterData(selectedTingkat, selectedKelas, tanggal);
     } catch (err: any) {
-      setAuthError(err.message || 'PIN Kelas salah');
+      setAuthError(err.message || 'Login petugas gagal. Periksa username dan password.');
     } finally {
       setVerifying(false);
     }
   };
 
+  const handleSelectClass = (newTingkat: string, newKelas: string) => {
+    setSelectedTingkat(newTingkat);
+    setSelectedKelas(newKelas);
+    // Persist current selected class to session
+    const saved = localStorage.getItem('SISWA_ABSEN_SESSION');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        parsed.tingkat = newTingkat;
+        parsed.nama_kelas = newKelas;
+        localStorage.setItem('SISWA_ABSEN_SESSION', JSON.stringify(parsed));
+      } catch (e) {}
+    }
+    loadRosterData(newTingkat, newKelas, tanggal);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('SISWA_ABSEN_SESSION');
     setIsUnlocked(false);
-    setInputPin('');
+    setPassword('');
     setRoster([]);
     setSaveSuccessMsg(null);
+    setSaveErrorMsg(null);
   };
 
   const loadRosterData = async (tingkat: string, kelas: string, tgl: string) => {
@@ -178,7 +207,9 @@ export default function SiswaAbsenPage() {
       const res = await saveSiswaAbsen({
         tingkat: selectedTingkat,
         nama_kelas: selectedKelas,
-        pin: inputPin.trim(),
+        pin: password.trim() || '654321',
+        username: username.trim() || 'petugas',
+        isGlobalPetugas: true,
         tanggal,
         nama_petugas: namaPetugas.trim(),
         entries,
@@ -256,7 +287,7 @@ export default function SiswaAbsenPage() {
 
       {!isUnlocked ? (
         /* ============================================================ */
-        /* LOGIN / PIN GATE                                             */
+        /* LOGIN / AKUN PETUGAS GATE                                    */
         /* ============================================================ */
         <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm max-w-md mx-auto space-y-6">
           <div className="text-center space-y-2">
@@ -264,18 +295,69 @@ export default function SiswaAbsenPage() {
               <KeyRound className="w-7 h-7" />
             </div>
             <h2 className="text-lg sm:text-xl font-black text-slate-900">
-              Autentikasi PIN Kelas
+              Login Petugas Absen Kelas
             </h2>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Pilih kelas dan masukkan PIN yang telah dibagikan oleh Ka.Prog RPL Pak Indra Batara kepada perwakilan kelas Anda.
+              Gunakan akun petugas untuk mengabsen semua kelas RPL / PPLG.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Tingkat & Rombel */}
+            {/* Username Akun Petugas */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Pilih Kelas:
+                Username Akun:
+              </label>
+              <div className="relative">
+                <UserCheck className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Username (petugas)"
+                  required
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400"
+                />
+              </div>
+            </div>
+
+            {/* Password Akun Petugas */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                Password:
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Masukkan password akun petugas"
+                  required
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono tracking-wider text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400 placeholder:font-sans placeholder:tracking-normal"
+                />
+              </div>
+            </div>
+
+            {/* Nama Petugas Absen Hari Ini */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                Nama Petugas Siswa (Yang Mengabsen Hari Ini):
+              </label>
+              <input
+                type="text"
+                value={namaPetugas}
+                onChange={(e) => setNamaPetugas(e.target.value)}
+                placeholder="Contoh: Budi Santoso"
+                required
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400"
+              />
+            </div>
+
+            {/* Tingkat & Rombel Awal */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                Pilih Kelas yang Ingin Diabsen Pertama:
               </label>
               <select
                 value={`${selectedTingkat}-${selectedKelas}`}
@@ -294,40 +376,6 @@ export default function SiswaAbsenPage() {
               </select>
             </div>
 
-            {/* Nama Petugas Absen */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Nama Petugas Siswa (Yang Mengabsen Hari Ini):
-              </label>
-              <input
-                type="text"
-                value={namaPetugas}
-                onChange={(e) => setNamaPetugas(e.target.value)}
-                placeholder="Contoh: Budi Santoso"
-                required
-                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            {/* PIN Kelas */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                PIN Rahasia Kelas:
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  value={inputPin}
-                  onChange={(e) => setInputPin(e.target.value)}
-                  placeholder="Masukkan 5 digit PIN kelas"
-                  maxLength={10}
-                  required
-                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono tracking-widest text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all placeholder:text-slate-400 placeholder:tracking-normal"
-                />
-              </div>
-            </div>
-
             {authError && (
               <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
@@ -343,12 +391,12 @@ export default function SiswaAbsenPage() {
               {verifying ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Memverifikasi PIN...</span>
+                  <span>Memverifikasi Akun...</span>
                 </>
               ) : (
                 <>
                   <Unlock className="w-4 h-4" />
-                  <span>Buka Lembar Absen Kelas</span>
+                  <span>Masuk & Buka Absen Kelas</span>
                 </>
               )}
             </button>
@@ -356,7 +404,7 @@ export default function SiswaAbsenPage() {
 
           <div className="pt-2 border-t border-slate-100 text-center">
             <span className="text-[11px] text-slate-400">
-              Jika lupa PIN kelas, silakan konfirmasi langsung ke Ka.Prog RPL.
+              Satu akun petugas dapat mengabsen seluruh kelas 10, 11, dan 12 RPL/PPLG.
             </span>
           </div>
         </div>
@@ -367,22 +415,41 @@ export default function SiswaAbsenPage() {
         <div className="space-y-5">
           {/* Active Session Info Bar */}
           <div className="bg-white border border-teal-200 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 bg-linear-to-r from-teal-50/40 via-white to-transparent">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="w-12 h-12 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-2xs">
                 {selectedTingkat}
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-base sm:text-lg font-black text-slate-900">
-                    Kelas {selectedTingkat} {selectedKelas}
-                  </span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Class switcher dropdown */}
+                  <div className="flex items-center gap-1.5 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-lg">
+                    <span className="text-xs text-teal-700 font-bold hidden sm:inline">Kelas:</span>
+                    <select
+                      value={`${selectedTingkat}-${selectedKelas}`}
+                      onChange={(e) => {
+                        const [t, k] = e.target.value.split('-');
+                        handleSelectClass(t, k);
+                      }}
+                      className="bg-transparent font-black text-sm sm:text-base text-slate-900 focus:outline-none cursor-pointer"
+                      title="Ganti kelas yang sedang diabsen"
+                    >
+                      {CLASS_OPTIONS.map((c) => (
+                        <option key={`${c.tingkat}-${c.kelas}`} value={`${c.tingkat}-${c.kelas}`}>
+                          Kelas {c.tingkat} {c.kelas}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
                     <CheckCircle2 className="w-3 h-3" />
-                    <span>Terverifikasi</span>
+                    <span>Petugas Aktif</span>
                   </span>
                 </div>
-                <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-3 flex-wrap">
+                <div className="text-xs text-slate-500 mt-1 flex items-center gap-3 flex-wrap">
                   <span>Petugas: <strong className="text-slate-700">{namaPetugas}</strong></span>
+                  <span>•</span>
+                  <span>Akun: <strong className="text-slate-700">@{username}</strong></span>
                   <span>•</span>
                   <span>Total Siswa: <strong className="text-slate-700">{roster.length}</strong></span>
                 </div>
@@ -407,10 +474,10 @@ export default function SiswaAbsenPage() {
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs font-semibold cursor-pointer shadow-2xs"
-                title="Ganti kelas atau petugas"
+                title="Keluar dari akun petugas"
               >
                 <LogOut className="w-3.5 h-3.5 text-slate-400" />
-                <span>Ganti Kelas</span>
+                <span>Keluar</span>
               </button>
             </div>
           </div>
