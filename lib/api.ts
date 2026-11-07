@@ -468,6 +468,42 @@ export async function fetchRplSummary(): Promise<RplSummaryData> {
   return json.data;
 }
 
+export interface GuruItem {
+  id: string;
+  username: string;
+  nama_lengkap: string;
+  jenkel: string;
+}
+
+export async function fetchGuruList(): Promise<GuruItem[]> {
+  const res = await fetch(`${getApiBaseUrl()}/rpl/guru?_t=${Date.now()}`, {
+    cache: 'no-store',
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal memuat data guru');
+  return json.data || [];
+}
+
+export async function fetchWaliKelas(): Promise<Record<string, string>> {
+  const res = await fetch(`${getApiBaseUrl()}/rpl/walikelas?_t=${Date.now()}`, {
+    cache: 'no-store',
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal memuat wali kelas');
+  return json.data || {};
+}
+
+export async function saveWaliKelas(mapping: Record<string, string>): Promise<void> {
+  const res = await fetch(`${getApiBaseUrl()}/rpl/walikelas`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mapping }),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal menyimpan wali kelas');
+}
+
+
 // ==========================================
 // FITUR SISWA ABSEN KELAS (3 SISWA PER KELAS BERGANTIAN)
 // ==========================================

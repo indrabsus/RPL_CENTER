@@ -24,7 +24,16 @@ import {
   X,
   FileText
 } from 'lucide-react';
-import { fetchRplSiswa, fetchRplSummary, RplSiswaItem, RplSummaryData } from '@/lib/api';
+import {
+  fetchRplSiswa,
+  fetchRplSummary,
+  RplSiswaItem,
+  RplSummaryData,
+  fetchGuruList,
+  fetchWaliKelas,
+  saveWaliKelas,
+  GuruItem,
+} from '@/lib/api';
 
 const CLASS_OPTIONS = [
   { tingkat: '10', kelas: 'PPLG 1', label: '10 PPLG 1' },
@@ -71,6 +80,14 @@ export default function DataSiswaPage() {
   const [printStudents, setPrintStudents] = useState<RplSiswaItem[]>([]);
   const [printExecuted, setPrintExecuted] = useState<boolean>(false);
 
+  // Wali Kelas States (from Zakola DB)
+  const [waliKelasMapping, setWaliKelasMapping] = useState<Record<string, string>>({});
+  const [guruList, setGuruList] = useState<GuruItem[]>([]);
+  const [showWaliModal, setShowWaliModal] = useState<boolean>(false);
+  const [loadingGuru, setLoadingGuru] = useState<boolean>(false);
+  const [savingWali, setSavingWali] = useState<boolean>(false);
+  const [waliSaveStatus, setWaliSaveStatus] = useState<string | null>(null);
+
   // Check URL parameters on mount (?tingkat=10, 11, 12)
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -83,7 +100,50 @@ export default function DataSiswaPage() {
       if (k) setSelectedClass(k);
     }
     loadSummary();
+    loadWaliKelas();
   }, []);
+
+  const loadWaliKelas = async () => {
+    try {
+      const mapping = await fetchWaliKelas();
+      setWaliKelasMapping(mapping);
+    } catch (e) {
+      console.warn('Gagal memuat wali kelas:', e);
+    }
+  };
+
+  const handleOpenWaliModal = async () => {
+    setShowWaliModal(true);
+    setWaliSaveStatus(null);
+    if (guruList.length === 0) {
+      setLoadingGuru(true);
+      try {
+        const teachers = await fetchGuruList();
+        setGuruList(teachers);
+      } catch (err: any) {
+        console.warn('Gagal memuat list guru:', err.message);
+      } finally {
+        setLoadingGuru(false);
+      }
+    }
+  };
+
+  const handleSaveWaliKelas = async () => {
+    setSavingWali(true);
+    setWaliSaveStatus(null);
+    try {
+      await saveWaliKelas(waliKelasMapping);
+      setWaliSaveStatus('success');
+      setTimeout(() => {
+        setShowWaliModal(false);
+        setWaliSaveStatus(null);
+      }, 1000);
+    } catch (err: any) {
+      setWaliSaveStatus(err.message || 'Gagal menyimpan wali kelas');
+    } finally {
+      setSavingWali(false);
+    }
+  };
 
   // Reload students when filter changes
   useEffect(() => {
@@ -266,6 +326,16 @@ export default function DataSiswaPage() {
           </div>
 
           <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
+            {/* Button Atur Wali Kelas */}
+            <button
+              onClick={handleOpenWaliModal}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold transition-all shadow-2xs cursor-pointer"
+              title="Atur Nama Wali Kelas dari Database Guru Zakola"
+            >
+              <GraduationCap className="w-3.5 h-3.5 text-amber-700" />
+              <span>Atur Wali Kelas</span>
+            </button>
+
             {/* Button Cetak PDF */}
             <button
               onClick={handleOpenPrintModal}
@@ -808,6 +878,134 @@ export default function DataSiswaPage() {
       )}
 
       {/* ============================================================ */}
+      {/* 2B. MODAL PENGATURAN WALI KELAS (DATABASE GURU ZAKOLA)       */}
+      {/* ============================================================ */}
+      {showWaliModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 screen-only print-hide print:hidden animate-in fade-in-0 duration-150" data-print="hide">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shadow-2xs">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    Pengaturan Wali Kelas
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Pilih nama guru resmi dari Database Zakola untuk setiap kelas RPL
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowWaliModal(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {loadingGuru ? (
+              <div className="py-12 text-center space-y-3">
+                <RefreshCw className="w-7 h-7 text-amber-600 animate-spin mx-auto" />
+                <p className="text-xs font-semibold text-slate-600">
+                  Mengambil daftar nama guru dari Database Zakola...
+                </p>
+              </div>
+            ) : (
+              <div className="flex-1 overflow-y-auto space-y-3 pr-1 py-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {CLASS_OPTIONS.map((c) => {
+                    const key = `${c.tingkat}-${c.kelas}`;
+                    const currentVal = waliKelasMapping[key] || '';
+
+                    return (
+                      <div key={key} className="bg-slate-50/80 border border-slate-200 rounded-xl p-3 space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-slate-800">
+                            Kelas {c.tingkat} {c.kelas}
+                          </span>
+                          <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                            Wali Kelas
+                          </span>
+                        </div>
+                        <select
+                          value={currentVal}
+                          onChange={(e) => {
+                            setWaliKelasMapping({
+                              ...waliKelasMapping,
+                              [key]: e.target.value,
+                            });
+                          }}
+                          className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all cursor-pointer"
+                        >
+                          <option value="">-- Kosongkan (Tanda Tangan Manual) --</option>
+                          {guruList.map((g) => (
+                            <option key={g.id} value={g.nama_lengkap}>
+                              {g.nama_lengkap}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {waliSaveStatus === 'success' && (
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 font-bold animate-in fade-in-0 duration-150">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Pengaturan wali kelas berhasil disimpan ke sistem!</span>
+              </div>
+            )}
+
+            {waliSaveStatus && waliSaveStatus !== 'success' && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2 font-bold animate-in fade-in-0 duration-150">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{waliSaveStatus}</span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <span className="text-[11px] text-slate-400">
+                Tersimpan di tabel sarpras_pengaturan Zakola
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowWaliModal(false)}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  Tutup
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveWaliKelas}
+                  disabled={savingWali || loadingGuru}
+                  className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                >
+                  {savingWali ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Menyimpan...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Simpan Wali Kelas</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
       {/* 3. OFFICIAL PRINTABLE DOCUMENT (A4 LANDSCAPE 1 HALAMAN UTUH)  */}
       {/* ============================================================ */}
       <div id="printable-document" className="hidden print:block w-full text-black bg-white text-[9.5px] leading-tight">
@@ -970,7 +1168,6 @@ export default function DataSiswaPage() {
               />
             </div>
             <div className="font-bold underline relative z-10">INDRA BATARA, S.Pd., Gr.</div>
-            <div className="relative z-10">NUPTK. -</div>
           </div>
 
           <div className="text-[8px] text-gray-500 italic max-w-xs text-center self-end mb-1">
@@ -982,8 +1179,9 @@ export default function DataSiswaPage() {
             <div>Cimahi, {formatIndoDate(new Date().toISOString().split('T')[0])}</div>
             <div className="font-semibold">Wali Kelas {printClass ? printClass.replace('-', ' ') : '-'}</div>
             <div className="h-14"></div>
-            <div className="font-bold underline">( ............................................ )</div>
-            <div>NIP/NUPTK. -</div>
+            <div className="font-bold underline">
+              {waliKelasMapping[printClass] || '( ............................................ )'}
+            </div>
           </div>
         </div>
       </div>
