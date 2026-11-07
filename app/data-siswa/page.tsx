@@ -810,37 +810,37 @@ export default function DataSiswaPage() {
       {/* ============================================================ */}
       {/* 3. OFFICIAL PRINTABLE DOCUMENT (A4 LANDSCAPE 1 HALAMAN UTUH)  */}
       {/* ============================================================ */}
-      <div id="printable-document" className="hidden print:block w-full text-black bg-white text-[9px] leading-tight">
+      <div id="printable-document" className="hidden print:block w-full text-black bg-white text-[9.5px] leading-tight">
         {/* KOP SURAT RESMI */}
-        <div className="flex items-center gap-3.5 pb-1.5 border-b-2 border-black">
+        <div className="flex items-center gap-4 pb-2 border-b-2 border-black">
           <img
             src="/logo-sangkuriang.png"
             alt="Logo SMK Sangkuriang 1 Cimahi"
-            className="w-13 h-13 object-contain shrink-0"
+            className="w-16 h-16 object-contain shrink-0"
           />
           <div className="text-center flex-1">
-            <div className="text-[10.5px] font-bold tracking-wider uppercase text-black leading-none">
+            <div className="text-[12px] font-bold tracking-wider uppercase text-black leading-tight">
               YAYASAN PENDIDIKAN DAYANG SUMBI JAYA LESTARI
             </div>
-            <div className="text-[13.5px] font-black tracking-wide uppercase text-black leading-tight mt-0.5">
+            <div className="text-[16px] font-black tracking-wide uppercase text-black leading-tight mt-0.5">
               SMK SANGKURIANG 1 CIMAHI
             </div>
-            <div className="text-[9px] font-bold text-black uppercase tracking-tight leading-tight mt-0.5">
+            <div className="text-[10.5px] font-bold text-black uppercase tracking-tight leading-tight mt-0.5">
               KONSENTRASI KEAHLIAN: PENGEMBANGAN PERANGKAT LUNAK DAN GIM (PPLG / RPL)
             </div>
-            <div className="text-[8px] text-gray-700 leading-tight mt-0.5">
+            <div className="text-[9px] text-gray-700 leading-tight mt-0.5">
               Jl. Sangkuriang No. 76 Cimahi 40511 • Telp/Fax: (022) 6652280 • Website: smksangkuriang1cimahi.sch.id
             </div>
           </div>
         </div>
-        <div className="border-b border-black mt-[1px] mb-2"></div>
+        <div className="border-b border-black mt-[1.5px] mb-2.5"></div>
 
         {/* JUDUL DOKUMEN & IDENTITAS */}
-        <div className="text-center mb-2">
-          <h2 className="text-[11px] font-black uppercase tracking-wider underline leading-none">
+        <div className="text-center mb-2.5">
+          <h2 className="text-[12px] font-black uppercase tracking-wider underline leading-none">
             DAFTAR REKAPITULASI PRESENSI &amp; DATA SISWA
           </h2>
-          <div className="text-[8.5px] font-semibold text-black mt-1 flex items-center justify-center gap-4">
+          <div className="text-[9.5px] font-semibold text-black mt-1 flex items-center justify-center gap-4">
             <span>Kelas: <strong>{printClass ? printClass.replace('-', ' ') : '-'}</strong></span>
             <span>•</span>
             <span>Periode: <strong>{formatIndoDate(printStartDate)} s.d. {formatIndoDate(printEndDate)}</strong></span>
@@ -855,18 +855,18 @@ export default function DataSiswaPage() {
           const col2 = printStudents.slice(18, 36);
 
           const renderSubTable = (studentsList: typeof printStudents, startOffset: number) => (
-            <table className="w-full text-[8.5px] border border-black border-collapse">
+            <table className="w-full text-[9.5px] border border-black border-collapse">
               <thead>
                 <tr className="bg-gray-100 border-b border-black text-center font-bold">
-                  <th className="border border-black py-0.5 px-1 w-6 text-center">No</th>
-                  <th className="border border-black py-0.5 px-1.5 text-left">Nama Siswa</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">L/P</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">S</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">I</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">A</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">T</th>
-                  <th className="border border-black py-0.5 px-1 w-5 text-center">D</th>
-                  <th className="border border-black py-0.5 px-1 w-6 text-center bg-gray-50">Tot</th>
+                  <th className="border border-black py-1 px-1 w-6 text-center">No</th>
+                  <th className="border border-black py-1 px-1.5 text-left">Nama Siswa</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">L/P</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">S</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">I</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">A</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">T</th>
+                  <th className="border border-black py-1 px-1 w-5 text-center">D</th>
+                  <th className="border border-black py-1 px-1 w-6 text-center bg-gray-50">Tot</th>
                 </tr>
               </thead>
               <tbody>
@@ -888,31 +888,31 @@ export default function DataSiswaPage() {
 
                     return (
                       <tr key={st.id_siswa} className="border-b border-gray-300">
-                        <td className="border border-black py-[2px] px-1 text-center font-mono font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-mono font-medium">
                           {rowNumber}
                         </td>
-                        <td className="border border-black py-[2px] px-1.5 font-semibold text-black uppercase truncate max-w-[135px]">
+                        <td className="border border-black py-[2.5px] px-1.5 font-semibold text-black uppercase truncate max-w-[135px]">
                           {st.nama_lengkap}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center uppercase font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center uppercase font-medium">
                           {st.jenkel}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-medium">
                           {st.sakit || 0}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-medium">
                           {st.izin || 0}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-bold text-red-700">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-bold text-red-700">
                           {st.alfa || 0}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-medium">
                           {st.terlambat || 0}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-medium">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-medium">
                           {st.dispen || 0}
                         </td>
-                        <td className="border border-black py-[2px] px-1 text-center font-black bg-gray-50">
+                        <td className="border border-black py-[2.5px] px-1 text-center font-black bg-gray-50">
                           {totalRow}
                         </td>
                       </tr>
@@ -931,7 +931,7 @@ export default function DataSiswaPage() {
               </div>
 
               {/* BARIS RINGKASAN TOTAL KELAS */}
-              <div className="mt-1.5 py-1 px-3 bg-gray-100 border border-black flex items-center justify-between text-[8.5px] font-bold">
+              <div className="mt-2 py-1 px-3 bg-gray-100 border border-black flex items-center justify-between text-[9.5px] font-bold">
                 <span className="uppercase tracking-wide">
                   REKAP TOTAL SATU KELAS ({printStudents.length} Siswa):
                 </span>
@@ -950,25 +950,25 @@ export default function DataSiswaPage() {
           );
         })()}
 
-        {/* KETERANGAN & TANDA TANGAN RESMI */}
-        <div className="mt-3 flex justify-between items-start text-[9px] break-inside-avoid">
-          <div className="text-left w-60">
+        {/* 2 SPASI KE TANDA TANGAN (MT-7) */}
+        <div className="mt-7 flex justify-between items-start text-[10px] break-inside-avoid">
+          <div className="text-left w-64">
             <div>Mengetahui,</div>
             <div className="font-semibold">Kepala Program Keahlian RPL</div>
-            <div className="h-11"></div>
+            <div className="h-12"></div>
             <div className="font-bold underline">INDRA BATARA, S.Pd., Gr.</div>
             <div>NUPTK. -</div>
           </div>
 
-          <div className="text-[7.5px] text-gray-500 italic max-w-xs text-center self-end mb-1">
+          <div className="text-[8px] text-gray-500 italic max-w-xs text-center self-end mb-1">
             * Keterangan: S = Sakit, I = Izin, A = Alpa, T = Terlambat, D = Dispensasi.<br />
             Dicetak otomatis dari Sistem RPL Center SMK Sangkuriang 1 Cimahi.
           </div>
 
-          <div className="text-left w-60">
+          <div className="text-left w-64">
             <div>Cimahi, {formatIndoDate(new Date().toISOString().split('T')[0])}</div>
             <div className="font-semibold">Wali Kelas {printClass ? printClass.replace('-', ' ') : '-'}</div>
-            <div className="h-11"></div>
+            <div className="h-12"></div>
             <div className="font-bold underline">( ............................................ )</div>
             <div>NIP/NUPTK. -</div>
           </div>
