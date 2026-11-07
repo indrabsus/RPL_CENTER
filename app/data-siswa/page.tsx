@@ -955,7 +955,13 @@ export default function DataSiswaPage() {
           <div className="text-left w-64">
             <div>Mengetahui,</div>
             <div className="font-semibold">Kepala Program Keahlian RPL</div>
-            <div className="h-12"></div>
+            <div className="relative h-14 flex items-center">
+              <img
+                src="/ttd-kajur.png"
+                alt="Tanda Tangan Kepala Program Keahlian RPL"
+                className="h-16 w-auto object-contain -my-1 pointer-events-none"
+              />
+            </div>
             <div className="font-bold underline">INDRA BATARA, S.Pd., Gr.</div>
             <div>NUPTK. -</div>
           </div>
@@ -968,7 +974,7 @@ export default function DataSiswaPage() {
           <div className="text-left w-64">
             <div>Cimahi, {formatIndoDate(new Date().toISOString().split('T')[0])}</div>
             <div className="font-semibold">Wali Kelas {printClass ? printClass.replace('-', ' ') : '-'}</div>
-            <div className="h-12"></div>
+            <div className="h-14"></div>
             <div className="font-bold underline">( ............................................ )</div>
             <div>NIP/NUPTK. -</div>
           </div>
