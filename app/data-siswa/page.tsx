@@ -952,18 +952,25 @@ export default function DataSiswaPage() {
 
         {/* 2 SPASI KE TANDA TANGAN (MT-7) */}
         <div className="mt-7 flex justify-between items-start text-[10px] break-inside-avoid">
-          <div className="text-left w-64">
+          <div className="text-left w-64 relative">
             <div>Mengetahui,</div>
             <div className="font-semibold">Kepala Program Keahlian RPL</div>
             <div className="relative h-14 flex items-center">
+              {/* Cap Stempel Resmi Jurusan RPL SMK Sangkuriang 1 Cimahi */}
+              <img
+                src="/stempel-rpl.png"
+                alt="Cap Stempel Resmi Jurusan RPL"
+                className="absolute -left-3.5 -top-2.5 w-20 h-20 object-contain -rotate-6 opacity-90 pointer-events-none mix-blend-multiply"
+              />
+              {/* Tanda Tangan Kepala Program Keahlian RPL */}
               <img
                 src="/ttd-kajur.png"
                 alt="Tanda Tangan Kepala Program Keahlian RPL"
-                className="h-16 w-auto object-contain -my-1 pointer-events-none"
+                className="relative z-10 h-16 w-auto object-contain -my-1 ml-4 pointer-events-none"
               />
             </div>
-            <div className="font-bold underline">INDRA BATARA, S.Pd., Gr.</div>
-            <div>NUPTK. -</div>
+            <div className="font-bold underline relative z-10">INDRA BATARA, S.Pd., Gr.</div>
+            <div className="relative z-10">NUPTK. -</div>
           </div>
 
           <div className="text-[8px] text-gray-500 italic max-w-xs text-center self-end mb-1">
