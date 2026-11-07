@@ -386,40 +386,82 @@ html.dark .tech-schematic-bg {
 }
 
 /* ============================================================ */
-/* PRINT STYLES FOR OFFICIAL DOCUMENT / PDF (A4 LANDSCAPE 2 KOLOM) */
+/* PRINT STYLES FOR OFFICIAL DOCUMENT / PDF (A4 LANDSCAPE 1 HALAMAN) */
 /* ============================================================ */
 @media print {
   @page {
     size: A4 landscape;
-    margin: 10mm 12mm 10mm 12mm;
+    margin: 5mm 8mm 5mm 8mm;
   }
+
   html, body {
     background-color: #ffffff !important;
     color: #000000 !important;
     background-image: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    height: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible !important;
   }
-  header, footer, nav, button, .print-hide, [data-print-hide="true"] {
+
+  /* Sembunyikan seluruh tampilan aplikasi normal dan elemen non-cetak */
+  header,
+  footer,
+  nav,
+  button,
+  aside,
+  .screen-only,
+  .print-hide,
+  .print\:hidden,
+  [data-print="hide"],
+  [data-print-hide="true"],
+  div.fixed,
+  div.pointer-events-none {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
+
+  /* Reset container layout agar tidak ada flex min-h-screen yang menciptakan halaman kosong */
+  body > div,
+  body > div > main,
+  main {
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  /* Hanya tampilkan dokumen cetak */
   #printable-document {
     display: block !important;
+    visibility: visible !important;
     width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
     color: #000000 !important;
+    page-break-before: avoid !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  #printable-document table {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  #printable-document tr {
+
+  #printable-document table,
+  #printable-document tr,
+  #printable-document td,
+  #printable-document th {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
