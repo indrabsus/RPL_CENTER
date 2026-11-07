@@ -367,9 +367,14 @@ export interface RplSiswaItem {
   jenkel: string;
   tingkat: string;
   nama_kelas: string;
-  no_hp: string;
-  alamat: string;
-  status: string;
+  no_hp?: string;
+  alamat?: string;
+  status?: string;
+  sakit: number;
+  izin: number;
+  alfa: number;
+  terlambat: number;
+  dispen: number;
 }
 
 export interface RplAbsenItem {
@@ -410,11 +415,15 @@ export async function fetchRplSiswa(params?: {
   tingkat?: string;
   kelas?: string;
   q?: string;
+  start_date?: string;
+  end_date?: string;
 }): Promise<{ total: number; data: RplSiswaItem[] }> {
   const query = new URLSearchParams();
   if (params?.tingkat && params.tingkat !== 'all') query.set('tingkat', params.tingkat);
   if (params?.kelas && params.kelas !== 'all') query.set('kelas', params.kelas);
   if (params?.q) query.set('q', params.q);
+  if (params?.start_date) query.set('start_date', params.start_date);
+  if (params?.end_date) query.set('end_date', params.end_date);
 
   const res = await fetch(`${getApiBaseUrl()}/rpl/siswa?${query.toString()}&_t=${Date.now()}`, {
     cache: 'no-store',
@@ -574,6 +583,17 @@ export async function saveSiswaAbsen(payload: {
   });
   const json = await res.json();
   if (!json.success) throw new Error(json.message || 'Gagal menyimpan absensi');
+  return json;
+}
+
+export async function deleteSiswaAbsen(id: number | string): Promise<{ success: boolean; message: string }> {
+  const res = await fetch(`${getApiBaseUrl()}/siswa-absen/delete`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal menghapus data presensi');
   return json;
 }
 

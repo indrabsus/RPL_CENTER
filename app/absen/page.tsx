@@ -19,12 +19,14 @@ import {
   ShieldAlert,
   KeyRound,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  Trash2
 } from 'lucide-react';
 import {
   fetchSiswaAbsenList,
   fetchSiswaAbsenPinList,
   fetchRplSummary,
+  deleteSiswaAbsen,
   SiswaAbsenRecord,
   SiswaAbsenSummary,
   SiswaAbsenPinItem,
@@ -51,6 +53,22 @@ export default function AbsenPage() {
   const [showPinModal, setShowPinModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDeleteRecord = async (rec: SiswaAbsenRecord) => {
+    const confirmMsg = `Hapus catatan presensi "${rec.nama_siswa}" (${rec.status}) tanggal ${rec.tanggal}?`;
+    if (!window.confirm(confirmMsg)) return;
+
+    setDeletingId(rec.id_siswa_absen);
+    try {
+      await deleteSiswaAbsen(rec.id_siswa_absen);
+      await loadAbsenData();
+    } catch (err: any) {
+      alert('Gagal menghapus data: ' + err.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -527,6 +545,7 @@ export default function AbsenPage() {
                   <th className="py-3 px-3 text-center">Status</th>
                   <th className="py-3 px-4">Petugas Pengabsen</th>
                   <th className="py-3 px-3 text-center">Catatan</th>
+                  <th className="py-3 px-3 w-16 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-sans">
@@ -557,6 +576,20 @@ export default function AbsenPage() {
                     </td>
                     <td className="py-3 px-3 text-center text-slate-500 text-xs">
                       {rec.catatan || '-'}
+                    </td>
+                    <td className="py-3 px-3 text-center">
+                      <button
+                        onClick={() => handleDeleteRecord(rec)}
+                        disabled={deletingId === rec.id_siswa_absen}
+                        className="p-1.5 rounded-lg border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-colors cursor-pointer disabled:opacity-50"
+                        title="Hapus catatan presensi ini"
+                      >
+                        {deletingId === rec.id_siswa_absen ? (
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3.5 h-3.5" />
+                        )}
+                      </button>
                     </td>
                   </tr>
                 ))}

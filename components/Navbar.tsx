@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Laptop, Monitor, Clock, Sun, Moon } from 'lucide-react';
+import { RefreshCw, Menu, X, ChevronDown, GraduationCap, Wifi, ShieldAlert, ArrowRight, Laptop, Monitor, Clock, Sun, Moon, UserCheck } from 'lucide-react';
 import { fetchNetworkStats, fetchBarang, NetworkStatsData } from '@/lib/api';
 
 export default function Navbar() {
@@ -412,85 +412,106 @@ export default function Navbar() {
                     Pusat Data &amp; Presensi RPL
                   </div>
 
-                  {/* 3 Grade Columns / Blocks */}
-                  <div className="py-2 space-y-2">
+                  {/* 3 Grade Items: Kelas 10, Kelas 11, Kelas 12 */}
+                  <div className="py-2 space-y-1.5">
                     {/* Kelas 10 */}
-                    <div className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-bold text-slate-900 dark:text-slate-200 flex items-center gap-1.5">
-                          <GraduationCap className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                          <span>Kelas 10 RPL</span>
-                        </span>
+                    <Link
+                      href="/data-siswa?tingkat=10"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center justify-between p-2 rounded-xl hover:bg-indigo-50/80 dark:hover:bg-indigo-950/50 border border-transparent hover:border-indigo-100 dark:hover:border-indigo-500/30 transition-all group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs group-hover:scale-105 transition-transform">
+                          10
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                            Kelas 10 RPL
+                          </div>
+                          <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                            10 PPLG 1, 2, 3
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <Link
-                          href="/data-siswa?tingkat=10"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/80 transition-colors border border-indigo-100 dark:border-indigo-500/30"
-                        >
-                          Data Siswa
-                        </Link>
-                        <Link
-                          href="/absen?tingkat=10"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-teal-50 dark:bg-emerald-950/80 text-teal-700 dark:text-emerald-300 hover:bg-teal-100 dark:hover:bg-emerald-900/80 transition-colors border border-teal-100 dark:border-emerald-500/30"
-                        >
-                          Absen
-                        </Link>
-                      </div>
-                    </div>
+                      <span className="text-[11px] font-semibold text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 flex items-center gap-0.5">
+                        Buka &rarr;
+                      </span>
+                    </Link>
 
                     {/* Kelas 11 */}
-                    <div className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-bold text-slate-900 dark:text-slate-200 flex items-center gap-1.5">
-                          <GraduationCap className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                          <span>Kelas 11 RPL</span>
-                        </span>
+                    <Link
+                      href="/data-siswa?tingkat=11"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center justify-between p-2 rounded-xl hover:bg-emerald-50/80 dark:hover:bg-emerald-950/50 border border-transparent hover:border-emerald-100 dark:hover:border-emerald-500/30 transition-all group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-xs group-hover:scale-105 transition-transform">
+                          11
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                            Kelas 11 RPL
+                          </div>
+                          <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                            11 PPLG 1, 2, 3, 4
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <Link
-                          href="/data-siswa?tingkat=11"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 transition-colors border border-emerald-100 dark:border-emerald-500/30"
-                        >
-                          Data Siswa
-                        </Link>
-                        <Link
-                          href="/absen?tingkat=11"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-teal-50 dark:bg-teal-950/80 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/80 transition-colors border border-teal-100 dark:border-teal-500/30"
-                        >
-                          Absen
-                        </Link>
-                      </div>
-                    </div>
+                      <span className="text-[11px] font-semibold text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 flex items-center gap-0.5">
+                        Buka &rarr;
+                      </span>
+                    </Link>
 
                     {/* Kelas 12 */}
-                    <div className="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-bold text-slate-900 dark:text-slate-200 flex items-center gap-1.5">
-                          <GraduationCap className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
-                          <span>Kelas 12 RPL</span>
-                        </span>
+                    <Link
+                      href="/data-siswa?tingkat=12"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center justify-between p-2 rounded-xl hover:bg-purple-50/80 dark:hover:bg-purple-950/50 border border-transparent hover:border-purple-100 dark:hover:border-purple-500/30 transition-all group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-purple-50 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 flex items-center justify-center font-black text-xs group-hover:scale-105 transition-transform">
+                          12
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400">
+                            Kelas 12 RPL
+                          </div>
+                          <div className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                            12 PPLG 1, 2, 3, 4
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <Link
-                          href="/data-siswa?tingkat=12"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/80 transition-colors border border-purple-100 dark:border-purple-500/30"
-                        >
-                          Data Siswa
-                        </Link>
-                        <Link
-                          href="/absen?tingkat=12"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex-1 px-2.5 py-1 text-center rounded-lg text-xs font-semibold bg-teal-50 dark:bg-emerald-950/80 text-teal-700 dark:text-emerald-300 hover:bg-teal-100 dark:hover:bg-emerald-900/80 transition-colors border border-teal-100 dark:border-emerald-500/30"
-                        >
-                          Absen
-                        </Link>
+                      <span className="text-[11px] font-semibold text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 flex items-center gap-0.5">
+                        Buka &rarr;
+                      </span>
+                    </Link>
+                  </div>
+
+                  {/* Logo Absen di Bawah Kelas 12 */}
+                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <Link
+                      href="/absen"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center justify-between p-2.5 rounded-xl bg-linear-to-r from-teal-500/10 via-emerald-500/5 to-transparent hover:from-teal-500/20 border border-teal-200/80 dark:border-emerald-500/30 transition-all group shadow-2xs"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center shadow-xs">
+                          <UserCheck className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-black text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-emerald-400 flex items-center gap-1.5">
+                            <span>Absen Siswa RPL</span>
+                            <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-teal-100 text-teal-800 dark:bg-emerald-950 dark:text-emerald-300">
+                              Live
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                            Monitoring &amp; Input Presensi Kelas
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      <span className="text-xs font-bold text-teal-600 dark:text-emerald-400">&rarr;</span>
+                    </Link>
                   </div>
 
                   {/* Bottom: Semua Angkatan */}
@@ -500,15 +521,7 @@ export default function Navbar() {
                       onClick={() => setDropdownOpen(false)}
                       className="px-2 py-1 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-emerald-400 font-semibold"
                     >
-                      Semua Siswa
-                    </Link>
-                    <span className="text-slate-300 dark:text-slate-700">|</span>
-                    <Link
-                      href="/absen?tingkat=all"
-                      onClick={() => setDropdownOpen(false)}
-                      className="px-2 py-1 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-emerald-400 font-semibold"
-                    >
-                      Semua Absen
+                      Semua Siswa (Angkatan 10-12)
                     </Link>
                   </div>
                 </div>
@@ -621,67 +634,58 @@ export default function Navbar() {
             </div>
 
             {/* Kelas 10 */}
-            <div className="bg-slate-50 dark:bg-slate-900/60 rounded-lg p-2 space-y-1">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Kelas 10 RPL</span>
-              <div className="flex gap-2">
-                <Link
-                  href="/data-siswa?tingkat=10"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-indigo-950/80 border border-slate-200 dark:border-indigo-500/30 rounded text-xs font-semibold text-indigo-700 dark:text-indigo-300"
-                >
-                  Data Siswa
-                </Link>
-                <Link
-                  href="/absen?tingkat=10"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-teal-950/80 border border-slate-200 dark:border-teal-500/30 rounded text-xs font-semibold text-teal-700 dark:text-teal-300"
-                >
-                  Absen
-                </Link>
+            <Link
+              href="/data-siswa?tingkat=10"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-black text-xs flex items-center justify-center">10</span>
+                <span>Kelas 10 RPL</span>
               </div>
-            </div>
+              <span className="text-slate-400 text-[11px]">&rarr;</span>
+            </Link>
 
             {/* Kelas 11 */}
-            <div className="bg-slate-50 dark:bg-slate-900/60 rounded-lg p-2 space-y-1">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Kelas 11 RPL</span>
-              <div className="flex gap-2">
-                <Link
-                  href="/data-siswa?tingkat=11"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-emerald-950/80 border border-slate-200 dark:border-emerald-500/30 rounded text-xs font-semibold text-emerald-700 dark:text-emerald-300"
-                >
-                  Data Siswa
-                </Link>
-                <Link
-                  href="/absen?tingkat=11"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-teal-950/80 border border-slate-200 dark:border-teal-500/30 rounded text-xs font-semibold text-teal-700 dark:text-teal-300"
-                >
-                  Absen
-                </Link>
+            <Link
+              href="/data-siswa?tingkat=11"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 font-black text-xs flex items-center justify-center">11</span>
+                <span>Kelas 11 RPL</span>
               </div>
-            </div>
+              <span className="text-slate-400 text-[11px]">&rarr;</span>
+            </Link>
 
             {/* Kelas 12 */}
-            <div className="bg-slate-50 dark:bg-slate-900/60 rounded-lg p-2 space-y-1">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Kelas 12 RPL</span>
-              <div className="flex gap-2">
-                <Link
-                  href="/data-siswa?tingkat=12"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-purple-950/80 border border-slate-200 dark:border-purple-500/30 rounded text-xs font-semibold text-purple-700 dark:text-purple-300"
-                >
-                  Data Siswa
-                </Link>
-                <Link
-                  href="/absen?tingkat=12"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 py-1 text-center bg-white dark:bg-teal-950/80 border border-slate-200 dark:border-teal-500/30 rounded text-xs font-semibold text-teal-700 dark:text-teal-300"
-                >
-                  Absen
-                </Link>
+            <Link
+              href="/data-siswa?tingkat=12"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 font-black text-xs flex items-center justify-center">12</span>
+                <span>Kelas 12 RPL</span>
               </div>
-            </div>
+              <span className="text-slate-400 text-[11px]">&rarr;</span>
+            </Link>
+
+            {/* Logo Absen di Bawah Kelas 12 */}
+            <Link
+              href="/absen"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-2.5 rounded-lg bg-teal-50 dark:bg-emerald-950/60 border border-teal-200 dark:border-emerald-500/30 text-xs font-black text-teal-800 dark:text-emerald-300"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded bg-teal-600 text-white flex items-center justify-center">
+                  <UserCheck className="w-3.5 h-3.5" />
+                </div>
+                <span>Absen Siswa RPL</span>
+              </div>
+              <span className="text-teal-600 dark:text-emerald-400 text-xs">&rarr;</span>
+            </Link>
           </div>
 
           <Link
