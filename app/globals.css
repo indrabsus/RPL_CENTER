@@ -386,12 +386,12 @@ html.dark .tech-schematic-bg {
 }
 
 /* ============================================================ */
-/* PRINT STYLES FOR OFFICIAL DOCUMENT / PDF (F4 LANDSCAPE 2 KOLOM) */
+/* PRINT STYLES FOR OFFICIAL DOCUMENT / PDF (A4 LANDSCAPE 2 KOLOM) */
 /* ============================================================ */
 @media print {
   @page {
-    size: 330mm 215mm landscape;
-    margin: 6mm 10mm 6mm 10mm;
+    size: A4 landscape;
+    margin: 10mm 12mm 10mm 12mm;
   }
   html, body {
     background-color: #ffffff !important;
