@@ -270,7 +270,7 @@ export default function SiswaAbsenPage() {
             Input Absensi Siswa Kelas
           </h1>
           <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-            Sistem pengabsenan kelas oleh 3 perwakilan siswa bergantian setiap hari
+            Sistem pengabsenan kelas oleh akun petugas presensi RPL untuk seluruh rombel
           </p>
         </div>
 

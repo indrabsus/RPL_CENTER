@@ -17,19 +17,16 @@ import {
   GraduationCap,
   UserCheck,
   ShieldAlert,
-  KeyRound,
   ExternalLink,
   ChevronRight,
   Trash2
 } from 'lucide-react';
 import {
   fetchSiswaAbsenList,
-  fetchSiswaAbsenPinList,
   fetchRplSummary,
   deleteSiswaAbsen,
   SiswaAbsenRecord,
   SiswaAbsenSummary,
-  SiswaAbsenPinItem,
   RplSummaryData
 } from '@/lib/api';
 
@@ -49,8 +46,6 @@ export default function AbsenPage() {
     terlambat: 0,
   });
   const [rplSummary, setRplSummary] = useState<RplSummaryData | null>(null);
-  const [pinList, setPinList] = useState<SiswaAbsenPinItem[]>([]);
-  const [showPinModal, setShowPinModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -93,16 +88,6 @@ export default function AbsenPage() {
       setRplSummary(data);
     } catch (err: any) {
       console.warn('Gagal memuat info kelas:', err.message);
-    }
-  };
-
-  const loadPinList = async () => {
-    try {
-      const pins = await fetchSiswaAbsenPinList();
-      setPinList(pins);
-      setShowPinModal(true);
-    } catch (err: any) {
-      alert('Gagal memuat list PIN: ' + err.message);
     }
   };
 
@@ -206,7 +191,7 @@ export default function AbsenPage() {
             Monitoring Absensi Siswa
           </h1>
           <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-            Data absensi bersumber dari tabel <code className="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono text-xs">siswa_absen</code> yang diinput oleh perwakilan siswa tiap kelas
+            Data absensi bersumber dari rekap presensi harian kelas yang diinput oleh petugas presensi
           </p>
         </div>
 
@@ -219,16 +204,6 @@ export default function AbsenPage() {
             <UserCheck className="w-3.5 h-3.5" />
             <span>Input Absen Kelas</span>
           </Link>
-
-          {/* Button View PIN Kelas */}
-          <button
-            onClick={loadPinList}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-            title="Daftar PIN Kelas untuk dibagikan ke siswa"
-          >
-            <KeyRound className="w-3.5 h-3.5 text-slate-500" />
-            <span>Daftar PIN Kelas</span>
-          </button>
 
           <button
             onClick={loadAbsenData}
@@ -606,77 +581,6 @@ export default function AbsenPage() {
           <div>Tabel Database: <code className="font-mono text-teal-600">siswa_absen</code></div>
         </div>
       </div>
-
-      {/* Modal Daftar PIN Kelas */}
-      {showPinModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                <KeyRound className="w-4 h-4 text-teal-600" />
-                <span>Daftar PIN Kelas RPL (Untuk Siswa Petugas)</span>
-              </h3>
-              <button
-                onClick={() => setShowPinModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Berikut adalah daftar PIN untuk tiap kelas yang dapat dibagikan kepada 3 orang siswa perwakilan yang bertugas mengabsen di menu <code className="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono text-xs">/siswa-absen</code>:
-            </p>
-
-            <div className="border border-slate-200 rounded-xl overflow-hidden max-h-80 overflow-y-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-                    <th className="py-2.5 px-3">Kelas</th>
-                    <th className="py-2.5 px-3 text-center">PIN Kelas</th>
-                    <th className="py-2.5 px-3">Tindakan</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {pinList.map((p) => (
-                    <tr key={p.id} className="hover:bg-slate-50">
-                      <td className="py-2.5 px-3 font-bold text-slate-800">
-                        Kelas {p.tingkat} {p.nama_kelas}
-                      </td>
-                      <td className="py-2.5 px-3 text-center font-mono font-black text-teal-700 tracking-wider">
-                        {p.pin}
-                      </td>
-                      <td className="py-2.5 px-3 text-slate-500">
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              `PIN Absen Kelas ${p.tingkat} ${p.nama_kelas}: ${p.pin}\nLink: https://rpl.sakuci.id/siswa-absen`
-                            );
-                            alert(`PIN untuk ${p.tingkat} ${p.nama_kelas} berhasil disalin ke clipboard!`);
-                          }}
-                          className="text-[11px] font-semibold text-teal-600 hover:text-teal-800 underline cursor-pointer"
-                        >
-                          Salin Info
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="flex items-center justify-end pt-2">
-              <button
-                type="button"
-                onClick={() => setShowPinModal(false)}
-                className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold cursor-pointer shadow-2xs"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
