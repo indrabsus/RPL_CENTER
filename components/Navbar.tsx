@@ -220,7 +220,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200/90 dark:border-emerald-500/20 bg-white/95 dark:bg-[#090d15]/95 backdrop-blur-md shadow-2xs dark:shadow-[0_4px_25px_rgba(0,0,0,0.5)] relative transition-colors duration-200">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/90 dark:border-emerald-500/20 bg-white/95 dark:bg-[#090d15]/95 backdrop-blur-md shadow-2xs dark:shadow-[0_4px_25px_rgba(0,0,0,0.5)] relative transition-colors duration-200 print:hidden">
       {/* Glowing Gaming Green Accent Line at top (Dark Mode only) */}
       <div className="hidden dark:block h-[2px] w-full bg-gradient-to-r from-emerald-600 via-emerald-400 to-green-300 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
 
