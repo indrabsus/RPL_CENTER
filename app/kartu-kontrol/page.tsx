@@ -153,20 +153,12 @@ export default function KartuKontrolPage() {
     if (status === 'acc') {
       return (
         <div className="flex items-center justify-center w-full h-full p-1 bg-white">
-          <div className="relative w-28 h-20 flex items-center justify-start pl-1">
-            {/* Tanda Tangan Kajur */}
-            <img
-              src="/ttd-kajur.png"
-              alt="Paraf Kajur"
-              className="relative z-10 h-16 w-auto object-contain pointer-events-none select-none"
-            />
-            {/* Cap Stempel Resmi Jurusan RPL: Di sebelah kanan menimpa setengah */}
-            <img
-              src="/stempel-rpl.png"
-              alt="Cap Stempel Resmi Jurusan RPL"
-              className="absolute left-6 -top-1 w-20 h-20 object-contain -rotate-6 pointer-events-none select-none mix-blend-multiply opacity-90"
-            />
-          </div>
+          {/* Cap Stempel Resmi Jurusan RPL */}
+          <img
+            src="/stempel-rpl.png"
+            alt="Cap Stempel Resmi Jurusan RPL"
+            className="w-20 h-20 sm:w-22 sm:h-22 object-contain -rotate-3 pointer-events-none select-none mix-blend-multiply opacity-90"
+          />
         </div>
       );
     } else if (status === 'revisi') {
