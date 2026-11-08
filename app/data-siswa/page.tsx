@@ -103,8 +103,6 @@ export default function DataSiswaPage() {
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [loginUsername, setLoginUsername] = useState<string>('petugas');
   const [loginPassword, setLoginPassword] = useState<string>('');
-  const [loginPin, setLoginPin] = useState<string>('');
-  const [loginType, setLoginType] = useState<'password' | 'pin'>('password');
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginLoading, setLoginLoading] = useState<boolean>(false);
 
@@ -147,8 +145,10 @@ export default function DataSiswaPage() {
     setLoginError(null);
     setLoginLoading(true);
     try {
-      const credentials = loginType === 'pin' ? { pin: loginPin.trim() } : { username: loginUsername.trim(), password: loginPassword.trim() };
-      const res = await verifyRole(credentials);
+      const res = await verifyRole({
+        username: loginUsername.trim(),
+        password: loginPassword.trim(),
+      });
       setAuthRole(res.role);
       setAuthUsername(res.username || (res.role === 'admin' ? 'admin' : 'petugas'));
       sessionStorage.setItem('sarpras_auth_role', res.role);
@@ -1436,81 +1436,35 @@ export default function DataSiswaPage() {
               </button>
             </div>
 
-            {/* Tab: Password vs PIN */}
-            <div className="flex rounded-xl bg-slate-100 p-1 text-xs font-bold">
-              <button
-                type="button"
-                onClick={() => setLoginType('password')}
-                className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  loginType === 'password'
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                Username &amp; Password
-              </button>
-              <button
-                type="button"
-                onClick={() => setLoginType('pin')}
-                className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  loginType === 'pin'
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                PIN Cepat
-              </button>
-            </div>
-
             <form onSubmit={handleLogin} className="space-y-3.5">
-              {loginType === 'password' ? (
-                <>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Username:
-                    </label>
-                    <input
-                      type="text"
-                      value={loginUsername}
-                      onChange={(e) => setLoginUsername(e.target.value)}
-                      placeholder="Contoh: petugas atau admin"
-                      required
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Password:
-                    </label>
-                    <input
-                      type="password"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      placeholder="Masukkan password akun"
-                      required
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                    />
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    PIN Akses (Admin / Petugas):
-                  </label>
-                  <input
-                    type="password"
-                    maxLength={6}
-                    value={loginPin}
-                    onChange={(e) => setLoginPin(e.target.value.replace(/\D/g, ''))}
-                    placeholder="Masukkan 6 digit PIN (contoh: 654321)"
-                    required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono tracking-widest text-center font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                  />
-                  <span className="text-[11px] text-slate-400 mt-1 block text-center">
-                    Petugas: 654321 • Admin: 987654
-                  </span>
-                </div>
-              )}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Username Akun: <span className="text-rose-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={loginUsername}
+                  onChange={(e) => setLoginUsername(e.target.value)}
+                  placeholder="Contoh: petugas atau admin"
+                  required
+                  autoFocus
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Password: <span className="text-rose-600">*</span>
+                </label>
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="Masukkan password akun"
+                  required
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                />
+              </div>
 
               {loginError && (
                 <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2 font-semibold">
