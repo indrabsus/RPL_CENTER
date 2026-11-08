@@ -153,11 +153,20 @@ export default function KartuKontrolPage() {
     if (status === 'acc') {
       return (
         <div className="flex items-center justify-center w-full h-full p-1 bg-white">
-          <img
-            src="/cap_rpl.png"
-            alt="Cap ACC"
-            className="w-24 h-24 sm:w-28 sm:h-28 object-contain select-none -rotate-2"
-          />
+          <div className="relative w-28 h-20 flex items-center justify-start pl-1">
+            {/* Tanda Tangan Kajur */}
+            <img
+              src="/ttd-kajur.png"
+              alt="Paraf Kajur"
+              className="relative z-10 h-16 w-auto object-contain pointer-events-none select-none"
+            />
+            {/* Cap Stempel Resmi Jurusan RPL: Di sebelah kanan menimpa setengah */}
+            <img
+              src="/stempel-rpl.png"
+              alt="Cap Stempel Resmi Jurusan RPL"
+              className="absolute left-6 -top-1 w-20 h-20 object-contain -rotate-6 pointer-events-none select-none mix-blend-multiply opacity-90"
+            />
+          </div>
         </div>
       );
     } else if (status === 'revisi') {
@@ -541,8 +550,8 @@ export default function KartuKontrolPage() {
                     className="absolute left-6 -top-2 w-20 h-20 object-contain -rotate-6 pointer-events-none mix-blend-multiply opacity-90"
                   />
                 </div>
-                <div className="font-extrabold underline text-slate-900 tracking-wide relative z-10">
-                  Indra Batara, S.Pd., Gr.
+                <div className="font-extrabold underline text-slate-900 tracking-wide relative z-10 uppercase">
+                  INDRA BATARA, S.Pd., Gr.
                 </div>
               </div>
             </div>
