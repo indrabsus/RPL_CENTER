@@ -152,19 +152,18 @@ export default function KartuKontrolPage() {
   const renderParaf = (status?: string) => {
     if (status === 'acc') {
       return (
-        <div className="flex items-center justify-center w-full h-full p-0.5">
+        <div className="flex items-center justify-center w-full h-full p-1 bg-white">
           <img
             src="/cap_rpl.png"
             alt="Cap ACC"
-            className="w-18 h-18 sm:w-20 sm:h-20 object-contain select-none"
-            style={{ mixBlendMode: 'multiply' }}
+            className="w-24 h-24 sm:w-28 sm:h-28 object-contain select-none -rotate-2"
           />
         </div>
       );
     } else if (status === 'revisi') {
       return (
-        <div className="flex items-center justify-center w-full h-full">
-          <div className="border-2 border-dashed border-red-600 text-red-700 font-extrabold text-xs sm:text-sm tracking-wider px-2.5 py-1 rounded-sm uppercase -rotate-6 select-none bg-red-50/60 shadow-2xs">
+        <div className="flex items-center justify-center w-full h-full bg-white">
+          <div className="border-2 border-dashed border-red-600 text-red-700 font-extrabold text-xs sm:text-sm tracking-wider px-2.5 py-1 rounded-sm uppercase -rotate-6 select-none bg-red-50/80 shadow-2xs">
             REVISI
           </div>
         </div>
@@ -421,100 +420,100 @@ export default function KartuKontrolPage() {
                 <tbody className="text-xs sm:text-sm">
                   {/* Row 1: TKA vs UKK */}
                   <tr className="border-b border-black">
-                    <td className="border border-black text-center font-bold">1</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">1</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       TKA
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Tes Kemampuan Akademik)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.tka)}
                     </td>
 
-                    <td className="border border-black text-center font-bold">5</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">5</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       UKK
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Uji Kompetensi Keahlian)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.ukk)}
                     </td>
                   </tr>
 
                   {/* Row 2: Verifikasi Dokumen UKK vs PKL */}
                   <tr className="border-b border-black">
-                    <td className="border border-black text-center font-bold">2</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">2</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       Verifikasi Dokumen UKK
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Pemeriksaan Portofolio &amp; Berkas)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle bg-slate-50/30">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.verif_dokumen)}
                     </td>
 
-                    <td className="border border-black text-center font-bold">6</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">6</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       PKL
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Praktik Kerja Lapangan)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.pkl)}
                     </td>
                   </tr>
 
                   {/* Row 3: Preparation UKK vs Uji Laporan PKL */}
                   <tr className="border-b border-black">
-                    <td className="border border-black text-center font-bold">3</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">3</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       Preparation UKK
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Kesiapan Teknis &amp; Workshop)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.prep_ukk)}
                     </td>
 
-                    <td className="border border-black text-center font-bold">7</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">7</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       Uji Laporan PKL
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Sidang Presentasi Industri)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.uji_laporan_pkl)}
                     </td>
                   </tr>
 
                   {/* Row 4: Pra UKK vs SAJ */}
                   <tr>
-                    <td className="border border-black text-center font-bold">4</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">4</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       Pra UKK
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Simulasi Uji Kejuruan)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.pra_ukk)}
                     </td>
 
-                    <td className="border border-black text-center font-bold">8</td>
-                    <td className="border border-black p-2.5 font-bold leading-tight">
+                    <td className="border border-black text-center font-bold bg-white">8</td>
+                    <td className="border border-black p-2.5 font-bold leading-tight bg-white">
                       SAJ
                       <span className="block text-[10px] font-normal text-slate-600 mt-0.5">
                         (Sumatif Akhir Jenjang)
                       </span>
                     </td>
-                    <td className="border border-black p-1 text-center h-22 sm:h-24 align-middle">
+                    <td className="border border-black p-1 text-center h-28 sm:h-30 align-middle bg-white">
                       {renderParaf(selectedStudent.stages?.saj)}
                     </td>
                   </tr>
@@ -524,15 +523,27 @@ export default function KartuKontrolPage() {
 
             {/* Official Signature Section */}
             <div className="mt-8 flex justify-end font-sans">
-              <div className="text-center w-64 text-xs sm:text-sm">
+              <div className="text-left w-64 text-xs sm:text-sm relative">
                 <div>Cimahi, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
                 <div className="mt-1 font-semibold">Mengetahui,</div>
                 <div className="text-slate-700">Kepala Program Keahlian RPL</div>
-                <div className="h-18"></div>
-                <div className="font-extrabold underline text-slate-900 tracking-wide">
+                <div className="relative h-16 flex items-center my-1">
+                  {/* Tanda Tangan Kepala Program Keahlian RPL */}
+                  <img
+                    src="/ttd-kajur.png"
+                    alt="Tanda Tangan Kajur"
+                    className="relative z-10 h-16 w-auto object-contain pointer-events-none"
+                  />
+                  {/* Cap Stempel Resmi Jurusan RPL di sebelah kanan menimpa setengah */}
+                  <img
+                    src="/stempel-rpl.png"
+                    alt="Cap Stempel Resmi Jurusan RPL"
+                    className="absolute left-6 -top-2 w-20 h-20 object-contain -rotate-6 pointer-events-none mix-blend-multiply opacity-90"
+                  />
+                </div>
+                <div className="font-extrabold underline text-slate-900 tracking-wide relative z-10">
                   Indra Batara, S.Pd., Gr.
                 </div>
-                <div className="text-[11px] text-slate-500 mt-0.5">NUPTK. 0550769670130102</div>
               </div>
             </div>
           </div>
