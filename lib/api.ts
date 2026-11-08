@@ -370,6 +370,8 @@ export interface RplSiswaItem {
   no_hp?: string;
   alamat?: string;
   status?: string;
+  username?: string;
+  is_default_password?: boolean;
   sakit: number;
   izin: number;
   alfa: number;
@@ -431,6 +433,33 @@ export async function fetchRplSiswa(params?: {
   const json = await res.json();
   if (!json.success) throw new Error(json.message || 'Gagal memuat data siswa RPL');
   return { total: json.total, data: json.data || [] };
+}
+
+export async function changeSiswaUsername(payload: {
+  id_siswa: string;
+  new_username: string;
+}): Promise<{ success: boolean; message: string; data?: { id_siswa: string; username: string } }> {
+  const res = await fetch(`${getApiBaseUrl()}/rpl/siswa/change-username`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal mengubah username');
+  return json;
+}
+
+export async function resetSiswaPassword(payload: {
+  id_siswa: string;
+}): Promise<{ success: boolean; message: string; data?: { id_siswa: string; is_default_password: boolean } }> {
+  const res = await fetch(`${getApiBaseUrl()}/rpl/siswa/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.message || 'Gagal mereset password');
+  return json;
 }
 
 export async function fetchRplAbsen(params?: {

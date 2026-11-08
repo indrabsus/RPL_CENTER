@@ -22,7 +22,13 @@ import {
   ChevronRight,
   Printer,
   X,
-  FileText
+  FileText,
+  ShieldCheck,
+  Lock,
+  LogOut,
+  KeyRound,
+  Edit3,
+  Check
 } from 'lucide-react';
 import {
   fetchRplSiswa,
@@ -32,6 +38,9 @@ import {
   fetchGuruList,
   fetchWaliKelas,
   saveWaliKelas,
+  changeSiswaUsername,
+  resetSiswaPassword,
+  verifyRole,
   GuruItem,
 } from '@/lib/api';
 
@@ -88,9 +97,39 @@ export default function DataSiswaPage() {
   const [savingWali, setSavingWali] = useState<boolean>(false);
   const [waliSaveStatus, setWaliSaveStatus] = useState<string | null>(null);
 
-  // Check URL parameters on mount (?tingkat=10, 11, 12)
+  // Auth State (Admin / Petugas)
+  const [authRole, setAuthRole] = useState<'admin' | 'sarpras' | null>(null);
+  const [authUsername, setAuthUsername] = useState<string>('');
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [loginUsername, setLoginUsername] = useState<string>('petugas');
+  const [loginPassword, setLoginPassword] = useState<string>('');
+  const [loginPin, setLoginPin] = useState<string>('');
+  const [loginType, setLoginType] = useState<'password' | 'pin'>('password');
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginLoading, setLoginLoading] = useState<boolean>(false);
+
+  // Student Account Management States
+  const [editingStudent, setEditingStudent] = useState<RplSiswaItem | null>(null);
+  const [newUsernameInput, setNewUsernameInput] = useState<string>('');
+  const [changeUsernameError, setChangeUsernameError] = useState<string | null>(null);
+  const [changeUsernameLoading, setChangeUsernameLoading] = useState<boolean>(false);
+
+  const [resetConfirmStudent, setResetConfirmStudent] = useState<RplSiswaItem | null>(null);
+  const [resetLoading, setResetLoading] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const isAuthorized = authRole === 'admin' || authRole === 'sarpras';
+
+  // Check URL parameters & Auth session on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const savedRole = (sessionStorage.getItem('sarpras_auth_role') || sessionStorage.getItem('monitor_auth_role')) as 'admin' | 'sarpras' | null;
+      const savedUser = sessionStorage.getItem('sarpras_auth_username') || sessionStorage.getItem('monitor_auth_username') || '';
+      if (savedRole) {
+        setAuthRole(savedRole);
+        setAuthUsername(savedUser);
+      }
+
       const params = new URLSearchParams(window.location.search);
       const t = params.get('tingkat');
       if (t && ['10', '11', '12', 'all'].includes(t)) {
@@ -102,6 +141,103 @@ export default function DataSiswaPage() {
     loadSummary();
     loadWaliKelas();
   }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError(null);
+    setLoginLoading(true);
+    try {
+      const credentials = loginType === 'pin' ? { pin: loginPin.trim() } : { username: loginUsername.trim(), password: loginPassword.trim() };
+      const res = await verifyRole(credentials);
+      setAuthRole(res.role);
+      setAuthUsername(res.username || (res.role === 'admin' ? 'admin' : 'petugas'));
+      sessionStorage.setItem('sarpras_auth_role', res.role);
+      sessionStorage.setItem('sarpras_auth_username', res.username || (res.role === 'admin' ? 'admin' : 'petugas'));
+      if (res.pin) sessionStorage.setItem('sarpras_auth_pin', res.pin);
+      setShowLoginModal(false);
+      setToastMessage({ type: 'success', text: `Berhasil masuk sebagai ${res.username || res.role} (${res.role === 'admin' ? 'Administrator' : 'Petugas Sarpras'})` });
+      setTimeout(() => setToastMessage(null), 4000);
+      loadStudents();
+    } catch (err: any) {
+      setLoginError(err.message || 'Login gagal, periksa kredensial Anda');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    setAuthRole(null);
+    setAuthUsername('');
+    sessionStorage.removeItem('sarpras_auth_role');
+    sessionStorage.removeItem('sarpras_auth_username');
+    sessionStorage.removeItem('sarpras_auth_pin');
+    sessionStorage.removeItem('monitor_auth_role');
+    sessionStorage.removeItem('monitor_auth_username');
+    sessionStorage.removeItem('monitor_auth_pin');
+    setToastMessage({ type: 'success', text: 'Berhasil keluar' });
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleOpenChangeUsername = (st: RplSiswaItem) => {
+    setEditingStudent(st);
+    setNewUsernameInput(st.username || '');
+    setChangeUsernameError(null);
+  };
+
+  const handleSubmitChangeUsername = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingStudent) return;
+    const clean = newUsernameInput.trim().toLowerCase();
+    if (!clean) {
+      setChangeUsernameError('Username tidak boleh kosong!');
+      return;
+    }
+    if (clean.length < 3) {
+      setChangeUsernameError('Username minimal 3 karakter!');
+      return;
+    }
+    setChangeUsernameLoading(true);
+    setChangeUsernameError(null);
+    try {
+      await changeSiswaUsername({
+        id_siswa: editingStudent.id_siswa,
+        new_username: clean,
+      });
+      // Update student list state
+      setStudents((prev) =>
+        prev.map((s) => (s.id_siswa === editingStudent.id_siswa ? { ...s, username: clean } : s))
+      );
+      setToastMessage({ type: 'success', text: `Username ${editingStudent.nama_lengkap} berhasil diubah menjadi '${clean}'` });
+      setTimeout(() => setToastMessage(null), 4000);
+      setEditingStudent(null);
+    } catch (err: any) {
+      setChangeUsernameError(err.message || 'Gagal mengubah username');
+    } finally {
+      setChangeUsernameLoading(false);
+    }
+  };
+
+  const handleOpenResetPassword = (st: RplSiswaItem) => {
+    setResetConfirmStudent(st);
+  };
+
+  const handleConfirmResetPassword = async () => {
+    if (!resetConfirmStudent) return;
+    setResetLoading(true);
+    try {
+      await resetSiswaPassword({ id_siswa: resetConfirmStudent.id_siswa });
+      setStudents((prev) =>
+        prev.map((s) => (s.id_siswa === resetConfirmStudent.id_siswa ? { ...s, is_default_password: true } : s))
+      );
+      setToastMessage({ type: 'success', text: `Password ${resetConfirmStudent.nama_lengkap} berhasil di-reset ke default: 123456` });
+      setTimeout(() => setToastMessage(null), 4000);
+      setResetConfirmStudent(null);
+    } catch (err: any) {
+      alert(err.message || 'Gagal mereset password');
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   const loadWaliKelas = async () => {
     try {
@@ -326,6 +462,38 @@ export default function DataSiswaPage() {
           </div>
 
           <div className="flex items-center gap-2 self-start md:self-auto flex-wrap">
+            {/* User Session Badge / Login Button */}
+            {isAuthorized ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-bold shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span className="truncate max-w-[100px]">{authUsername || (authRole === 'admin' ? 'admin' : 'petugas')}</span>
+                <span className="text-[10px] px-1.5 py-0.5 bg-emerald-200/70 text-emerald-900 rounded font-bold uppercase">
+                  {authRole === 'admin' ? 'Admin' : 'Petugas'}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="ml-1 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
+                  title="Keluar / Logout"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setLoginError(null);
+                  setShowLoginModal(true);
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                title="Login sebagai Admin atau Petugas untuk kelola username & reset password"
+              >
+                <Lock className="w-3.5 h-3.5 text-slate-500" />
+                <span>Login Petugas / Admin</span>
+              </button>
+            )}
+
             {/* Button Atur Wali Kelas */}
             <button
               onClick={handleOpenWaliModal}
@@ -635,6 +803,12 @@ export default function DataSiswaPage() {
                     <th className="py-3 px-3 w-12 text-center">No</th>
                     <th className="py-3 px-4">Nama Lengkap Siswa</th>
                     <th className="py-3 px-3 w-14 text-center">L/P</th>
+                    {isAuthorized && (
+                      <>
+                        <th className="py-3 px-3 w-40 text-left text-indigo-700">Username</th>
+                        <th className="py-3 px-3 w-36 text-center text-amber-700">Reset Password</th>
+                      </>
+                    )}
                     <th className="py-3 px-3 w-20 text-center text-amber-700">Sakit</th>
                     <th className="py-3 px-3 w-20 text-center text-blue-700">Izin</th>
                     <th className="py-3 px-3 w-20 text-center text-rose-700">Alpa</th>
@@ -667,6 +841,55 @@ export default function DataSiswaPage() {
                           {st.jenkel}
                         </span>
                       </td>
+
+                      {/* Kolom Tambahan: Username & Ganti Username */}
+                      {isAuthorized && (
+                        <td className="py-3 px-3">
+                          <div className="flex items-center justify-between gap-1.5 bg-slate-50 border border-slate-200/90 rounded-lg px-2 py-1 max-w-[170px]">
+                            <span
+                              className="font-mono text-xs font-bold text-slate-800 truncate"
+                              title={st.username || 'Belum ada username'}
+                            >
+                              {st.username || <span className="text-slate-400 font-sans italic text-[11px]">Belum dibuat</span>}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenChangeUsername(st)}
+                              className="p-1 rounded-md hover:bg-indigo-100 text-slate-400 hover:text-indigo-700 transition-colors cursor-pointer shrink-0"
+                              title={`Ganti username untuk ${st.nama_lengkap}`}
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      )}
+
+                      {/* Kolom Tambahan: Reset Password */}
+                      {isAuthorized && (
+                        <td className="py-3 px-3 text-center">
+                          {st.is_default_password ? (
+                            <button
+                              disabled
+                              type="button"
+                              className="inline-flex items-center justify-center gap-1 w-full max-w-[140px] px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed select-none opacity-80"
+                              title="Password masih default (123456). Tombol dinonaktifkan."
+                            >
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                              <span className="truncate">Default (123456)</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenResetPassword(st)}
+                              className="inline-flex items-center justify-center gap-1 w-full max-w-[140px] px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white shadow-2xs transition-all cursor-pointer hover:shadow-xs active:scale-95"
+                              title="Password telah diubah siswa. Klik untuk reset ke 123456"
+                            >
+                              <KeyRound className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate">Reset Password</span>
+                            </button>
+                          )}
+                        </td>
+                      )}
                       {/* Sakit */}
                       <td className="py-3 px-3 text-center font-bold">
                         {st.sakit > 0 ? (
@@ -1002,6 +1225,344 @@ export default function DataSiswaPage() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* 2.1 MODAL: GANTI USERNAME SISWA                              */}
+      {/* ============================================================ */}
+      {editingStudent && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in-0 zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center shadow-2xs">
+                  <Edit3 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    Ganti Username Siswa
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Atur username akun Zakola siswa
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setEditingStudent(null)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Info Siswa */}
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1 text-xs">
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-semibold">Nama Siswa:</span>
+                <span className="font-bold text-slate-900">{editingStudent.nama_lengkap}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-semibold">Kelas:</span>
+                <span className="font-semibold text-slate-800">Kelas {editingStudent.tingkat} {editingStudent.nama_kelas}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-semibold">Username Sekarang:</span>
+                <span className="font-mono font-bold text-indigo-700">{editingStudent.username || '(Belum diset)'}</span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmitChangeUsername} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                  Username Baru: <span className="text-rose-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newUsernameInput}
+                  onChange={(e) => setNewUsernameInput(e.target.value.toLowerCase().replace(/[^a-z0-9_.]/g, ''))}
+                  placeholder="contoh: 392destrija"
+                  required
+                  autoFocus
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                />
+                <span className="text-[11px] text-slate-400 mt-1 block">
+                  Hanya huruf kecil, angka, titik, atau underscore (minimal 3 karakter). Jika username sudah dipakai, sistem akan menolak.
+                </span>
+              </div>
+
+              {changeUsernameError && (
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2 font-semibold">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{changeUsernameError}</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingStudent(null)}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={changeUsernameLoading || !newUsernameInput.trim()}
+                  className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                >
+                  {changeUsernameLoading ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Menyimpan...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Simpan Username</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* 2.2 MODAL: KONFIRMASI RESET PASSWORD SISWA                   */}
+      {/* ============================================================ */}
+      {resetConfirmStudent && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in-0 zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center shadow-2xs">
+                  <KeyRound className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    Konfirmasi Reset Password
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Kembalikan password ke default
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setResetConfirmStudent(null)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-2">
+              <p className="font-semibold">
+                Apakah Anda yakin ingin me-reset password akun siswa berikut?
+              </p>
+              <div className="bg-white/80 p-2.5 rounded-lg border border-amber-200/80 space-y-1 font-sans">
+                <div>Nama: <strong>{resetConfirmStudent.nama_lengkap}</strong></div>
+                <div>Kelas: <strong>Kelas {resetConfirmStudent.tingkat} {resetConfirmStudent.nama_kelas}</strong></div>
+                <div>Username: <strong className="font-mono">{resetConfirmStudent.username || '-'}</strong></div>
+              </div>
+              <p className="text-[11px] text-amber-800 leading-relaxed">
+                Password akan dikembalikan menjadi default: <strong>123456</strong>. Setelah berhasil di-reset, tombol pada baris siswa ini akan otomatis dinonaktifkan (disabled).
+              </p>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setResetConfirmStudent(null)}
+                className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmResetPassword}
+                disabled={resetLoading}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+              >
+                {resetLoading ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Mereset...</span>
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="w-3.5 h-3.5" />
+                    <span>Ya, Reset ke 123456</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* 2.3 MODAL: LOGIN ADMIN / PETUGAS                             */}
+      {/* ============================================================ */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in-0 zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center shadow-2xs">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">
+                    Login Petugas / Admin
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Akses kelola username &amp; reset password siswa
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowLoginModal(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Tab: Password vs PIN */}
+            <div className="flex rounded-xl bg-slate-100 p-1 text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setLoginType('password')}
+                className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  loginType === 'password'
+                    ? 'bg-white text-slate-900 shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                Username &amp; Password
+              </button>
+              <button
+                type="button"
+                onClick={() => setLoginType('pin')}
+                className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  loginType === 'pin'
+                    ? 'bg-white text-slate-900 shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                PIN Cepat
+              </button>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-3.5">
+              {loginType === 'password' ? (
+                <>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Username:
+                    </label>
+                    <input
+                      type="text"
+                      value={loginUsername}
+                      onChange={(e) => setLoginUsername(e.target.value)}
+                      placeholder="Contoh: petugas atau admin"
+                      required
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Password:
+                    </label>
+                    <input
+                      type="password"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="Masukkan password akun"
+                      required
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    />
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    PIN Akses (Admin / Petugas):
+                  </label>
+                  <input
+                    type="password"
+                    maxLength={6}
+                    value={loginPin}
+                    onChange={(e) => setLoginPin(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Masukkan 6 digit PIN (contoh: 654321)"
+                    required
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-mono tracking-widest text-center font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                  />
+                  <span className="text-[11px] text-slate-400 mt-1 block text-center">
+                    Petugas: 654321 • Admin: 987654
+                  </span>
+                </div>
+              )}
+
+              {loginError && (
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2 font-semibold">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setShowLoginModal(false)}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={loginLoading}
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                >
+                  {loginLoading ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Memverifikasi...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-3.5 h-3.5" />
+                      <span>Masuk</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl shadow-lg border text-xs font-bold animate-in fade-in-0 slide-in-from-bottom-2 duration-150 ${
+          toastMessage.type === 'success'
+            ? 'bg-emerald-600 text-white border-emerald-700'
+            : 'bg-rose-600 text-white border-rose-700'
+        }`}>
+          {toastMessage.type === 'success' ? (
+            <CheckCircle2 className="w-4 h-4 text-emerald-200 shrink-0" />
+          ) : (
+            <AlertCircle className="w-4 h-4 text-rose-200 shrink-0" />
+          )}
+          <span>{toastMessage.text}</span>
         </div>
       )}
 
